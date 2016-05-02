@@ -48,7 +48,7 @@ def _create_mock_data():
         reform_itemized.sort(inplace=True)
         df['reform_itemized'] = reform_itemized
 
-        # bar plot
+        # bar plot ---------------------
         baseline_bars = pd.Series([randint(0,13) for r in range(100)])
         baseline_bars.sort(inplace=True)
         df['baseline_bars'] = baseline_bars + .125
@@ -56,10 +56,6 @@ def _create_mock_data():
         reform_bars = pd.Series([randint(0,13) for r in range(100)])
         reform_bars.sort(inplace=True)
         df['reform_bars'] = reform_bars - .125
-
-        reform_itemized = pd.Series([randint(10,75) for r in range(100)])
-        reform_itemized.sort(inplace=True)
-        df['reform_itemized'] = reform_itemized
 
         return ColumnDataSource(df)
 
@@ -179,5 +175,5 @@ slider1.callback = CustomJS(args=data_sources, code=jscode)
 slider2.callback = CustomJS(args=data_sources, code=jscode)
 slider3.callback = CustomJS(args=data_sources, code=jscode)
 
-output_file('sliders.html')
+output_file('tax-reform-explorer.html')
 show(layout)
