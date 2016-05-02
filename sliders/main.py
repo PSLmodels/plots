@@ -26,8 +26,8 @@ from styles import (DATETIME_FORMAT,
                     RED,
                     BLUE)
 
-plot_width = 325
-plot_height = 200
+plot_width = 400
+plot_height = 250
 
 # ------------------------
 def _create_mock_data():
@@ -37,12 +37,25 @@ def _create_mock_data():
         df['average_tax'] = np.random.normal(50000, 10000, 100)
         df['x'] = df.apply(lambda r: randint(0, 100), axis=1)
         df['x1'] = df.apply(lambda r: randint(0, 100), axis=1)
-        df['y'] = df.apply(lambda r: randint(0, 75), axis=1)
         df['income_percentile'] = pd.Series(list(range(100)))
-
+    
+        # line plot
         baseline_itemized = pd.Series([randint(10,75) for r in range(100)])
         baseline_itemized.sort(inplace=True)
         df['baseline_itemized'] = baseline_itemized
+
+        reform_itemized = pd.Series([randint(10,75) for r in range(100)])
+        reform_itemized.sort(inplace=True)
+        df['reform_itemized'] = reform_itemized
+
+        # bar plot
+        baseline_bars = pd.Series([randint(0,13) for r in range(100)])
+        baseline_bars.sort(inplace=True)
+        df['baseline_bars'] = baseline_bars + .125
+
+        reform_bars = pd.Series([randint(0,13) for r in range(100)])
+        reform_bars.sort(inplace=True)
+        df['reform_bars'] = reform_bars - .125
 
         reform_itemized = pd.Series([randint(10,75) for r in range(100)])
         reform_itemized.sort(inplace=True)
@@ -68,7 +81,7 @@ def get_data_sources():
 
 data_sources = get_data_sources()
 
-tax_average_bin_names = ['Less than 10',
+tax_average_bin_names = reversed(['Less than 10',
                          '10 - 20',
                          '20 - 30',
                          '30 - 40',
@@ -78,7 +91,8 @@ tax_average_bin_names = ['Less than 10',
                          '100 - 200',
                          '200 - 500',
                          '500 - 1000',
-                         ' 1000+']
+                         '1000+',
+                         'All'])
 
 slider1 = Slider(title="Mortage & Other Interest Paid Deduction",
                   value=0, start=0, end=2, step=1)
@@ -91,7 +105,7 @@ slider3 = Slider(title="Charitable Contribution",
 
 source = ColumnDataSource(data_sources.values()[0].data)
 
-# create line plot
+# create line plot --------------------------------------------------
 lines = Plot(plot_width=plot_width,
             plot_height=plot_height,
             x_range=Range1d(0, 100),
@@ -108,25 +122,23 @@ lines.add_glyph(source,
                Line(x='income_percentile',
                     y='reform_itemized',
                     line_color=RED,
-                    line_alpha=1))
+                    line_alpha=.5))
 
 lines.add_layout(LinearAxis(axis_label="Percentiles of Income", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
 
-
-# create bar plot
+# create bar plot -------------------------------------
 bars = Plot(plot_width=plot_width,
             plot_height=plot_height,
+            title='Average Tax',
             x_range=Range1d(0, 100),
             y_range=FactorRange(*tax_average_bin_names),
             **PLOT_FORMATS)
 
-
-
 bars.add_glyph(source,
                Rect(x='x',
-                    y='y',
-                    height=0.8,
+                    y='baseline_bars',
+                    height=0.2,
                     width=100,
                     fill_color=BLUE,
                     fill_alpha=0.8,
@@ -134,17 +146,17 @@ bars.add_glyph(source,
 
 bars.add_glyph(source,
                Rect(x='x1',
-                    y='y',
-                    height=0.4,
+                    y='reform_bars',
+                    height=0.2,
                     width=100,
                     fill_color=RED,
                     fill_alpha=1,
                     line_color=None))
 
-bars.add_layout(LinearAxis(axis_label="Average Tax", **AXIS_FORMATS), 'below')
+#bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 bars.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
 
-# wire up for interactivity
+# wire up for interactivity ------------------------
 layout = VBox(width=plot_width, children=[slider1, slider2, slider3, lines, bars])
 
 data_sources['slider1'] = slider1
