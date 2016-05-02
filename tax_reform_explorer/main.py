@@ -8,7 +8,7 @@ from numpy.random import normal, randint
 from pdb import set_trace
 
 
-from bokeh.models import Plot, ColumnDataSource, Range1d, Rect, Line
+from bokeh.models import Plot, ColumnDataSource, Range1d, Rect, Line, ImageURL
 from bokeh.io import output_file
 from bokeh.plotting import show
 from bokeh.models import (ColumnDataSource, CustomJS, HoverTool,
@@ -76,17 +76,17 @@ def get_data_sources():
 data_sources = get_data_sources()
 
 tax_average_bin_names = reversed(['Less than 10',
-                         '10 - 20',
-                         '20 - 30',
-                         '30 - 40',
-                         '40 - 50',
-                         '50 - 75',
-                         '75 - 100',
-                         '100 - 200',
-                         '200 - 500',
-                         '500 - 1000',
-                         '1000+',
-                         'All'])
+                                  '10 - 20',
+                                  '20 - 30',
+                                  '30 - 40',
+                                  '40 - 50',
+                                  '50 - 75',
+                                  '75 - 100',
+                                  '100 - 200',
+                                  '200 - 500',
+                                  '500 - 1000',
+                                  '1000+',
+                                  'All'])
 
 slider1 = Slider(title="Mortage & Other Interest Paid Deduction",
                   value=0, start=0, end=2, step=1)
@@ -97,6 +97,10 @@ slider2 = Slider(title="State & Local Tax Deduction",
 slider3 = Slider(title="Charitable Contribution",
                   value=0, start=0, end=2, step=1)
 
+logo_url = 'https://avatars0.githubusercontent.com/u/8301070?v=3&s=200'
+logo_source = ColumnDataSource(dict(url=[logo_url], x=[17], y=[.8], w=[100], h=[12]))
+logo_image = ImageURL(url="url", x="x", y="y", global_alpha=.05, anchor="bottom_left")
+
 source = ColumnDataSource(data_sources.values()[0].data)
 
 # create line plot --------------------------------------------------
@@ -105,6 +109,8 @@ lines = Plot(plot_width=plot_width,
             x_range=Range1d(0, 100),
             y_range=Range1d(0, 100),
             **PLOT_FORMATS)
+
+lines.add_glyph(logo_source, logo_image)
 
 lines.add_glyph(source,
                Line(x='income_percentile',
@@ -130,6 +136,8 @@ bars = Plot(plot_width=plot_width,
             x_range=Range1d(0, 100),
             y_range=FactorRange(*tax_average_bin_names),
             **PLOT_FORMATS)
+
+bars.add_glyph(logo_source, logo_image)
 
 bars.add_glyph(source,
                Rect(x='x',
@@ -177,3 +185,5 @@ slider3.callback = CustomJS(args=data_sources, code=jscode)
 
 output_file('tax-reform-explorer.html')
 show(layout)
+
+
