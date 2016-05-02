@@ -41,20 +41,18 @@ def _create_mock_data():
     
         # line plot
         baseline_itemized = pd.Series([randint(10,75) for r in range(100)])
-        baseline_itemized.sort(inplace=True)
-        df['baseline_itemized'] = baseline_itemized
+        baseline_itemized.sort()
+        df['baseline_itemized'] = baseline_itemized.values
 
         reform_itemized = pd.Series([randint(10,75) for r in range(100)])
-        reform_itemized.sort(inplace=True)
-        df['reform_itemized'] = reform_itemized
+        reform_itemized.sort()
+        df['reform_itemized'] = reform_itemized.values
 
-        # bar plot ---------------------
+        # bar plot
         baseline_bars = pd.Series([randint(0,13) for r in range(100)])
-        baseline_bars.sort(inplace=True)
         df['baseline_bars'] = baseline_bars + .125
 
         reform_bars = pd.Series([randint(0,13) for r in range(100)])
-        reform_bars.sort(inplace=True)
         df['reform_bars'] = reform_bars - .125
 
         return ColumnDataSource(df)
@@ -112,13 +110,15 @@ lines.add_glyph(source,
                Line(x='income_percentile',
                     y='baseline_itemized',
                     line_color=BLUE,
+                    line_width=1.5,
                     line_alpha=0.8))
 
 lines.add_glyph(source,
                Line(x='income_percentile',
                     y='reform_itemized',
                     line_color=RED,
-                    line_alpha=.5))
+                    line_width=1.5,
+                    line_alpha=.8))
 
 lines.add_layout(LinearAxis(axis_label="Percentiles of Income", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
