@@ -1,33 +1,32 @@
 '''
 Tax Brain Widget
 '''
+import os
 import pandas as pd
 import numpy as np
-from numpy.random import normal, randint
+from numpy.random import randint
 
-from pdb import set_trace
+from jinja2 import Environment, FileSystemLoader
 
+from bokeh.models import Plot, Range1d, ImageURL
+from bokeh.embed import components
+from bokeh.models import (ColumnDataSource, LinearAxis, Rect, FactorRange,
+                          CategoricalAxis, Line)
 
-from bokeh.models import Plot, ColumnDataSource, Range1d, Rect, Line, ImageURL
-from bokeh.io import output_file
-from bokeh.plotting import show
-from bokeh.models import (ColumnDataSource, CustomJS, HoverTool,
-                          Range1d, Plot, LinearAxis, Rect, FactorRange,
-                          CategoricalAxis, DatetimeAxis, Line, DataRange1d,
-                          MultiLine, Text, Circle, VBox, Slider)
-
-from models import IonRangeSlider
-
-from styles import (DATETIME_FORMAT,
-                    PLOT_FORMATS,
+from styles import (PLOT_FORMATS,
                     AXIS_FORMATS,
-                    LINE_FORMATS,
-                    FONT_PROPS_SM,
                     RED,
                     BLUE)
 
 plot_width = 400
 plot_height = 250
+
+def output_page(output_path, **kwargs):
+    here = os.path.dirname(os.path.abspath(__file__))
+    j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
+    content = j2_env.get_template('template.j2').render(**kwargs)
+    with open(output_path, 'w') as output_file:
+        output_file.write(content)
 
 # ------------------------
 def _create_mock_data():
@@ -38,21 +37,21 @@ def _create_mock_data():
         df['x'] = df.apply(lambda r: randint(0, 100), axis=1)
         df['x1'] = df.apply(lambda r: randint(0, 100), axis=1)
         df['income_percentile'] = pd.Series(list(range(100)))
-    
+
         # line plot
-        baseline_itemized = pd.Series([randint(10,75) for r in range(100)])
+        baseline_itemized = pd.Series([randint(10, 75) for r in range(100)])
         baseline_itemized.sort()
         df['baseline_itemized'] = baseline_itemized.values
 
-        reform_itemized = pd.Series([randint(10,75) for r in range(100)])
+        reform_itemized = pd.Series([randint(10, 75) for r in range(100)])
         reform_itemized.sort()
         df['reform_itemized'] = reform_itemized.values
 
         # bar plot
-        baseline_bars = pd.Series([randint(0,13) for r in range(100)])
+        baseline_bars = pd.Series([randint(0, 13) for r in range(100)])
         df['baseline_bars'] = baseline_bars + .125
 
-        reform_bars = pd.Series([randint(0,13) for r in range(100)])
+        reform_bars = pd.Series([randint(0, 13) for r in range(100)])
         df['reform_bars'] = reform_bars - .125
 
         return ColumnDataSource(df)
@@ -88,15 +87,6 @@ tax_average_bin_names = reversed(['Less than 10',
                                   '1000+',
                                   'All'])
 
-slider1 = Slider(title="Mortage & Other Interest Paid Deduction",
-                  value=0, start=0, end=2, step=1)
-
-slider2 = Slider(title="State & Local Tax Deduction",
-                  value=0, start=0, end=2, step=1)
-
-slider3 = Slider(title="Charitable Contribution",
-                  value=0, start=0, end=2, step=1)
-
 logo_url = 'https://avatars0.githubusercontent.com/u/8301070?v=3&s=200'
 logo_source = ColumnDataSource(dict(url=[logo_url], x=[17], y=[.8], w=[100], h=[12]))
 logo_image = ImageURL(url="url", x="x", y="y", global_alpha=.05, anchor="bottom_left")
@@ -105,26 +95,26 @@ source = ColumnDataSource(data_sources.values()[0].data)
 
 # create line plot --------------------------------------------------
 lines = Plot(plot_width=plot_width,
-            plot_height=plot_height,
-            x_range=Range1d(0, 100),
-            y_range=Range1d(0, 100),
-            **PLOT_FORMATS)
+             plot_height=plot_height,
+             x_range=Range1d(0, 100),
+             y_range=Range1d(0, 100),
+             **PLOT_FORMATS)
 
 lines.add_glyph(logo_source, logo_image)
 
 lines.add_glyph(source,
-               Line(x='income_percentile',
-                    y='baseline_itemized',
-                    line_color=BLUE,
-                    line_width=1.5,
-                    line_alpha=0.8))
+                Line(x='income_percentile',
+                     y='baseline_itemized',
+                     line_color=BLUE,
+                     line_width=2,
+                     line_alpha=0.8))
 
 lines.add_glyph(source,
-               Line(x='income_percentile',
-                    y='reform_itemized',
-                    line_color=RED,
-                    line_width=1.5,
-                    line_alpha=.8))
+                Line(x='income_percentile',
+                     y='reform_itemized',
+                     line_color=RED,
+                     line_width=2,
+                     line_alpha=.8))
 
 lines.add_layout(LinearAxis(axis_label="Percentiles of Income", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
@@ -157,33 +147,20 @@ bars.add_glyph(source,
                     fill_alpha=1,
                     line_color=None))
 
-#bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
+# bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 bars.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
 
-# wire up for interactivity ------------------------
-layout = VBox(width=plot_width, children=[slider1, slider2, slider3, lines, bars])
+plots = {}
+plots['bars_plot'] = bars
+plots['line_plot'] = lines
 
-data_sources['slider1'] = slider1
-data_sources['slider2'] = slider2
-data_sources['slider3'] = slider3
-data_sources['source'] = source
+data = {}
+for k, v in data_sources.items():
+    data[k] = v.data
 
-jscode="""
-source_id = 'ds_';
-source_id += slider1.get('value').toString();
-source_id += slider2.get('value').toString();
-source_id += slider3.get('value').toString();
-
-var new_data = eval(source_id).get('data')
-source.set('data', new_data)
-
-"""
-
-slider1.callback = CustomJS(args=data_sources, code=jscode)
-slider2.callback = CustomJS(args=data_sources, code=jscode)
-slider3.callback = CustomJS(args=data_sources, code=jscode)
-
-output_file('tax-reform-explorer.html')
-show(layout)
-
-
+script, divs = components(plots)
+output_page('tax-reform-explorer.html',
+            bokeh_script=script,
+            plots=divs,
+            plot_id=lines._id,
+            bokeh_data=data)

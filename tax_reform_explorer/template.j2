@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Tax Reform Explorer</title>
+    <link rel="stylesheet" href="normalize.css" />
+    <link rel="stylesheet" href="ion.rangeSlider.css" />
+    <link rel="stylesheet" href="ion.rangeSlider.skinFlat.css" />
+    <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" rel="stylesheet" />
+
+    <style>
+
+      .slider-group {
+        height: 80px;
+        margin: 15px;
+      }
+
+      .slider-group h5 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #6B6B73;
+        font-weight:normal;
+      }
+
+      .irs-from, .irs-to, .irs-single {
+        background:#21bfd5 !important;
+      }
+
+      .irs-from:after, .irs-to:after, .irs-single:after {
+        border-top-color:#21bfd5 !important;
+      }
+
+
+    </style>
+
+</head>
+<body>
+
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.js"></script>
+
+    {{ bokeh_script | safe }}
+
+<!-- Page contents -->
+<div style="position: relative; width:375px;padding:20px;">
+
+    <div class="slider-group">
+        <h5>Mortage & Other Interest Paid Deduction</h5>
+        <input id="slider1" type="text" id="range" value="" name="range" />
+    </div>
+    <div class="slider-group">
+        <h5>State & Local Tax Deduction</h5>
+        <input id="slider2" type="text" id="range" value="" name="range" />
+    </div>
+    <div class="slider-group">
+        <h5>Charitable Contribution</h5>
+        <input id="slider3" type="text" id="range" value="" name="range" />
+    </div>
+
+</div>
+
+<!-- All JS -->
+<script src="jquery-1.12.3.min.js"></script>
+<script src="ion.rangeSlider.js"></script>
+
+<script>
+    $(function () {
+
+	    window.bokeh_data = {{ bokeh_data | safe }};
+
+	    var onSliderChange = function () {
+		    var lookup = ['keep', 'halve', 'repeal'];
+		    var slider1_val = lookup.indexOf($("#slider1").prop('value').toLowerCase()).toString();
+		    var slider2_val = lookup.indexOf($("#slider2").prop('value').toLowerCase()).toString();
+		    var slider3_val = lookup.indexOf($("#slider3").prop('value').toLowerCase()).toString();
+		    var ds_id = 'ds_' + [slider1_val, slider2_val, slider3_val].join('');
+            var renderers = renderers = Bokeh.index['{{ plot_id }}'].renderers;
+            var source = renderers[Object.keys(renderers)[1]].model.get('data_source');
+		    source.set('data', window.bokeh_data[ds_id]);
+	    };
+
+	    var $slider1 = $("#slider1");
+	    $slider1.ionRangeSlider({
+		    grid: true,
+		    from: 3,
+		    hide_min_max: true,
+		    values: ["Keep", "Halve", "Repeal"]
+	    });
+	    $slider1.on("change", onSliderChange);
+
+	    var $slider2 = $("#slider2");
+	    $slider2.ionRangeSlider({
+		    grid: true,
+		    from: 3,
+		    hide_min_max: true,
+		    values: ["Keep", "Halve", "Repeal"]
+	    });
+	    $slider2.on("change", onSliderChange);
+
+	    var $slider3 = $("#slider3");
+	    $slider3.ionRangeSlider({
+		    grid: true,
+		    from: 3,
+		    hide_min_max: true,
+		    values: ["Keep", "Halve", "Repeal"]
+	    });
+	    $slider3.on("change", onSliderChange);
+
+    });
+</script>
+
+{{ plots.line_plot | safe }}
+{{ plots.bars_plot | safe }}
+
+</body>
+</html>

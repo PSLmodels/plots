@@ -17,8 +17,8 @@ FONT_SIZE = "10pt"
 NODATA_COLOR = "#eeeeee"
 GRAY = "#CCCCCC"
 DARK_GRAY = "#6B6B73"
-BLUE = '#67a9cf'
-RED = '#ef8a62'
+BLUE = '#21bfd5'
+RED = '#FF6666'
 
 AXIS_FORMATS = dict(
     minor_tick_in=None,
