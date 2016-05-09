@@ -4,10 +4,6 @@ Tax Brain Widget
 import glob
 import os
 import pandas as pd
-import numpy as np
-from numpy.random import randint
-
-from pdb import set_trace
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -31,17 +27,17 @@ def output_page(output_path, **kwargs):
 def get_data_sources():
 
     tax_average_bin_cats = reversed(['(-100000000000000, 0]',
-                                      '(0, 9999]',
-                                      '(9999, 19999]',
-                                      '(19999, 29999]',
-                                      '(29999, 39999]',
-                                      '(39999, 49999]',
-                                      '(49999, 74999]',
-                                      '(74999, 99999]',
-                                      '(99999, 199999]',
-                                      '(199999, 499999]',
-                                      '(499999, 1000000]',
-                                      '(1000000, 100000000000000]'])
+                                     '(0, 9999]',
+                                     '(9999, 19999]',
+                                     '(19999, 29999]',
+                                     '(29999, 39999]',
+                                     '(39999, 49999]',
+                                     '(49999, 74999]',
+                                     '(74999, 99999]',
+                                     '(99999, 199999]',
+                                     '(199999, 499999]',
+                                     '(499999, 1000000]',
+                                     '(1000000, 100000000000000]'])
     tax_average_bin_cats = list(tax_average_bin_cats)
     files = glob.glob('ds_*_*.csv')
     line_sources = {}
@@ -56,7 +52,7 @@ def get_data_sources():
             line_sources[ds_id] = ColumnDataSource(df)
 
         elif '_diff' in ds_id:
-            df['bins'] = df['bins'].map(lambda r:tax_average_bin_cats.index(r))
+            df['bins'] = df['bins'].map(lambda r: tax_average_bin_cats.index(r))
             df['reform_bins'] = df['bins'] - .125
             df['base_bins'] = df['bins'] + .125
             bar_sources[ds_id] = ColumnDataSource(df)
@@ -95,18 +91,18 @@ lines = Plot(plot_width=plot_width,
 lines.add_glyph(logo_source, logo_image)
 
 line_base_renderer = lines.add_glyph(lines_source,
-                                Line(x='index',
-                                     y='base',
-                                     line_color=BLUE,
-                                     line_width=2,
-                                     line_alpha=0.8))
+                                     Line(x='index',
+                                          y='base',
+                                          line_color=BLUE,
+                                          line_width=2,
+                                          line_alpha=0.8))
 
-line_reform_renderer = lines.add_glyph(lines_source,
-                                       Line(x='index',
-                                            y='reform',
-                                            line_color=RED,
-                                            line_width=2,
-                                            line_alpha=.8))
+lines.add_glyph(lines_source,
+                Line(x='index',
+                     y='reform',
+                     line_color=RED,
+                     line_width=2,
+                     line_alpha=.8))
 
 
 lines.add_layout(LinearAxis(axis_label="Percentiles of Income", **AXIS_FORMATS), 'below')
@@ -148,8 +144,8 @@ plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
 
-bars_data = { k: v.data for k,v in bar_sources.items() }
-lines_data = { k: v.data for k,v in line_sources.items() }
+bars_data = {k: v.data for k, v in bar_sources.items()}
+lines_data = {k: v.data for k, v in line_sources.items()}
 
 script, divs = components(plots)
 output_page('tax-reform-explorer.html',
