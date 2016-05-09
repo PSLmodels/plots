@@ -43,7 +43,6 @@
 
 <!-- Page contents -->
 <div style="position: relative; width:375px;padding:20px;">
-
     <div class="slider-group">
         <h5>Mortage & Other Interest Paid Deduction</h5>
         <input id="slider1" type="text" id="range" value="" name="range" />
@@ -56,7 +55,6 @@
         <h5>Charitable Contribution</h5>
         <input id="slider3" type="text" id="range" value="" name="range" />
     </div>
-
 </div>
 
 <!-- All JS -->
@@ -66,17 +64,26 @@
 <script>
     $(function () {
 
-	    window.bokeh_data = {{ bokeh_data | safe }};
+	    window.bars_data = {{ bars_data | safe }};
+	    window.lines_data = {{ lines_data | safe }};
 
 	    var onSliderChange = function () {
+
 		    var lookup = ['keep', 'halve', 'repeal'];
 		    var slider1_val = lookup.indexOf($("#slider1").prop('value').toLowerCase()).toString();
 		    var slider2_val = lookup.indexOf($("#slider2").prop('value').toLowerCase()).toString();
 		    var slider3_val = lookup.indexOf($("#slider3").prop('value').toLowerCase()).toString();
 		    var ds_id = 'ds_' + [slider1_val, slider2_val, slider3_val].join('');
-            var renderers = renderers = Bokeh.index['{{ plot_id }}'].renderers;
-            var source = renderers[Object.keys(renderers)[1]].model.get('data_source');
-		    source.set('data', window.bokeh_data[ds_id]);
+
+		    // lines data source 
+		    var line_renderers = Bokeh.index['{{ line_plot_id }}'].renderers;
+		    var line_source = line_renderers['{{ line_renderer_id }}'].model.get('data_source');
+		    line_source.set('data', window.lines_data[ds_id + '_data']);
+
+		    // bars data source 
+		    var bar_renderers = Bokeh.index['{{ bar_plot_id }}'].renderers;
+		    var bars_source = bar_renderers['{{ bar_renderer_id }}'].model.get('data_source');
+		    bars_source.set('data', window.bars_data[ds_id + '_diff']);
 	    };
 
 	    var $slider1 = $("#slider1");
