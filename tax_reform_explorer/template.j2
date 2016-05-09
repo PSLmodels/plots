@@ -31,6 +31,10 @@
         border-top-color:#21bfd5 !important;
       }
 
+      .irs-grid-pol.small {
+	display: None !important;
+      }
+
 
     </style>
 
@@ -89,6 +93,7 @@
 	    var $slider1 = $("#slider1");
 	    $slider1.ionRangeSlider({
 		    grid: true,
+		    grid_num: 3,
 		    from: 0,
 		    hide_min_max: true,
 		    values: ["Keep", "Halve", "Repeal"]
@@ -98,6 +103,7 @@
 	    var $slider2 = $("#slider2");
 	    $slider2.ionRangeSlider({
 		    grid: true,
+		    grid_num: 3,
 		    from: 0,
 		    hide_min_max: true,
 		    values: ["Keep", "Halve", "Repeal"]
@@ -107,6 +113,7 @@
 	    var $slider3 = $("#slider3");
 	    $slider3.ionRangeSlider({
 		    grid: true,
+		    grid_num: 3,
 		    from: 0,
 		    hide_min_max: true,
 		    values: ["Keep", "Halve", "Repeal"]
