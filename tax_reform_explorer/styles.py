@@ -19,6 +19,7 @@ GRAY = "#CCCCCC"
 DARK_GRAY = "#6B6B73"
 BLUE = '#21bfd5'
 RED = '#FF6666'
+GREEN = '#32CD32'
 
 AXIS_FORMATS = dict(
     minor_tick_in=None,
@@ -57,18 +58,22 @@ LINE_FORMATS = dict(
     line_join='round',
     line_width=2
 )
+
 FONT_PROPS_SM = dict(
     text_font=FONT,
     text_font_size='8pt',
 )
+
 FONT_PROPS_MD = dict(
     text_font=FONT,
     text_font_size='10pt',
 )
+
 FONT_PROPS_LG = dict(
     text_font=FONT,
     text_font_size='12pt',
 )
+
 BLANK_AXIS = dict(
     minor_tick_in=None,
     minor_tick_out=None,

@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="ion.rangeSlider.css" />
     <link rel="stylesheet" href="ion.rangeSlider.skinFlat.css" />
+    <script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" rel="stylesheet" />
 
     <style>
@@ -14,9 +23,16 @@
       .slider-group {
         height: 80px;
         margin: 15px;
+        width:150px;
       }
 
-      .slider-group h5 {
+      .plot-container {
+        height: 250px;
+        margin: 15px;
+        width:400px;
+      }
+
+      .slider-group h6 {
         margin-top: 0px;
         margin-bottom: 0px;
         color: #6B6B73;
@@ -32,9 +48,14 @@
       }
 
       .irs-grid-pol.small {
-	display: None !important;
+        display: None !important;
       }
 
+      p {
+        color: #6B6B73;
+        font-weight:normal;
+        font-size:8pt;
+      }
 
     </style>
 
@@ -47,18 +68,6 @@
 
 <!-- Page contents -->
 <div style="position: relative; width:375px;padding:20px;">
-    <div class="slider-group">
-        <h5>Mortage & Other Interest Paid Deduction</h5>
-        <input id="slider1" type="text" id="range" value="" name="range" />
-    </div>
-    <div class="slider-group">
-        <h5>State & Local Tax Deduction</h5>
-        <input id="slider2" type="text" id="range" value="" name="range" />
-    </div>
-    <div class="slider-group">
-        <h5>Charitable Contribution</h5>
-        <input id="slider3" type="text" id="range" value="" name="range" />
-    </div>
 </div>
 
 <!-- All JS -->
@@ -123,8 +132,62 @@
     });
 </script>
 
-{{ plots.line_plot | safe }}
-{{ plots.bars_plot | safe }}
+<div class="container">
+        <hr>
+        <div class="row">
+
+            <div class="col-md-4">
+              <div class="slider-group">
+                  <h6>Mortage & Other Interest Paid Deduction</h6>
+                  <input id="slider1" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="slider-group">
+                  <h6>State & Local Tax Deduction</h6>
+                  <input id="slider2" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="slider-group">
+                    <h6>Charitable Contribution</h6>
+                    <input id="slider3" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+              <div class="plot-container">
+                {{ plots.line_plot | safe }}
+              </div>
+            </div>
+
+            <div class="col-md-4 col-md-offset-2">
+              <div class="plot-container">
+                {{ plots.bars_plot | safe }}
+              </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control"
+                     id="email-input"
+                     placeholder="Email"
+                     type="text">
+            </div>
+        </div>
+        <hr>
+
+    </div>
 
 </body>
 </html>
