@@ -106,7 +106,7 @@ lines.add_glyph(lines_source,
                      line_alpha=.8))
 
 lines.add_glyph(Text(x=5.15,
-                     y=92.5,
+                     y=92,
                      text=['baseline'],
                      text_font_size='8pt',
                      text_color='#666666'))
@@ -156,6 +156,19 @@ bar_base_renderer = bars.add_glyph(bars_source,
                                         fill_color=GREEN,
                                         fill_alpha=0.65,
                                         line_color=None))
+
+bars.add_glyph(Text(x=7.75,
+                    y=11.6,
+                    text=['Net Change'],
+                    text_font_size='8pt',
+                    text_color='#666666'))
+
+bars.add_glyph(Square(x=7.5,
+                      y=12,
+                      fill_color=GREEN,
+                      size=10,
+                      line_color=None,
+                      fill_alpha=0.65))
 
 # bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 bars.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
