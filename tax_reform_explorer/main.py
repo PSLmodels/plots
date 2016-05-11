@@ -154,7 +154,7 @@ bar_base_renderer = bars.add_glyph(bars_source,
                                         height=0.2,
                                         width='reform_net',
                                         fill_color=GREEN,
-                                        fill_alpha=0.5,
+                                        fill_alpha=0.65,
                                         line_color=None))
 
 # bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
