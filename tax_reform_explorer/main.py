@@ -2,23 +2,28 @@
 Tax Brain Widget
 '''
 import glob
+import locale
+import numpy as np
 import os
 import pandas as pd
-import numpy as np
 
 from jinja2 import Environment, FileSystemLoader
 
-from bokeh.models import Plot, Range1d, ImageURL
+from bokeh.models import Plot, Range1d, ImageURL, DataRange1d
 from bokeh.embed import components
-from bokeh.models import (ColumnDataSource, LinearAxis, Rect, FactorRange,
-                          CategoricalAxis, Line, Text, Square)
+from bokeh.models import (ColumnDataSource, LogAxis, LinearAxis, Rect, FactorRange,
+                          CategoricalAxis, Line, Text, Square, HoverTool)
 
 from styles import (PLOT_FORMATS,
                     AXIS_FORMATS,
                     FONT_PROPS_SM,
+                    DARK_GRAY,
                     GREEN,
+                    PURPLE,
                     RED,
                     BLUE)
+
+locale.setlocale(locale.LC_ALL, 'en_US')
 
 def output_page(output_path, **kwargs):
     here = os.path.dirname(os.path.abspath(__file__))
@@ -55,26 +60,35 @@ def get_data_sources():
 
         elif '_diff' in ds_id:
             df['bins'] = df['bins'].map(lambda r: tax_average_bin_cats.index(r))
-            df['reform_net'] = np.log((df['reform'] - df['base']).values).astype(np.int8)
+            net = np.maximum(df['reform'] - df['base'], 1)
+            df['reform_net'] = np.nan_to_num(np.sign(net) * np.log(np.abs(net)))
+            df['color'] = np.where(df['reform_net'].values >= 0, GREEN, PURPLE)
+            df['width'] = np.abs(df['reform_net'] * 2) # bokeh drawing from center
+
+            annotation_func = lambda r:'$' + locale.format('%d', float(r['reform'] - r['base']), grouping=True)
+            df['annotation'] = df.apply(annotation_func, axis=1)
+            df['annotation_y'] = df.apply(lambda r:r['bins'] - .38, axis=1)
+            df['annotation_x'] = df.apply(lambda r:max(.1, r['width'] / 2), axis=1)
             bar_sources[ds_id] = ColumnDataSource(df)
 
     return line_sources, bar_sources
 
-plot_width = 380
+
+plot_width = 425
 plot_height = 250
 
 line_sources, bar_sources = get_data_sources()
-tax_average_bin_names = reversed(['Less than 10',
-                                  '10 - 20',
-                                  '20 - 30',
-                                  '30 - 40',
-                                  '40 - 50',
-                                  '50 - 75',
-                                  '75 - 100',
-                                  '100 - 200',
-                                  '200 - 500',
-                                  '500 - 1000',
-                                  '1000+',
+tax_average_bin_names = reversed(['Less than 10k',
+                                  '10k - 20k',
+                                  '20k - 30k',
+                                  '30k - 40k',
+                                  '40k - 50k',
+                                  '50k - 75k',
+                                  '75k - 100k',
+                                  '100k - 200k',
+                                  '200k - 500k',
+                                  '500k - 1M',
+                                  '1M+',
                                   'All'])
 
 logo_url = 'https://avatars0.githubusercontent.com/u/8301070?v=3&s=200'
@@ -82,21 +96,15 @@ logo_source = ColumnDataSource(dict(url=[logo_url], x=[17], y=[.8], w=[100], h=[
 logo_image = ImageURL(url="url", x="x", y="y", global_alpha=.05, anchor="bottom_left")
 
 # create line plot --------------------------------------------------
-lines_source = ColumnDataSource(line_sources.values()[0].data)
+lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
              plot_height=plot_height,
+             title='Percent Itemizing by Income Percentile',
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
 
 lines.add_glyph(logo_source, logo_image)
-
-line_base_renderer = lines.add_glyph(lines_source,
-                                     Line(x='index',
-                                          y='base',
-                                          line_color=BLUE,
-                                          line_width=2,
-                                          line_alpha=0.8))
 
 lines.add_glyph(lines_source,
                 Line(x='index',
@@ -105,8 +113,17 @@ lines.add_glyph(lines_source,
                      line_width=2,
                      line_alpha=.8))
 
+line_base_renderer = lines.add_glyph(lines_source,
+                                     Line(x='index',
+                                          y='base',
+                                          line_color=BLUE,
+                                          line_width=2,
+                                          line_alpha=1))
+
+
 lines.add_glyph(Text(x=5.15,
                      y=92,
+                     text_font_style='italic',
                      text=['baseline'],
                      text_font_size='8pt',
                      text_color='#666666'))
@@ -121,6 +138,7 @@ lines.add_glyph(Square(x=3,
 
 lines.add_glyph(Text(x=5.15,
                      y=84.75,
+                     text_font_style='italic',
                      text=['reform'],
                      text_font_size='8pt',
                      text_color='#666666'))
@@ -133,35 +151,42 @@ lines.add_glyph(Square(x=3,
                        fill_alpha=0.8))
 
 
-lines.add_layout(LinearAxis(axis_label="Percentiles of Income", **AXIS_FORMATS), 'below')
+lines.add_layout(LinearAxis(axis_label="Percentile of Income", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
 
 # create bar plot -------------------------------------
 PLOT_FORMATS['min_border_bottom'] = 30
-bars_source = ColumnDataSource(bar_sources.values()[0].data)
-bars = Plot(plot_width=plot_width,
+bars_source = ColumnDataSource(bar_sources['ds_000_diff'].data)
+bars = Plot(plot_width=500,
             plot_height=plot_height,
-            title='Average Tax',
-            x_range=Range1d(0, 10),
-            y_range=FactorRange(*tax_average_bin_names),
+            title='Net Change in Average Tax by Annual Income',
+            x_range=Range1d(0, 11),
+            y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
+
+bars.add_tools(HoverTool(tooltips=[("width", "@width"),
+                                   ("reform_net", "@reform_net"),
+                                   ("bins", "@bins"),
+                                   ]))
 
 bars.add_glyph(logo_source, logo_image)
 
 bar_base_renderer = bars.add_glyph(bars_source,
                                    Rect(x=0,
                                         y='bins',
-                                        height=0.2,
-                                        width='reform_net',
-                                        fill_color=GREEN,
+                                        height=0.7,
+                                        width='width',
+                                        fill_color='color',
                                         fill_alpha=0.65,
                                         line_color=None))
 
-bars.add_glyph(Text(x=7.75,
+bars.add_glyph(Text(x=4.6,
                     y=11.6,
-                    text=['Net Change'],
+                    text_font_style='italic',
+                    text=[''],
                     text_font_size='8pt',
                     text_color='#666666'))
+
 
 bars.add_glyph(Square(x=7.5,
                       y=12,
@@ -170,8 +195,24 @@ bars.add_glyph(Square(x=7.5,
                       line_color=None,
                       fill_alpha=0.65))
 
-# bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
-bars.add_layout(CategoricalAxis(**AXIS_FORMATS), 'left')
+bars.add_glyph(Text(x=7.7,
+                    y=11.6,
+                    text_font_style='italic',
+                    text=['net tax increase'],
+                    text_font_size='8pt',
+                    text_color='#666666'))
+
+bars.add_glyph(bars_source,
+               Text(x='annotation_x',
+                    y='annotation_y',
+                    text='annotation',
+                    text_font_style='italic',
+                    text_font_size='8pt',
+                    text_color=DARK_GRAY))
+
+#bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
+#bars.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
+bars.add_layout(CategoricalAxis(axis_label="Annual Income (USD)", **AXIS_FORMATS), 'left')
 
 plots = {}
 plots['bars_plot'] = bars

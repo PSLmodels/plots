@@ -27,8 +27,6 @@
       }
 
       .plot-container {
-        height: 250px;
-        width:400px;
       }
 
       .slider-group h6 {
@@ -50,6 +48,10 @@
 
       .irs-grid-pol.small {
         display: None !important;
+      }
+
+      .row {
+        margin-bottom:15px;
       }
 
       p {
@@ -103,6 +105,7 @@
 		    var bar_renderers = Bokeh.index['{{ bar_plot_id }}'].renderers;
 		    var bars_source = bar_renderers['{{ bar_renderer_id }}'].model.get('data_source');
 		    bars_source.set('data', window.bars_data[ds_id + '_diff']);
+        debugger;
 	    };
 
 	    var $slider1 = $("#slider1");
@@ -166,13 +169,13 @@
 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="plot-container">
                 {{ plots.line_plot | safe }}
               </div>
             </div>
 
-            <div class="col-md-4 col-md-offset-2">
+            <div class="col-md-6">
               <div class="plot-container">
                 {{ plots.bars_plot | safe }}
               </div>
@@ -188,7 +191,7 @@
               <div class="input-group">
                  <input type="text" class="form-control" placeholder="Email">
                  <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Subscribe</button>
+                      <button class="btn btn-default" type="button">Submit</button>
                  </span>
               </div>
             </div>

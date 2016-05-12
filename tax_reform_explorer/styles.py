@@ -20,6 +20,7 @@ DARK_GRAY = "#6B6B73"
 BLUE = '#21bfd5'
 RED = '#FF6666'
 GREEN = '#32CD32'
+PURPLE = '#C5007C'
 
 AXIS_FORMATS = dict(
     minor_tick_in=None,
