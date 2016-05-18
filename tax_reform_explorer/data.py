@@ -8,6 +8,8 @@ from numpy.testing import assert_array_almost_equal
 from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator, Behavior, behavior
 
+from pdb import set_trace
+
 EPSILON = 1e-3
 
 def get_diff(calcX, calcY, name):
@@ -95,7 +97,9 @@ def print_data(calcX, calcY, weights, tab, name):
     df_filtered_y = df_filtered_y['w_pct']
 
     merged = pd.concat([df_filtered_x, df_filtered_y], axis=1, ignore_index=True)
-    merged.columns = ['base','reform']
+    merged['mean_income'] = mean_inc_x['_expanded_income'].values
+    merged.columns = ['base','reform','mean_income']
+
     merged.to_csv('{}_data.csv'.format(name),float_format = '%1.3f',sep=',',header = True, index =False)
 
 RES_COLUMNS = STATS_COLUMNS + ['e00200'] + ['MARS'] + ['n24']
@@ -127,11 +131,11 @@ def main(name, reform):
 
 if __name__ == '__main__':
     #reform_values = (0, .5, 1)
-    reform_values = (1,)
+    reform_values = (0,1,)
     groups = {}
-    for i in range(1):
-        for j in range(1):
-            for k in range(1):
+    for i in range(2):
+        for j in range(2):
+            for k in range(2):
                 reform = {
                           2015:{
                         "_ID_InterestPaid_HC":[reform_values[i]],
