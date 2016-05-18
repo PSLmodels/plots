@@ -90,7 +90,7 @@
 
 	    var onSliderChange = function () {
 
-		    var lookup = ['keep', 'halve', 'repeal'];
+		    var lookup = ['keep', 'repeal'];
 		    var slider1_val = lookup.indexOf($("#slider1").prop('value').toLowerCase()).toString();
 		    var slider2_val = lookup.indexOf($("#slider2").prop('value').toLowerCase()).toString();
 		    var slider3_val = lookup.indexOf($("#slider3").prop('value').toLowerCase()).toString();
@@ -105,36 +105,35 @@
 		    var bar_renderers = Bokeh.index['{{ bar_plot_id }}'].renderers;
 		    var bars_source = bar_renderers['{{ bar_renderer_id }}'].model.get('data_source');
 		    bars_source.set('data', window.bars_data[ds_id + '_diff']);
-        debugger;
 	    };
 
 	    var $slider1 = $("#slider1");
 	    $slider1.ionRangeSlider({
 		    grid: true,
-		    grid_num: 3,
+		    grid_num: 2,
 		    from: 0,
 		    hide_min_max: true,
-		    values: ["Keep", "Halve", "Repeal"]
+		    values: ["Keep", "Repeal"]
 	    });
 	    $slider1.on("change", onSliderChange);
 
 	    var $slider2 = $("#slider2");
 	    $slider2.ionRangeSlider({
 		    grid: true,
-		    grid_num: 3,
+		    grid_num: 2,
 		    from: 0,
 		    hide_min_max: true,
-		    values: ["Keep", "Halve", "Repeal"]
+		    values: ["Keep", "Repeal"]
 	    });
 	    $slider2.on("change", onSliderChange);
 
 	    var $slider3 = $("#slider3");
 	    $slider3.ionRangeSlider({
 		    grid: true,
-		    grid_num: 3,
+		    grid_num: 2,
 		    from: 0,
 		    hide_min_max: true,
-		    values: ["Keep", "Halve", "Repeal"]
+		    values: ["Keep", "Repeal"]
 	    });
 	    $slider3.on("change", onSliderChange);
 
