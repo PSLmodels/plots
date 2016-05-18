@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import sys
-sys.path.append("../Tax-Calculator")
 from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator
 from taxcalc.utils import *
@@ -50,7 +49,8 @@ def add_income_bins2(df, num_bins, tab):
     bin_edges = [0] + list(np.arange(1, (num_bins+1)) * (max_ / float(num_bins)))
     labels = range(1, (num_bins+1))
     df['bins'] = pd.cut(df['cumsum_weights'], bins=bin_edges, labels=labels)
-    return df
+    mean_income = df[['_expanded_income', 'bins']].groupby('bins').mean()
+    return df, mean_income
 
 def print_data(calcX, calcY, weights, tab, name):
     df_x = results(calcX)
@@ -64,8 +64,8 @@ def print_data(calcX, calcY, weights, tab, name):
 
     df_y[tab] = df_x[tab]
 
-    df_x = add_income_bins2(df_x, 100, tab)
-    df_y = add_income_bins2(df_y, 100, tab)
+    df_x, mean_inc_x = add_income_bins2(df_x, 100, tab)
+    df_y, mean_inc_y = add_income_bins2(df_y, 100, tab)
 
     df_filtered_x = df_x.copy()
     df_filtered_y = df_y.copy()
@@ -126,15 +126,17 @@ def main(name, reform):
     print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
 
 if __name__ == '__main__':
-    reform_values = (0, .5, 1)
+    #reform_values = (0, .5, 1)
+    reform_values = (1,)
     groups = {}
-    for i in range(3):
-        for j in range(3):
-            for k in range(3):
+    for i in range(1):
+        for j in range(1):
+            for k in range(1):
                 reform = {
                           2015:{
                         "_ID_InterestPaid_HC":[reform_values[i]],
                         "_ID_StateLocalTax_HC":[reform_values[j]],
+                        "_ID_RealEstate_HC":[reform_values[j]],
                         "_ID_Charity_HC":[reform_values[k]]
                     }
                 }
