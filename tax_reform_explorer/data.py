@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
-import sys
 from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator
 from taxcalc.utils import *
-from numpy.testing import assert_array_almost_equal
 from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator, Behavior, behavior
 
@@ -115,29 +113,28 @@ def results(c):
 def main(name, reform):
 
     puf = pd.read_csv("./puf.csv")
-    policy_base = Policy()
+    policy_base = Policy(start_year=2013)
     records_base = Records(puf)
     policy_reform = Policy()
     records_reform = Records(puf)
     calcbase = Calculator(policy = policy_base, records = records_base)
     calcreform = Calculator(policy = policy_reform, records = records_reform)
     policy_reform.implement_reform(reform)
-    calcbase.advance_to_year(2015)
-    calcreform.advance_to_year(2015)
+    calcbase.advance_to_year(2016)
+    calcreform.advance_to_year(2016)
     calcbase.calc_all()
     calcreform.calc_all()
     get_diff(calcbase, calcreform, name)
     print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
 
 if __name__ == '__main__':
-    #reform_values = (0, .5, 1)
     reform_values = (0,1,)
     groups = {}
     for i in range(2):
         for j in range(2):
             for k in range(2):
                 reform = {
-                          2015:{
+                          2016:{
                         "_ID_InterestPaid_HC":[reform_values[i]],
                         "_ID_StateLocalTax_HC":[reform_values[j]],
                         "_ID_RealEstate_HC":[reform_values[j]],
