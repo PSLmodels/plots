@@ -54,8 +54,10 @@ def get_data_sources():
         df = pd.read_csv(f)
 
         if '_data' in ds_id:
+            annotation_func = lambda r:'$' + locale.format('%d', float(r['mean_income']), grouping=True)
             df['base'] = df['base'] * 100
             df['reform'] = df['reform'] * 100
+            df['mean_income'] = df.apply(annotation_func, axis=1)
             line_sources[ds_id] = ColumnDataSource(df)
 
         elif '_diff' in ds_id:
@@ -102,6 +104,8 @@ lines = Plot(plot_width=plot_width,
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
+
+lines.add_tools(HoverTool(tooltips=[("mean_income", "@mean_income")]))
 
 lines.add_glyph(logo_source, logo_image)
 
@@ -162,11 +166,6 @@ bars = Plot(plot_width=500,
             x_range=Range1d(0, 21000),
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
-
-bars.add_tools(HoverTool(tooltips=[("width", "@width"),
-                                   ("reform_net", "@reform_net"),
-                                   ("bins", "@bins"),
-                                   ]))
 
 bars.add_glyph(logo_source, logo_image)
 
