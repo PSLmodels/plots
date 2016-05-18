@@ -60,8 +60,7 @@ def get_data_sources():
 
         elif '_diff' in ds_id:
             df['bins'] = df['bins'].map(lambda r: tax_average_bin_cats.index(r))
-            net = np.maximum(df['reform'] - df['base'], 1)
-            df['reform_net'] = np.nan_to_num(np.sign(net) * np.log(np.abs(net)))
+            df['reform_net'] = df['reform'] - df['base']
             df['color'] = np.where(df['reform_net'].values >= 0, GREEN, PURPLE)
             df['width'] = np.abs(df['reform_net'] * 2) # bokeh drawing from center
 
@@ -160,7 +159,7 @@ bars_source = ColumnDataSource(bar_sources['ds_000_diff'].data)
 bars = Plot(plot_width=500,
             plot_height=plot_height,
             title='Net Change in Average Tax by Annual Income',
-            x_range=Range1d(0, 11),
+            x_range=Range1d(0, 21000),
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
 
@@ -188,14 +187,14 @@ bars.add_glyph(Text(x=4.6,
                     text_color='#666666'))
 
 
-bars.add_glyph(Square(x=7.5,
+bars.add_glyph(Square(x=14600,
                       y=12,
                       fill_color=GREEN,
                       size=10,
                       line_color=None,
                       fill_alpha=0.65))
 
-bars.add_glyph(Text(x=7.7,
+bars.add_glyph(Text(x=15000,
                     y=11.6,
                     text_font_style='italic',
                     text=['net tax increase'],
