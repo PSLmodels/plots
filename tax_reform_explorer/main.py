@@ -33,8 +33,7 @@ def output_page(output_path, **kwargs):
         output_file.write(content)
 
 def get_data_sources():
-    tax_average_bin_cats = reversed(['(-100000000000000, 0]',
-                                     '(0, 9999]',
+    tax_average_bin_cats = reversed(['(0, 9999]',
                                      '(9999, 19999]',
                                      '(19999, 29999]',
                                      '(29999, 39999]',
@@ -61,6 +60,7 @@ def get_data_sources():
             line_sources[ds_id] = ColumnDataSource(df)
 
         elif '_diff' in ds_id:
+            df = df[df.bins != '(-100000000000000, 0]']
             df['bins'] = df['bins'].map(lambda r: tax_average_bin_cats.index(r))
             df['reform_net'] = df['reform'] - df['base']
             df['color'] = np.where(df['reform_net'].values >= 0, GREEN, PURPLE)
@@ -89,8 +89,7 @@ tax_average_bin_names = reversed(['Less than 10k',
                                   '100k - 200k',
                                   '200k - 500k',
                                   '500k - 1M',
-                                  '1M+',
-                                  'All'])
+                                  '1M+'])
 
 logo_url = 'https://avatars0.githubusercontent.com/u/8301070?v=3&s=200'
 logo_source = ColumnDataSource(dict(url=[logo_url], x=[17], y=[.8], w=[100], h=[12]))
