@@ -91,10 +91,6 @@ tax_average_bin_names = reversed(['Less than 10k',
                                   '500k - 1M',
                                   '1M+'])
 
-logo_url = 'https://avatars0.githubusercontent.com/u/8301070?v=3&s=200'
-logo_source = ColumnDataSource(dict(url=[logo_url], x=[17], y=[.8], w=[100], h=[12]))
-logo_image = ImageURL(url="url", x="x", y="y", global_alpha=.05, anchor="bottom_left")
-
 # create line plot --------------------------------------------------
 lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
@@ -106,7 +102,6 @@ lines = Plot(plot_width=plot_width,
 
 lines.add_tools(HoverTool(tooltips=[("mean_income", "@mean_income")]))
 
-lines.add_glyph(logo_source, logo_image)
 
 lines.add_glyph(lines_source,
                 Line(x='index',
@@ -137,7 +132,6 @@ lines.add_glyph(Square(x=3,
                        line_color=None,
                        fill_alpha=0.8))
 
-
 lines.add_glyph(Text(x=5.15,
                      y=84.75,
                      text_font_style='italic',
@@ -166,7 +160,6 @@ bars = Plot(plot_width=500,
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
 
-bars.add_glyph(logo_source, logo_image)
 
 bar_base_renderer = bars.add_glyph(bars_source,
                                    Rect(x=0,
