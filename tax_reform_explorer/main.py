@@ -156,7 +156,7 @@ bars_source = ColumnDataSource(bar_sources['ds_000_diff'].data)
 bars = Plot(plot_width=500,
             plot_height=plot_height,
             title='Net Change in Average Tax by Annual Income',
-            x_range=Range1d(0, 21000),
+            x_range=Range1d(0, 22000),
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
 
