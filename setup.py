@@ -3,14 +3,13 @@ from setuptools import setup, find_packages
 setup(
     name='Tax Plots',
     version='0.1.0',
-    description='create plots of tax information',
+    description='Create your own tax...plots',
     packages=find_packages(),
-    package_data={'': []},
-    include_package_data=True,
     entry_points = {
           'console_scripts': [
-              'build-plots=taxplots.build_plots:main'
-              'upload-plots=taxplots.upload_plots:main'
+              'list-plots=taxplots.cli:list_plots',
+              'build-plots=taxplots.cli:build_plots',
+              'upload-plots=taxplots.cli:upload_plots'
           ],
       }
 )
