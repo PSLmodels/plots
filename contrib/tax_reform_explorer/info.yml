@@ -1,0 +1,9 @@
+---
+plot_name: Tax Reform Explorer
+plot_id: tax_reform_explorer
+content: tax-reform-explorer.html
+thumbnail: thumbnail.png
+short_description: This plot shows a short amount of stuff
+long_description: This plot shows a long amount of stuff
+build_cmd: "python main.py"
+
