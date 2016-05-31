@@ -13,7 +13,7 @@ def ordered_load(stream, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
         construct_mapping)
     return yaml.load(stream, OrderedLoader)
 
-class ChDir(object):
+class DirectoryContext(object):
     """
     Context Manager for changing directories
     """
