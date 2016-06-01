@@ -4,6 +4,7 @@ from functools import partial
 from os import path, listdir, environ, system, walk
 from pdb import set_trace
 
+import mimetypes as mime
 import pandas as pd
 
 import boto3
@@ -42,14 +43,21 @@ def _upload_plot(client, bucket, plot):
 
     with DirectoryContext(plot.directory) as dir_ctx:
         try:
+            extra_args['ContentType'] = mime.guess_type(plot.content)[0]
             client.upload_file(plot.content, bucket,
                                path.join(plot.plot_id, plot.content),
+                               ExtraArgs=extra_args)
+
+            extra_args['ContentType'] = mime.guess_type(plot.thumbnail)[0]
+            client.upload_file(plot.thumbnail, bucket,
+                               path.join(plot.plot_id, plot.thumbnail),
                                ExtraArgs=extra_args)
 
             if path.exists('resources'):
                 for dir_path, subdir_list, file_list in walk('resources'):
                     for fname in file_list:
                         full_path = path.join(dir_path, fname)
+                        extra_args['ContentType'] = mime.guess_type(full_path)[0]
                         client.upload_file(full_path, bucket,
                                            path.join(plot.plot_id, full_path),
                                            ExtraArgs=extra_args)
