@@ -51,9 +51,21 @@ build-plots
 TODO: Add content
 
 #### Upload Plots
+
+The `upload-plots` cli tool will upload plots to an s3 bucket and including a `web_manifest.json` file which can be used to discover available plots from a 3rd Party applications.
+
 ```bash
 upload-plots
 ```
+
+To use the upload utility, you must have the following environment variables set:
+
+```bash
+    export AWS_KEY_ID=<my_aws_access_key>
+    export AWS_SECRET_ID=<my_aws_secret_key>
+    export TAXPLOT_S3_BUCKET=taxplots
+```
+
 TODO: Add content
 
 ### Contributing a Plot
