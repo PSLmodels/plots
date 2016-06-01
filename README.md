@@ -4,7 +4,7 @@ A repository of visualizations for tax policy reforms.
 
 ### What is a taxplot?
 
-TaxPlots are single html files which contain visual elements (e.g. images, charts, graphs) to  communicate an insight regarding our favorite compulsory revenue generatio (i.e. taxes).
+TaxPlots are single html files which contain visual elements (e.g. images, charts, graphs) to  communicate an insight regarding the tax systems.
 
 ### Installation
 
