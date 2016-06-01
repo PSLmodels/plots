@@ -212,7 +212,7 @@ bars_data = {k: v.data for k, v in bar_sources.items()}
 lines_data = {k: v.data for k, v in line_sources.items()}
 
 script, divs = components(plots)
-output_page('tax-reform-explorer.html',
+output_page('index.html',
             bokeh_script=script,
             plots=divs,
             line_plot_id=lines._id,
