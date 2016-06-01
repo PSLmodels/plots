@@ -11,6 +11,8 @@ import botocore
 
 from taxplots.utils import ordered_load, DirectoryContext
 
+contrib_dir = path.abspath(path.join(path.split(__file__)[0], '../contrib'))
+
 def _validate_plot_dir(directory):
     pass
 
@@ -40,9 +42,9 @@ def _upload_plot(client, bucket, plot):
 
     with DirectoryContext(plot.directory) as dir_ctx:
         try:
-            resp = client.upload_file(plot.content, bucket,
-                                      path.join(plot.plot_id, plot.content),
-                                      ExtraArgs=extra_args)
+            client.upload_file(plot.content, bucket,
+                               path.join(plot.plot_id, plot.content),
+                               ExtraArgs=extra_args)
 
             if path.exists('resources'):
                 for dir_path, subdir_list, file_list in walk('resources'):
@@ -51,21 +53,24 @@ def _upload_plot(client, bucket, plot):
                         client.upload_file(full_path, bucket,
                                            path.join(plot.plot_id, full_path),
                                            ExtraArgs=extra_args)
-            return url_template.format(bucket, plot.content)
+
+            results = [url_template.format(bucket, plot.content),
+                       url_template.format(bucket, plot.thumbnail)]
+
+            return pd.Series(results)
 
         except botocore.exceptions.ClientError as e:
             print(e.response)
             return False
 
-
 def list_plots():
-    plot_dir = path.abspath(path.join(path.split(__file__)[0], '../contrib'))
+    global contrib_dir
 
-    if not path.exists(plot_dir):
-        raise IOError("Can't find plot directory: {0}".format(plot_dir))
+    if not path.exists(contrib_dir):
+        raise IOError("Can't find contrib directory: {0}".format(contrib_dir))
 
-    plots = [path.join(plot_dir, d) for d in listdir(plot_dir)]
-    infos = [_get_plot_info(p) for p in plots]
+    plots = [path.join(contrib_dir, d) for d in listdir(contrib_dir)]
+    infos = [_get_plot_info(p) for p in plots if path.isdir(p)]
     df = pd.DataFrame(infos)
     return df
 
@@ -78,7 +83,7 @@ def build_plots():
     if not success_df.empty:
         print('\n\nSuccessfully Built:')
         print('-------------------')
-        print(success_df[['plot_name','plot_id','build_cmd']])
+        print(success_df[['plot_name', 'plot_id', 'build_cmd']])
         print('\n\n')
 
     # log error builds
@@ -86,8 +91,24 @@ def build_plots():
     if not error_df.empty:
         print('\n\nErrors while Building:')
         print('----------------------')
-        print(error_df[['plot_name','plot_id','build_cmd']])
+        print(error_df[['plot_name', 'plot_id', 'build_cmd']])
         print('\n\n')
+
+def _create_web_manifest(plots_df, s3_client, bucket):
+    manifest_fields = ['plot_url', 'plot_name','plot_id','thumbnail_url']
+
+    json_str = plots_df.reset_index()[manifest_fields].to_json(orient='records')
+    web_manifest_path = path.join(contrib_dir, 'webmanifest.json')
+    with open(web_manifest_path, 'w') as f:
+        f.write(json_str)
+
+    extra_args = dict(ACL='public-read', ContentType='application/json')
+    s3_client.upload_file(web_manifest_path,
+                          bucket,
+                          'webmanifest.json',
+                          ExtraArgs=extra_args)
+
+
 
 def upload_plots():
 
@@ -114,7 +135,7 @@ def upload_plots():
                              aws_access_key_id=access_key,
                              aws_secret_access_key=secret_key)
     upload_func = partial(_upload_plot, s3_client, upload_bucket) 
-    plots_df['plot_url'] = plots_df.apply(upload_func, axis=1)
+    plots_df[['plot_url', 'thumbnail_url']] = plots_df.apply(upload_func, axis=1)
 
     # log successful uploads
     success_df = plots_df[plots_df['plot_url'] != False]
@@ -124,6 +145,8 @@ def upload_plots():
         print(success_df[['plot_name', 'plot_id', 'plot_url']])
         print('\n\n')
 
+        _create_web_manifest(success_df, s3_client, upload_bucket)
+
     # log error uploads
     error_df = plots_df[plots_df['plot_url'] == False]
     if not error_df.empty:
@@ -131,4 +154,3 @@ def upload_plots():
         print('----------------------')
         print(error_df[['plot_name', 'plot_id']])
         print('\n\n')
-
