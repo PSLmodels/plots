@@ -4,26 +4,20 @@ A repository of visualizations for tax policy reforms.
 
 ### What is a taxplot?
 
-A tax plot
+TaxPlots are single html files which contain visual elemeents (e.g. images, charts, graphs) to  communicate an insight regarding compulsory revenue generation (i.e. taxes).
+
+### Installation
+
+Install the taxplots package using the following commmand:
+
+```bash
+python setup.py install
+```
+
+TODO: Add conda recipe
 
 ### Create A Plot
-
-### List Plots
-```bash
-list-plots
-```
-
-### Build Plots
-```bash
-build-plots
-```
-
-### Upload Plots
-```bash
-upload-plots
-```
-
-### info.yml
+#### info.yml
 The `info.yml` file contains metadata for the plot and is required to contain the following key-value pairs:
 
 ```yml
@@ -36,8 +30,31 @@ long_description: This plot shows a long amount of stuff
 build_cmd: "python main.py"
 ```
 
-### Plot Resource Directory
-Any supporting files (e.g. `.js`, `.css`, `.png`) should be placed in a `resources` directory within the plot directory. `Note`: All files placed in the `resources` will be uploaded/made-public to taxplots.
+#### resources directory
+Any supporting files (e.g. `.js`, `.css`, `.png`) should be placed in a `resources` directory within the plot directory. 
+
+**Note:** All files placed in the `resources` will be uploaded/made-public to taxplots.
+
+### TaxPlot Command-line Tools
+Install with the taxplots python package is a command-line interface (cli) which provides the following utilites:
+
+#### List Plots
+```bash
+list-plots
+```
+TODO: Add content
+
+#### Build Plots
+```bash
+build-plots
+```
+TODO: Add content
+
+#### Upload Plots
+```bash
+upload-plots
+```
+TODO: Add content
 
 ### Contributing a Plot
 - fork this repository
