@@ -42,13 +42,14 @@ Install with the taxplots python package is a command-line interface (cli) which
 ```bash
 list-plots
 ```
-TODO: Add content
+
+The `list-plots` commnad will display information about plots available in the `contrib` directory.
 
 #### Build Plots
 ```bash
 build-plots
 ```
-TODO: Add content
+The `build-plots` commnad will inspect plots available in `contrib`, find `info.yml` files corresponding to each plot, and execute the `buildcmd` for each plot.
 
 #### Upload Plots
 
