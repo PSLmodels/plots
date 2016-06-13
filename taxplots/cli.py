@@ -71,7 +71,7 @@ def _upload_plot(client, bucket, plot):
             print(e.response)
             return False
 
-def list_plots():
+def _list_plots():
     global contrib_dir
 
     if not path.exists(contrib_dir):
@@ -82,8 +82,27 @@ def list_plots():
     df = pd.DataFrame(infos)
     return df
 
+def list_plots():
+    plots_df = _list_plots()
+
+    def print_plot(p):
+        print('\n\n')
+        print(p['plot_name'])
+        print('-' * len(p.plot_name) + '\n')
+
+        fields = ('plot_id',
+                  'content',
+                  'thumbnail',
+                  'short_description',
+                  'build_cmd')
+
+        for f in fields:
+            print('{} : {}'.format(f, p.get(f)) + '\n')
+
+    plots_df.apply(print_plot, axis=1)
+
 def build_plots():
-    plots_df = list_plots()
+    plots_df = _list_plots()
     plots_df['build_successful'] = plots_df.apply(_run_plot, axis=1)
 
     # log successful builds
@@ -138,7 +157,7 @@ def upload_plots():
     print('Uploading Plots to: {0}'.format(upload_bucket))
 
     # upload plots
-    plots_df = list_plots()
+    plots_df = _list_plots()
     s3_client = boto3.client('s3',
                              aws_access_key_id=access_key,
                              aws_secret_access_key=secret_key)
