@@ -14,6 +14,8 @@ Each plot has a corresponding directory in the `contrib` and should contain the 
 	thumbnail: thumbnail.png
 	short_description: This is a short description
 	long_description: This is a longer description which is more detailed about the relevant take-aways from the plot.
+	best_width: The recommended width for the plot (e.g. 500px, 25rem, 100%)
+	best_height: The recommended height for the plot (e.g. 500px, 25rem, 100%)
 	build_cmd: "python build.py"
    ```
    - Notice the `buildcmd` property in `info.yml`- this provides a bash command to execute to build your plot. This allows you to use web technologies which output HTML.  For example, Bokeh allows users to create plots using Python and render them to HTML Canvas or WebGL.  The `python build.py` command shown above will call my custom Python script which creates my plot's HTML file. While I used Python for the plot above, The `buildcmd` accepts any valid commnads which can be executed by Python's `os.system()` function.
