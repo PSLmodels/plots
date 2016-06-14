@@ -5,5 +5,5 @@ content: index.html
 thumbnail: thumbnail.png
 short_description: This plot shows a short amount of stuff
 long_description: This plot shows a long amount of stuff
-build_cmd: "python main.py"
+build_cmd: "python build.py"
 
