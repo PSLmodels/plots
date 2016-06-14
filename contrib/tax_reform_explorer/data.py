@@ -35,8 +35,7 @@ def get_diff(calcX, calcY, name):
 
     merged.columns = ['base','reform']
     indexed = merged.reset_index([index])
-
-    indexed.to_csv('{}_diff.csv'.format(name),float_format = '%1.3f',sep=',',header = True, index =False)
+    return merged
 
 def weighted(agg, col_name):
     return (float((agg[col_name] * agg['s006']).sum())/
@@ -98,7 +97,7 @@ def print_data(calcX, calcY, weights, tab, name):
     merged['mean_income'] = mean_inc_x['_expanded_income'].values
     merged.columns = ['base','reform','mean_income']
 
-    merged.to_csv('{}_data.csv'.format(name),float_format = '%1.3f',sep=',',header = True, index =False)
+    return merged
 
 RES_COLUMNS = STATS_COLUMNS + ['e00200'] + ['MARS'] + ['n24']
 def results(c):
@@ -110,7 +109,7 @@ def results(c):
             outputs.append(getattr(c.records, col))
     return DataFrame(data=np.column_stack(outputs), columns=RES_COLUMNS)
 
-def main(name, reform):
+def run_reform(name, reform):
 
     puf = pd.read_csv("./puf.csv")
     policy_base = Policy(start_year=2013)
@@ -124,10 +123,11 @@ def main(name, reform):
     calcreform.advance_to_year(2016)
     calcbase.calc_all()
     calcreform.calc_all()
-    get_diff(calcbase, calcreform, name)
-    print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
+    diff_df = get_diff(calcbase, calcreform, name)
+    data_df = print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
+    return diff_df, data_df
 
-if __name__ == '__main__':
+def get_source_dataframes():
     reform_values = (0,1,)
     groups = {}
     for i in range(2):
@@ -143,5 +143,10 @@ if __name__ == '__main__':
                 }
                 groups[''.join(['ds_', str(i), str(j), str(k)])] = reform
 
+    dataframes = {}
     for name, reform in groups.items():
-        main(name, reform)
+        diff_df, data_df = run_reform(name, reform)
+        dataframes[name + '_data'] = data_df
+        dataframes[name + '_diff'] = diff_df
+
+    return dataframes
