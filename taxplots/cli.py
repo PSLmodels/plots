@@ -39,7 +39,7 @@ def _run_plot(plot):
 def _upload_plot(client, bucket, plot):
 
     extra_args = dict(ACL='public-read')
-    url_template = 'https://{0}.s3.amazonaws.com/{1}/{2}'
+    url_template = '//{0}.s3.amazonaws.com/{1}/{2}'
 
     with DirectoryContext(plot.directory) as dir_ctx:
         try:
