@@ -8,4 +8,4 @@ long_description: This plot shows a long amount of stuff
 best_width: "100%"
 best_height: 500px
 build_cmd: "python build.py"
-
+version: 1.0
