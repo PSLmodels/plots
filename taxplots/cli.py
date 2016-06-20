@@ -39,7 +39,7 @@ def _run_plot(plot):
 def _upload_plot(client, bucket, plot):
 
     extra_args = dict(ACL='public-read')
-    url_template = '//{0}.s3.amazonaws.com/{1}/{2}'
+    url_template = '//{0}.s3.amazonaws.com/{1}/{2}/{3}'
 
     with DirectoryContext(plot.directory) as dir_ctx:
         try:
@@ -62,8 +62,8 @@ def _upload_plot(client, bucket, plot):
                                            path.join(plot.plot_id, full_path),
                                            ExtraArgs=extra_args)
 
-            results = [url_template.format(bucket, plot.plot_id, plot.content),
-                       url_template.format(bucket, plot.plot_id, plot.thumbnail)]
+            results = [url_template.format(bucket, plot.plot_id, plot.version, plot.content),
+                       url_template.format(bucket, plot.plot_id, plot.version, plot.thumbnail)]
 
             return pd.Series(results)
 
@@ -93,11 +93,12 @@ def list_plots():
         fields = ('plot_id',
                   'content',
                   'thumbnail',
+                  'version',
                   'short_description',
                   'build_cmd')
 
         for f in fields:
-            print('{} : {}'.format(f, p.get(f)) + '\n')
+            print('{} : {}'.format(f, p.get(f)))
 
     plots_df.apply(print_plot, axis=1)
 
