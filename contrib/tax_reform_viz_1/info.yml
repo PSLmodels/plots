@@ -1,6 +1,6 @@
 ---
-plot_name: Tax Reform Explorer
-plot_id: tax_reform_explorer
+plot_name: Tax Reform Visualization 1
+plot_id: tax_reform_viz_1
 content: index.html
 thumbnail: thumbnail.png
 short_description: This plot shows a short amount of stuff
