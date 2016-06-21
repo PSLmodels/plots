@@ -133,14 +133,6 @@ def _create_web_manifest(plots_df, s3_client, bucket):
                        'long_description']
 
     json_str = plots_df.reset_index()[manifest_fields].to_json(orient='records')
-
-    # TODO REMOVE AFTER TESTING COMPLETE -------
-    import json
-    temp_items = json.loads(json_str)
-    temp_items = temp_items * 35
-    json_str = json.dumps(temp_items)
-    # ------------------------------------------
-
     web_manifest_path = path.join(contrib_dir, 'webmanifest.json')
     with open(web_manifest_path, 'w') as f:
         f.write(json_str)
