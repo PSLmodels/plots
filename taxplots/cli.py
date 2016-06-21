@@ -2,7 +2,6 @@ from __future__ import print_function, division, absolute_import
 
 from functools import partial
 from os import path, listdir, environ, system, walk
-from pdb import set_trace
 
 import mimetypes as mime
 import pandas as pd
@@ -45,12 +44,12 @@ def _upload_plot(client, bucket, plot):
         try:
             extra_args['ContentType'] = mime.guess_type(plot.content)[0]
             client.upload_file(plot.content, bucket,
-                               path.join(plot.plot_id, plot.content),
+                               path.join(plot.plot_id, plot.version, plot.content),
                                ExtraArgs=extra_args)
 
             extra_args['ContentType'] = mime.guess_type(plot.thumbnail)[0]
             client.upload_file(plot.thumbnail, bucket,
-                               path.join(plot.plot_id, plot.thumbnail),
+                               path.join(plot.plot_id, plot.version, plot.thumbnail),
                                ExtraArgs=extra_args)
 
             if path.exists('resources'):
@@ -59,7 +58,7 @@ def _upload_plot(client, bucket, plot):
                         full_path = path.join(dir_path, fname)
                         extra_args['ContentType'] = mime.guess_type(full_path)[0]
                         client.upload_file(full_path, bucket,
-                                           path.join(plot.plot_id, full_path),
+                                           path.join(plot.plot_id, plot.version, full_path),
                                            ExtraArgs=extra_args)
 
             results = [url_template.format(bucket, plot.plot_id, plot.version, plot.content),
@@ -80,6 +79,7 @@ def _list_plots():
     plots = [path.join(contrib_dir, d) for d in listdir(contrib_dir)]
     infos = [_get_plot_info(p) for p in plots if path.isdir(p)]
     df = pd.DataFrame(infos)
+    df.version = df.version.astype(str)
     return df
 
 def list_plots():
