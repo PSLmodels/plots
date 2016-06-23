@@ -23,7 +23,7 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-from data import get_source_dataframes
+from data import get_source_data
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -48,11 +48,13 @@ def get_data_sources():
     tax_average_bin_cats = list(tax_average_bin_cats)
     line_sources = {}
     bar_sources = {}
+    number_sources = {}
 
-    dataframes = get_source_dataframes()
+    dataframes = get_source_data()
 
-    for name, df in dataframes.items():
+    for name, data in dataframes.items():
         if '_data' in name:
+            df = data # Process the DataFrame
             df.reset_index(inplace=True)
             annotation_func = lambda r:'$' + locale.format('%d', float(r['mean_income']), grouping=True)
             df['base'] = df['base'] * 100
@@ -61,6 +63,7 @@ def get_data_sources():
             line_sources[name] = ColumnDataSource(df)
 
         elif '_diff' in name:
+            df = data # Process the DataFrame
             df.reset_index(inplace=True)
             df.bins = df.bins.astype(str)
             df = df[df.bins != '(-100000000000000, 0]']
@@ -74,6 +77,10 @@ def get_data_sources():
             df['annotation_y'] = df.apply(lambda r:r['bins'] - .38, axis=1)
             df['annotation_x'] = df.apply(lambda r:max(.1, r['width'] / 2), axis=1)
             bar_sources[name] = ColumnDataSource(df)
+
+        elif '_taxcut' in name:
+            number_sources[name] = data
+
 
     return line_sources, bar_sources
 

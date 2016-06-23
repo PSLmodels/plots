@@ -1,3 +1,4 @@
+from __future__ import print_function
 import pandas as pd
 import numpy as np
 from taxcalc.records import Records
@@ -6,9 +7,8 @@ from taxcalc.utils import *
 from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator, Behavior, behavior
 
-from pdb import set_trace
-
 EPSILON = 1e-3
+CURRENT_YEAR = 2016
 
 def get_diff(calcX, calcY, name):
     df_x = results(calcX)
@@ -99,6 +99,52 @@ def print_data(calcX, calcY, weights, tab, name):
 
     return merged
 
+
+def diff_in_revenue(reform_on_II, orig_reform):
+    policy_func = Policy()
+    puf = pd.read_csv("./puf.csv")
+    records_func = Records(puf)
+    calc_func = Calculator(policy = policy_func, records = records_func)
+    policy_bench = Policy()
+    records_bench = Records(puf)
+    calc_bench = Calculator(policy = policy_bench, records = records_bench)
+    reform = {
+        CURRENT_YEAR:{
+        "_II_rt1":[max(policy_bench._II_rt1[0] *(1 - reform_on_II),0.0)],
+        "_II_rt2":[max(policy_bench._II_rt2[0] *(1 - reform_on_II),0.0)],
+        "_II_rt3":[max(policy_bench._II_rt3[0] *(1 - reform_on_II),0.0)],
+        "_II_rt4":[max(policy_bench._II_rt4[0] *(1 - reform_on_II),0.0)],
+        "_II_rt5":[max(policy_bench._II_rt5[0] *(1 - reform_on_II),0.0)],
+        "_II_rt6":[max(policy_bench._II_rt6[0] *(1 - reform_on_II),0.0)],
+        "_II_rt7":[max(policy_bench._II_rt7[0] *(1 - reform_on_II),0.0)]}
+    }
+    policy_func.implement_reform(reform)
+    policy_func.implement_reform(orig_reform)
+    calc_func.advance_to_year(CURRENT_YEAR)
+    calc_bench.advance_to_year(CURRENT_YEAR)
+    calc_func.calc_all()
+    calc_bench.calc_all()
+    ans = ((calc_bench.records._combined*calc_bench.records.s006).sum()-(calc_func.records._combined*calc_func.records.s006).sum())
+    print("diff in revenue is ", ans)
+    return ans
+
+
+def reform_equiv(orig_reform, epsilon):
+    upp = 1
+    low = 0
+    mid = (upp + low)/2.0
+    while (upp - low)/2.0 > epsilon:
+        delta = diff_in_revenue(mid,orig_reform)
+        if delta == 0:
+            return mid
+        elif delta < 0:
+            low = mid
+        else:
+            upp = mid
+        mid = (upp + low)/2.0
+    return mid
+
+
 RES_COLUMNS = STATS_COLUMNS + ['e00200'] + ['MARS'] + ['n24']
 def results(c):
     outputs = []
@@ -109,7 +155,7 @@ def results(c):
             outputs.append(getattr(c.records, col))
     return DataFrame(data=np.column_stack(outputs), columns=RES_COLUMNS)
 
-def run_reform(name, reform):
+def run_reform(name, reform, epsilon):
 
     puf = pd.read_csv("./puf.csv")
     policy_base = Policy(start_year=2013)
@@ -119,22 +165,24 @@ def run_reform(name, reform):
     calcbase = Calculator(policy = policy_base, records = records_base)
     calcreform = Calculator(policy = policy_reform, records = records_reform)
     policy_reform.implement_reform(reform)
-    calcbase.advance_to_year(2016)
-    calcreform.advance_to_year(2016)
+    calcbase.advance_to_year(CURRENT_YEAR)
+    calcreform.advance_to_year(CURRENT_YEAR)
     calcbase.calc_all()
     calcreform.calc_all()
     diff_df = get_diff(calcbase, calcreform, name)
     data_df = print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
-    return diff_df, data_df
+    equiv_tax_cut = reform_equiv(reform, epsilon)
+    #diff_df['equiv_rate_cut'] = len(diff_df)*[equiv_tax_cut]
+    return diff_df, data_df, equiv_tax_cut
 
-def get_source_dataframes():
+def get_source_data():
     reform_values = (0,1,)
     groups = {}
     for i in range(2):
         for j in range(2):
             for k in range(2):
                 reform = {
-                          2016:{
+                          CURRENT_YEAR:{
                         "_ID_InterestPaid_HC":[reform_values[i]],
                         "_ID_StateLocalTax_HC":[reform_values[j]],
                         "_ID_RealEstate_HC":[reform_values[j]],
@@ -144,9 +192,11 @@ def get_source_dataframes():
                 groups[''.join(['ds_', str(i), str(j), str(k)])] = reform
 
     dataframes = {}
+    eps = 1e-4
     for name, reform in groups.items():
-        diff_df, data_df = run_reform(name, reform)
+        diff_df, data_df, tax_cut = run_reform(name, reform, eps)
         dataframes[name + '_data'] = data_df
         dataframes[name + '_diff'] = diff_df
+        dataframes[name + '_taxcut'] = tax_cut if tax_cut > eps else 0.
 
     return dataframes
