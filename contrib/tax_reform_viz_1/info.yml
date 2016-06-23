@@ -1,9 +1,11 @@
 ---
-plot_name: Tax Reform Explorer
-plot_id: tax_reform_explorer
+plot_name: Tax Reform Visualization 1
+plot_id: tax_reform_viz_1
 content: index.html
 thumbnail: thumbnail.png
 short_description: This plot shows a short amount of stuff
 long_description: This plot shows a long amount of stuff
-build_cmd: "python main.py"
-
+best_width: "100%"
+best_height: 500px
+build_cmd: "python build.py"
+version: 1.0

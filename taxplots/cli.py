@@ -2,7 +2,6 @@ from __future__ import print_function, division, absolute_import
 
 from functools import partial
 from os import path, listdir, environ, system, walk
-from pdb import set_trace
 
 import mimetypes as mime
 import pandas as pd
@@ -39,18 +38,18 @@ def _run_plot(plot):
 def _upload_plot(client, bucket, plot):
 
     extra_args = dict(ACL='public-read')
-    url_template = 'https://{0}.s3.amazonaws.com/{1}/{2}'
+    url_template = '//{0}.s3.amazonaws.com/{1}/{2}/{3}'
 
     with DirectoryContext(plot.directory) as dir_ctx:
         try:
             extra_args['ContentType'] = mime.guess_type(plot.content)[0]
             client.upload_file(plot.content, bucket,
-                               path.join(plot.plot_id, plot.content),
+                               path.join(plot.plot_id, plot.version, plot.content),
                                ExtraArgs=extra_args)
 
             extra_args['ContentType'] = mime.guess_type(plot.thumbnail)[0]
             client.upload_file(plot.thumbnail, bucket,
-                               path.join(plot.plot_id, plot.thumbnail),
+                               path.join(plot.plot_id, plot.version, plot.thumbnail),
                                ExtraArgs=extra_args)
 
             if path.exists('resources'):
@@ -59,11 +58,11 @@ def _upload_plot(client, bucket, plot):
                         full_path = path.join(dir_path, fname)
                         extra_args['ContentType'] = mime.guess_type(full_path)[0]
                         client.upload_file(full_path, bucket,
-                                           path.join(plot.plot_id, full_path),
+                                           path.join(plot.plot_id, plot.version, full_path),
                                            ExtraArgs=extra_args)
 
-            results = [url_template.format(bucket, plot.plot_id, plot.content),
-                       url_template.format(bucket, plot.plot_id, plot.thumbnail)]
+            results = [url_template.format(bucket, plot.plot_id, plot.version, plot.content),
+                       url_template.format(bucket, plot.plot_id, plot.version, plot.thumbnail)]
 
             return pd.Series(results)
 
@@ -71,7 +70,7 @@ def _upload_plot(client, bucket, plot):
             print(e.response)
             return False
 
-def list_plots():
+def _list_plots():
     global contrib_dir
 
     if not path.exists(contrib_dir):
@@ -80,10 +79,31 @@ def list_plots():
     plots = [path.join(contrib_dir, d) for d in listdir(contrib_dir)]
     infos = [_get_plot_info(p) for p in plots if path.isdir(p)]
     df = pd.DataFrame(infos)
+    df.version = df.version.astype(str)
     return df
 
+def list_plots():
+    plots_df = _list_plots()
+
+    def print_plot(p):
+        print('\n\n')
+        print(p['plot_name'])
+        print('-' * len(p.plot_name) + '\n')
+
+        fields = ('plot_id',
+                  'content',
+                  'thumbnail',
+                  'version',
+                  'short_description',
+                  'build_cmd')
+
+        for f in fields:
+            print('{} : {}'.format(f, p.get(f)))
+
+    plots_df.apply(print_plot, axis=1)
+
 def build_plots():
-    plots_df = list_plots()
+    plots_df = _list_plots()
     plots_df['build_successful'] = plots_df.apply(_run_plot, axis=1)
 
     # log successful builds
@@ -103,7 +123,14 @@ def build_plots():
         print('\n\n')
 
 def _create_web_manifest(plots_df, s3_client, bucket):
-    manifest_fields = ['plot_url', 'plot_name','plot_id','thumbnail_url']
+    manifest_fields = ['plot_url',
+                       'plot_name',
+                       'plot_id',
+                       'thumbnail_url',
+                       'short_description',
+                       'best_width',
+                       'best_height',
+                       'long_description']
 
     json_str = plots_df.reset_index()[manifest_fields].to_json(orient='records')
     web_manifest_path = path.join(contrib_dir, 'webmanifest.json')
@@ -138,7 +165,7 @@ def upload_plots():
     print('Uploading Plots to: {0}'.format(upload_bucket))
 
     # upload plots
-    plots_df = list_plots()
+    plots_df = _list_plots()
     s3_client = boto3.client('s3',
                              aws_access_key_id=access_key,
                              aws_secret_access_key=secret_key)

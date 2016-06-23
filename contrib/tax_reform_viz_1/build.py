@@ -23,8 +23,9 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-locale.setlocale(locale.LC_ALL, 'en_US')
+from data import get_source_dataframes
 
+locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
     here = os.path.dirname(os.path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
@@ -45,23 +46,25 @@ def get_data_sources():
                                      '(499999, 1000000]',
                                      '(1000000, 100000000000000]'])
     tax_average_bin_cats = list(tax_average_bin_cats)
-    files = glob.glob('ds_*_*.csv')
     line_sources = {}
     bar_sources = {}
-    for f in files:
-        ds_id = os.path.splitext(f)[0]
-        df = pd.read_csv(f)
 
-        if '_data' in ds_id:
+    dataframes = get_source_dataframes()
+
+    for name, df in dataframes.items():
+        if '_data' in name:
+            df.reset_index(inplace=True)
             annotation_func = lambda r:'$' + locale.format('%d', float(r['mean_income']), grouping=True)
             df['base'] = df['base'] * 100
             df['reform'] = df['reform'] * 100
             df['mean_income'] = df.apply(annotation_func, axis=1)
-            line_sources[ds_id] = ColumnDataSource(df)
+            line_sources[name] = ColumnDataSource(df)
 
-        elif '_diff' in ds_id:
+        elif '_diff' in name:
+            df.reset_index(inplace=True)
+            df.bins = df.bins.astype(str)
             df = df[df.bins != '(-100000000000000, 0]']
-            df['bins'] = df['bins'].map(lambda r: tax_average_bin_cats.index(r))
+            df.bins = df.bins.map(lambda r: tax_average_bin_cats.index(r))
             df['reform_net'] = df['reform'] - df['base']
             df['color'] = np.where(df['reform_net'].values >= 0, GREEN, PURPLE)
             df['width'] = np.abs(df['reform_net'] * 2) # bokeh drawing from center
@@ -70,7 +73,7 @@ def get_data_sources():
             df['annotation'] = df.apply(annotation_func, axis=1)
             df['annotation_y'] = df.apply(lambda r:r['bins'] - .38, axis=1)
             df['annotation_x'] = df.apply(lambda r:max(.1, r['width'] / 2), axis=1)
-            bar_sources[ds_id] = ColumnDataSource(df)
+            bar_sources[name] = ColumnDataSource(df)
 
     return line_sources, bar_sources
 
