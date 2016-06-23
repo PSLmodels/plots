@@ -48,7 +48,9 @@ def get_data_sources():
     tax_average_bin_cats = list(tax_average_bin_cats)
     line_sources = {}
     bar_sources = {}
-    number_sources = {}
+    taxcut_sources = {}
+    revenue_sources = {}
+    filers_sources = {}
 
     dataframes = get_source_data()
 
@@ -79,8 +81,13 @@ def get_data_sources():
             bar_sources[name] = ColumnDataSource(df)
 
         elif '_taxcut' in name:
-            number_sources[name] = data
+            taxcut_sources[name] = data
 
+        elif '_revenue' in name:
+            revenue_sources[name] = data
+
+        elif '_filers' in name:
+            filers_sources[name] = data
 
     return line_sources, bar_sources
 

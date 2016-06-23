@@ -145,6 +145,28 @@ def reform_equiv(orig_reform, epsilon):
     return mid
 
 
+def agg_diff(calcX, calcY):
+    df_x = results(calcX)
+    df_y = results(calcY)
+    agg_x = sum(df_x['_combined']*df_x['s006'])
+    agg_y = sum(df_y['_combined']*df_y['s006'])
+    agg_dif = agg_y - agg_x
+    return agg_dif
+
+
+def agg_num_delta(calcX, calcY):
+    df_x = results(calcX)
+    df_y = results(calcY)
+    id_itemizers_x = ((calcX.records.c04470 > 0) & (calcX.records.c00100 > 0))
+    id_itemizers_y = ((calcY.records.c04470 > 0) & (calcY.records.c00100 > 0))
+    df_x['pct_itm'] = id_itemizers_x
+    df_y['pct_itm'] = id_itemizers_y
+    itm_x = sum(df_x['pct_itm'] * df_x['s006'])
+    itm_y = sum(df_y['pct_itm'] * df_y['s006'])
+    agg_num_d= itm_y - itm_x
+    return agg_num_d
+
+
 RES_COLUMNS = STATS_COLUMNS + ['e00200'] + ['MARS'] + ['n24']
 def results(c):
     outputs = []
@@ -172,8 +194,11 @@ def run_reform(name, reform, epsilon):
     diff_df = get_diff(calcbase, calcreform, name)
     data_df = print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
     equiv_tax_cut = reform_equiv(reform, epsilon)
+    total_rev_raise = agg_diff(calcbase, calcreform)
+    delta_num_filers = agg_num_delta(calcbase, calcreform)
+
     #diff_df['equiv_rate_cut'] = len(diff_df)*[equiv_tax_cut]
-    return diff_df, data_df, equiv_tax_cut
+    return diff_df, data_df, equiv_tax_cut, total_rev_raise, delta_num_filers
 
 def get_source_data():
     reform_values = (0,1,)
@@ -194,9 +219,11 @@ def get_source_data():
     dataframes = {}
     eps = 1e-4
     for name, reform in groups.items():
-        diff_df, data_df, tax_cut = run_reform(name, reform, eps)
+        diff_df, data_df, tax_cut, total_rev, delta_filers = run_reform(name, reform, eps)
         dataframes[name + '_data'] = data_df
         dataframes[name + '_diff'] = diff_df
         dataframes[name + '_taxcut'] = tax_cut if tax_cut > eps else 0.
+        dataframes[name + '_revenue'] = total_rev
+        dataframes[name + '_filers'] = delta_filers
 
     return dataframes
