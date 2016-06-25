@@ -32,7 +32,7 @@ PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
                     "lower deficits, or a {:.2f} percent tax cut "
                     "for every bracket.")
 
-TAXPAYERS_ITEMIZING_TEXT = "{:.2f} million\n Fewer taxpayers itemizing."
+TAXPAYERS_ITEMIZING_TEXT = "{} million\n fewer taxpayers itemizing."
 
 
 DOLLARS_RAISED_TEXT = "{:.2f} billion\n dollars raised."
@@ -100,17 +100,26 @@ def get_data_sources():
             bar_sources[name] = ColumnDataSource(df)
 
         elif '_taxcut' in name:
-            txt = PERCENT_CUT_TEXT.format(data)
+            data_as_per = data * 100.
+            txt = PERCENT_CUT_TEXT.format(data_as_per)
+            if name.startswith("ds_000"):
+                txt = ""
             df = pd.DataFrame(data={"text":[txt]})
             taxcut_sources[name] = ColumnDataSource(df)
 
         elif '_revenue' in name:
-            txt = DOLLARS_RAISED_TEXT.format(data)
+            data_as_bil = data/(1.0e9)
+            txt = DOLLARS_RAISED_TEXT.format(data_as_bil)
+            if name.startswith("ds_000"):
+                txt = ""
             df = pd.DataFrame(data={"text":[txt]})
             revenue_sources[name] = ColumnDataSource(df)
 
         elif '_filers' in name:
-            txt = TAXPAYERS_ITEMIZING_TEXT.format(data)
+            data_as_mil = int(data/(-1.0e6))
+            txt = TAXPAYERS_ITEMIZING_TEXT.format(data_as_mil)
+            if name.startswith("ds_000"):
+                txt = ""
             df = pd.DataFrame(data={"text":[txt]})
             filers_sources[name] = ColumnDataSource(df)
 
@@ -119,7 +128,7 @@ def get_data_sources():
 
 plot_width = 425
 plot_height = 250
-text_plot_height = 100
+text_plot_height = 60
 
 line_sources, bar_sources, taxcut_sources, revenue_sources, filers_sources = get_data_sources()
 
@@ -260,7 +269,7 @@ percentcut_text = Plot(plot_width=1000,
 textbottom_renderer = percentcut_text.add_glyph(taxcut_source,
                           Text(x=5.15,
                                 y=10,
-                                text_font_style='italic',
+                                text_font_style='normal',
                                 text='text',
                                 text_font_size='10pt',
                                 text_color='#666666'))
@@ -274,7 +283,7 @@ itemizing_text = Plot(plot_width=500,
 textleft_renderer = itemizing_text.add_glyph(filers_source,
                                              Text(x=5.15,
                                                   y=10,
-                                                  text_font_style='italic',
+                                                  text_font_style='normal',
                                                   text="text",
                                                   text_font_size='10pt',
                                                   text_color='#666666'))
@@ -288,7 +297,7 @@ dollarsraised_text = Plot(plot_width=1000,
 textright_renderer = dollarsraised_text.add_glyph(revenue_source,
                              Text(x=5.15,
                                   y=10,
-                                  text_font_style='italic',
+                                  text_font_style='normal',
                                   text="text",
                                   text_font_size='10pt',
                                   text_color='#666666'))
