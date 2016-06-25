@@ -91,6 +91,9 @@
 
 	    window.bars_data = {{ bars_data | safe }};
 	    window.lines_data = {{ lines_data | safe }};
+	    window.textleft_data = {{ textleft_data | safe }};
+	    window.textright_data = {{ textright_data | safe }};
+	    window.textbottom_data = {{ textbottom_data | safe }};
 
 	    var onSliderChange = function () {
 
@@ -108,7 +111,25 @@
 		    // bars data source 
 		    var bar_renderers = Bokeh.index['{{ bar_plot_id }}'].renderers;
 		    var bars_source = bar_renderers['{{ bar_renderer_id }}'].model.get('data_source');
-		    bars_source.set('data', window.bars_data[ds_id + '_diff']);
+            bars_source.set('data', window.bars_data[ds_id + '_diff']);
+
+            // textleft_plot
+		    var tleft_renderers = Bokeh.index['{{ textleft_plot_id }}'].renderers;
+		    var tleft_source = tleft_renderers['{{ textleft_renderer_id }}'].model.get('data_source');
+            //tleft_plot.set('data', window.textleft_data[ds_id + '_filers']);
+		    tleft_source.set('data', window.textleft_data[ds_id + '_filers']);
+
+            // textright_plot
+		    var tright_renderers = Bokeh.index['{{ textright_plot_id }}'].renderers;
+		    var tright_source = tright_renderers['{{ textright_renderer_id }}'].model.get('data_source');
+		    tright_source.set('data', window.textright_data[ds_id + '_revenue']);
+
+            // textbottom_plot
+		    var tbottom_renderers = Bokeh.index['{{ textbottom_plot_id }}'].renderers;
+		    var tbottom_source = tbottom_renderers['{{ textbottom_renderer_id }}'].model.get('data_source');
+		    tbottom_source.set('data', window.textbottom_data[ds_id + '_taxcut']);
+
+
 	    };
 
 	    var $slider1 = $("#slider1");
@@ -185,7 +206,36 @@
             </div>
 
         </div>
-<!--
+        <div class="row">
+
+            <div class="col-md-6">
+              <div class="plot-container">
+                {{ plots.textleft_plot | safe }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="plot-container">
+                {{ plots.textright_plot | safe }}
+              </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+              <div class="plot-container">
+                {{ plots.textbottom_plot | safe }}
+              </div>
+            </div>
+
+
+        </div>
+
+
+
+
         <div class="row">
             <div class="col-md-1">
 		<img id="logoImg" src="//avatars0.githubusercontent.com/u/8301070?v=3&s=75"></img>
@@ -202,7 +252,7 @@
               </div>
             </div>
         </div>
--->
+
         <hr>
 
     </div>
