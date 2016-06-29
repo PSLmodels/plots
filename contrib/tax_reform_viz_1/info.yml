@@ -12,12 +12,21 @@ long_description: >
 	the tax system, the distribution of taxes across different income groups,
 	and the potential for rate reduction. Calculations do not include the
 	effect of tax reform on individuals' behavior or the economy as a whole.
-Concept_credit: Alex Brill and Matt Jensen
+Concept_credit: >
+	<a href = "https://www.aei.org/scholar/alex-brill/">Alex Brill</a> and
+	<a href = "https://www.aei.org/scholar/matthew-h-jensen/"Matt Jensen</a>
 Development_credit: >
-	T.J. Alumbaugh, Brendan Collins, and Sean Wang. 
+	<a href = "https://github.com/talumbau">T.J. Alumbaugh</a>,
+	<a href = "https://github.com/brendancol">Brendan Collins</a>, and
+	<a href = "https://github.com/GoFroggyRun">Sean Wang</a>.
 OSS_credit: >
-	Tax-Calculator and TaxData for tax computations. Bokeh for visualizations.
-	Bokeh for visualizations.  
+	<a href = "https://github.com/open-source-economics/tax-calculator">
+	Tax-Calculator</a> and
+	<a href = "https://github.com/open-source-economics/taxdata">TaxData</a>
+	for tax computations.
+	<a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+	for visualizations.
+ 
 best_width: "100%"
 best_height: 500px
 build_cmd: "python build.py"
