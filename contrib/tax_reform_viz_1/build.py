@@ -32,10 +32,10 @@ PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
                     "lower deficits, or a {:.2f} percent tax cut "
                     "for every bracket.")
 
-TAXPAYERS_ITEMIZING_TEXT = "{} million\n fewer taxpayers itemizing."
+TAXPAYERS_ITEMIZING_TEXT = "{:.2f} million fewer taxpayers itemizing."
 
 
-DOLLARS_RAISED_TEXT = "{:.2f} billion\n dollars raised."
+DOLLARS_RAISED_TEXT = "{:.2f} billion dollars raised."
 
 
 locale.setlocale(locale.LC_ALL, 'en_US')
@@ -116,7 +116,7 @@ def get_data_sources():
             revenue_sources[name] = ColumnDataSource(df)
 
         elif '_filers' in name:
-            data_as_mil = int(data/(-1.0e6))
+            data_as_mil = data/(-1.0e6)
             txt = TAXPAYERS_ITEMIZING_TEXT.format(data_as_mil)
             if name.startswith("ds_000"):
                 txt = ""
@@ -128,7 +128,7 @@ def get_data_sources():
 
 plot_width = 425
 plot_height = 250
-text_plot_height = 60
+text_plot_height = 50
 
 line_sources, bar_sources, taxcut_sources, revenue_sources, filers_sources = get_data_sources()
 
@@ -259,7 +259,7 @@ bars.add_layout(CategoricalAxis(axis_label="Annual Income (USD)", **AXIS_FORMATS
 
 # create text plots -------------------------------------
 taxcut_source = ColumnDataSource(taxcut_sources['ds_000_taxcut'].data)
-percentcut_text = Plot(plot_width=1000,
+percentcut_text = Plot(plot_width=800,
                        plot_height=text_plot_height,
                        x_range=Range1d(0, 100),
                        y_range=Range1d(0, 100),
@@ -267,12 +267,12 @@ percentcut_text = Plot(plot_width=1000,
 
 
 textbottom_renderer = percentcut_text.add_glyph(taxcut_source,
-                          Text(x=5.15,
-                                y=10,
-                                text_font_style='normal',
-                                text='text',
-                                text_font_size='10pt',
-                                text_color='#666666'))
+                          Text(x=3.15,
+                               y=10,
+                               text_font_style='normal',
+                               text='text',
+                               text_font_size='10pt',
+                               text_color='#666666'))
 
 filers_source = ColumnDataSource(filers_sources['ds_000_filers'].data)
 itemizing_text = Plot(plot_width=500,
@@ -290,7 +290,7 @@ textleft_renderer = itemizing_text.add_glyph(filers_source,
 
 
 revenue_source = ColumnDataSource(revenue_sources['ds_000_revenue'].data)
-dollarsraised_text = Plot(plot_width=1000,
+dollarsraised_text = Plot(plot_width=500,
                           x_range=Range1d(0, 100),
                           y_range=Range1d(0, 100),
                           plot_height=text_plot_height, **PLOT_FORMATS)
