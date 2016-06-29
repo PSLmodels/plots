@@ -5,13 +5,24 @@ from os import path, listdir, environ, system, walk
 
 import mimetypes as mime
 import pandas as pd
+import os
 
 import boto3
 import botocore
 
 from taxplots.utils import ordered_load, DirectoryContext
 
-contrib_dir = path.abspath(path.join(path.split(__file__)[0], '../contrib'))
+
+def get_contrib_dir():
+    curdir = os.getcwd()
+    for path, dirs, files in os.walk(curdir):
+        for d in dirs:
+            if d == "contrib":
+                return os.path.join(path, d)
+
+    raise ValueError("No 'contrib' directory found.")
+
+contrib_dir = get_contrib_dir()
 
 def _validate_plot_dir(directory):
     pass
