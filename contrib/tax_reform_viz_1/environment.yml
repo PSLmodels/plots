@@ -10,5 +10,6 @@ dependencies:
 - six
 - ipython
 - ipython-notebook
+- bokeh
 - pip:
   - pytest-pep8

@@ -2,6 +2,7 @@
 Tax Brain Widget
 '''
 import glob
+import pickle
 import locale
 import numpy as np
 import os
@@ -11,6 +12,8 @@ from jinja2 import Environment, FileSystemLoader
 
 from bokeh.models import Plot, Range1d, ImageURL, DataRange1d
 from bokeh.embed import components
+#from bokeh.layouts import layout
+from bokeh.plotting import figure, hplot, vplot, output_file, show
 from bokeh.models import (ColumnDataSource, LogAxis, LinearAxis, Rect, FactorRange,
                           CategoricalAxis, Line, Text, Square, HoverTool)
 
@@ -23,7 +26,17 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-from data import get_source_dataframes
+from data import get_source_data
+
+PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
+                    "lower deficits, or a {:.2f} percent tax cut "
+                    "for every bracket.")
+
+TAXPAYERS_ITEMIZING_TEXT = "{:.2f} million fewer taxpayers itemizing."
+
+
+DOLLARS_RAISED_TEXT = "{:.2f} billion dollars raised."
+
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -48,11 +61,21 @@ def get_data_sources():
     tax_average_bin_cats = list(tax_average_bin_cats)
     line_sources = {}
     bar_sources = {}
+    taxcut_sources = {}
+    revenue_sources = {}
+    filers_sources = {}
 
-    dataframes = get_source_dataframes()
+    #dataframes = get_source_data()
+    #with open("precalculated_data.pkle", "wb") as f:
+        #pickle.dump(dataframes, f)
 
-    for name, df in dataframes.items():
+    with open("precalculated_data.pkle", "rb") as f:
+        dataframes = pickle.load(f)
+
+
+    for name, data in dataframes.items():
         if '_data' in name:
+            df = data # Process the DataFrame
             df.reset_index(inplace=True)
             annotation_func = lambda r:'$' + locale.format('%d', float(r['mean_income']), grouping=True)
             df['base'] = df['base'] * 100
@@ -61,6 +84,7 @@ def get_data_sources():
             line_sources[name] = ColumnDataSource(df)
 
         elif '_diff' in name:
+            df = data # Process the DataFrame
             df.reset_index(inplace=True)
             df.bins = df.bins.astype(str)
             df = df[df.bins != '(-100000000000000, 0]']
@@ -75,13 +99,39 @@ def get_data_sources():
             df['annotation_x'] = df.apply(lambda r:max(.1, r['width'] / 2), axis=1)
             bar_sources[name] = ColumnDataSource(df)
 
-    return line_sources, bar_sources
+        elif '_taxcut' in name:
+            data_as_per = data * 100.
+            txt = PERCENT_CUT_TEXT.format(data_as_per)
+            if name.startswith("ds_000"):
+                txt = ""
+            df = pd.DataFrame(data={"text":[txt]})
+            taxcut_sources[name] = ColumnDataSource(df)
+
+        elif '_revenue' in name:
+            data_as_bil = data/(1.0e9)
+            txt = DOLLARS_RAISED_TEXT.format(data_as_bil)
+            if name.startswith("ds_000"):
+                txt = ""
+            df = pd.DataFrame(data={"text":[txt]})
+            revenue_sources[name] = ColumnDataSource(df)
+
+        elif '_filers' in name:
+            data_as_mil = data/(-1.0e6)
+            txt = TAXPAYERS_ITEMIZING_TEXT.format(data_as_mil)
+            if name.startswith("ds_000"):
+                txt = ""
+            df = pd.DataFrame(data={"text":[txt]})
+            filers_sources[name] = ColumnDataSource(df)
+
+    return line_sources, bar_sources, taxcut_sources, revenue_sources, filers_sources
 
 
 plot_width = 425
 plot_height = 250
+text_plot_height = 50
 
-line_sources, bar_sources = get_data_sources()
+line_sources, bar_sources, taxcut_sources, revenue_sources, filers_sources = get_data_sources()
+
 tax_average_bin_names = reversed(['Less than 10k',
                                   '10k - 20k',
                                   '20k - 30k',
@@ -207,20 +257,89 @@ bars.add_glyph(bars_source,
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
 bars.add_layout(CategoricalAxis(axis_label="Annual Income (USD)", **AXIS_FORMATS), 'left')
 
+# create text plots -------------------------------------
+taxcut_source = ColumnDataSource(taxcut_sources['ds_000_taxcut'].data)
+percentcut_text = Plot(plot_width=800,
+                       plot_height=text_plot_height,
+                       x_range=Range1d(0, 100),
+                       y_range=Range1d(0, 100),
+                       **PLOT_FORMATS)
+
+
+textbottom_renderer = percentcut_text.add_glyph(taxcut_source,
+                          Text(x=3.15,
+                               y=10,
+                               text_font_style='normal',
+                               text='text',
+                               text_font_size='10pt',
+                               text_color='#666666'))
+
+filers_source = ColumnDataSource(filers_sources['ds_000_filers'].data)
+itemizing_text = Plot(plot_width=500,
+                      x_range=Range1d(0, 100),
+                      y_range=Range1d(0, 100),
+                      plot_height=text_plot_height, **PLOT_FORMATS)
+
+textleft_renderer = itemizing_text.add_glyph(filers_source,
+                                             Text(x=5.15,
+                                                  y=10,
+                                                  text_font_style='normal',
+                                                  text="text",
+                                                  text_font_size='10pt',
+                                                  text_color='#666666'))
+
+
+revenue_source = ColumnDataSource(revenue_sources['ds_000_revenue'].data)
+dollarsraised_text = Plot(plot_width=500,
+                          x_range=Range1d(0, 100),
+                          y_range=Range1d(0, 100),
+                          plot_height=text_plot_height, **PLOT_FORMATS)
+textright_renderer = dollarsraised_text.add_glyph(revenue_source,
+                             Text(x=5.15,
+                                  y=10,
+                                  text_font_style='normal',
+                                  text="text",
+                                  text_font_size='10pt',
+                                  text_color='#666666'))
+
+
+# end create text plots ---------------------------------
 plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
+plots['textleft_plot'] = itemizing_text
+plots['textright_plot'] = dollarsraised_text
+plots['textbottom_plot'] = percentcut_text
+
 
 bars_data = {k: v.data for k, v in bar_sources.items()}
 lines_data = {k: v.data for k, v in line_sources.items()}
 
+# Left Text: # Itemizers from filers_source
+textleft_data = {k: v.data for k, v in filers_sources.items()}
+# Right Text: # Revenue raised from revenue_source
+textright_data = {k: v.data for k, v in revenue_sources.items()}
+# Bottom Text: # Tax Cut possible from from taxcut_source
+textbottom_data = {k: v.data for k, v in taxcut_sources.items()}
+
 script, divs = components(plots)
+
 output_page('index.html',
             bokeh_script=script,
             plots=divs,
+            # Plot Ids
             line_plot_id=lines._id,
             line_renderer_id=line_base_renderer._id,
             bar_plot_id=bars._id,
             bar_renderer_id=bar_base_renderer._id,
+            textleft_plot_id = itemizing_text._id,
+            textleft_renderer_id = textleft_renderer._id,
+            textright_plot_id = dollarsraised_text._id,
+            textright_renderer_id = textright_renderer._id,
+            textbottom_plot_id = percentcut_text._id,
+            textbottom_renderer_id = textbottom_renderer._id,
             bars_data=bars_data,
+            textleft_data=textleft_data,
+            textright_data=textright_data,
+            textbottom_data=textbottom_data,
             lines_data=lines_data)
