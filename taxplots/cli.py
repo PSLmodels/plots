@@ -141,7 +141,10 @@ def _create_web_manifest(plots_df, s3_client, bucket):
                        'short_description',
                        'best_width',
                        'best_height',
-                       'long_description']
+                       'long_description',
+                       'Concept_credit',
+                       'Development_credit',
+                       'OSS_credit']
 
     json_str = plots_df.reset_index()[manifest_fields].to_json(orient='records')
     web_manifest_path = path.join(contrib_dir, 'webmanifest.json')
