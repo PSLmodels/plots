@@ -29,13 +29,13 @@ from styles import (PLOT_FORMATS,
 from data import get_source_data
 
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
-                    "lower deficits, or a {:.2f} percent tax cut "
+                    "lower deficits, or a <span>{:.1f}</span> percent tax cut "
                     "for every bracket.")
 
-TAXPAYERS_ITEMIZING_TEXT = "{:.2f} million fewer taxpayers itemizing."
+TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
 
 
-DOLLARS_RAISED_TEXT = "{:.2f} billion dollars raised."
+DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
 
 
 locale.setlocale(locale.LC_ALL, 'en_US')
@@ -66,12 +66,11 @@ def get_data_sources():
     filers_sources = {}
 
     #dataframes = get_source_data()
-    #with open("precalculated_data.pkle", "wb") as f:
+    #with open("precalculated_data_latest.pkle", "wb") as f:
         #pickle.dump(dataframes, f)
 
-    with open("precalculated_data.pkle", "rb") as f:
+    with open("precalculated_data_latest.pkle", "rb") as f:
         dataframes = pickle.load(f)
-
 
     for name, data in dataframes.items():
         if '_data' in name:
@@ -116,8 +115,10 @@ def get_data_sources():
             revenue_sources[name] = ColumnDataSource(df)
 
         elif '_filers' in name:
-            data_as_mil = data/(-1.0e6)
-            txt = TAXPAYERS_ITEMIZING_TEXT.format(data_as_mil)
+            num_filers, percent_change = data
+            nf_as_mil = num_filers/(-1.0e6)
+            percent_change *= -100.0  # Text makes clear value is a decrease
+            txt = TAXPAYERS_ITEMIZING_TEXT.format(number=nf_as_mil, percent=percent_change)
             if name.startswith("ds_000"):
                 txt = ""
             df = pd.DataFrame(data={"text":[txt]})
@@ -198,7 +199,6 @@ lines.add_glyph(Square(x=3,
                        size=10,
                        line_color=None,
                        fill_alpha=0.8))
-
 
 lines.add_layout(LinearAxis(axis_label="Percentile of Income", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
@@ -307,9 +307,9 @@ textright_renderer = dollarsraised_text.add_glyph(revenue_source,
 plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
-plots['textleft_plot'] = itemizing_text
-plots['textright_plot'] = dollarsraised_text
-plots['textbottom_plot'] = percentcut_text
+#plots['textleft_plot'] = itemizing_text
+#plots['textright_plot'] = dollarsraised_text
+#plots['textbottom_plot'] = percentcut_text
 
 
 bars_data = {k: v.data for k, v in bar_sources.items()}
@@ -332,12 +332,12 @@ output_page('index.html',
             line_renderer_id=line_base_renderer._id,
             bar_plot_id=bars._id,
             bar_renderer_id=bar_base_renderer._id,
-            textleft_plot_id = itemizing_text._id,
-            textleft_renderer_id = textleft_renderer._id,
-            textright_plot_id = dollarsraised_text._id,
-            textright_renderer_id = textright_renderer._id,
-            textbottom_plot_id = percentcut_text._id,
-            textbottom_renderer_id = textbottom_renderer._id,
+            #textleft_plot_id = itemizing_text._id,
+            #textleft_renderer_id = textleft_renderer._id,
+            #textright_plot_id = dollarsraised_text._id,
+            #textright_renderer_id = textright_renderer._id,
+            #textbottom_plot_id = percentcut_text._id,
+            #textbottom_renderer_id = textbottom_renderer._id,
             bars_data=bars_data,
             textleft_data=textleft_data,
             textright_data=textright_data,
