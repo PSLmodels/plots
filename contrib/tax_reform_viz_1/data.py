@@ -48,7 +48,7 @@ def add_income_bins2(df, num_bins, tab):
     bin_edges = [0] + list(np.arange(1, (num_bins+1)) * (max_ / float(num_bins)))
     labels = range(1, (num_bins+1))
     df['bins'] = pd.cut(df['cumsum_weights'], bins=bin_edges, labels=labels)
-    mean_income = df[['_expanded_income', 'bins']].groupby('bins').mean()
+    mean_income = df[['c00100', 'bins']].groupby('bins').mean()
     return df, mean_income
 
 def print_data(calcX, calcY, weights, tab, name):
@@ -94,7 +94,7 @@ def print_data(calcX, calcY, weights, tab, name):
     df_filtered_y = df_filtered_y['w_pct']
 
     merged = pd.concat([df_filtered_x, df_filtered_y], axis=1, ignore_index=True)
-    merged['mean_income'] = mean_inc_x['_expanded_income'].values
+    merged['mean_income'] = mean_inc_x['c00100'].values
     merged.columns = ['base','reform','mean_income']
 
     return merged
