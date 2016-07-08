@@ -200,7 +200,7 @@ lines.add_glyph(Square(x=3,
                        fill_alpha=0.8))
 
 
-lines.add_layout(LinearAxis(axis_label="Percentile of Income", **AXIS_FORMATS), 'below')
+lines.add_layout(LinearAxis(axis_label="Average Adjusted Gross Income by Percentile", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
 
 # create bar plot -------------------------------------
@@ -255,7 +255,7 @@ bars.add_glyph(bars_source,
 
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
-bars.add_layout(CategoricalAxis(axis_label="Annual Income (USD)", **AXIS_FORMATS), 'left')
+bars.add_layout(CategoricalAxis(axis_label="Annual Adjusted Gross Income", **AXIS_FORMATS), 'left')
 
 # create text plots -------------------------------------
 taxcut_source = ColumnDataSource(taxcut_sources['ds_000_taxcut'].data)
