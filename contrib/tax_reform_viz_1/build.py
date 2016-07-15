@@ -31,12 +31,13 @@ from data import get_source_data
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
                     "lower deficits, or a <span>{:.1f}</span> percent tax cut "
                     "for every bracket.")
+PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate."
 
 TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
-
+TAXPAYERS_ITEMIZING_EMPTY = "Implement a reform to see how many fewer taxpayers would need to itemize." 
 
 DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
-
+DOLLARS_RAISED_EMPTY = "Implement a reform to see the revenue neutralizing rate."
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -102,7 +103,7 @@ def get_data_sources():
             data_as_per = data * 100.
             txt = PERCENT_CUT_TEXT.format(data_as_per)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = PERCENT_CUT_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             taxcut_sources[name] = ColumnDataSource(df)
 
@@ -110,7 +111,7 @@ def get_data_sources():
             data_as_bil = data/(1.0e9)
             txt = DOLLARS_RAISED_TEXT.format(data_as_bil)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = DOLLARS_RAISED_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             revenue_sources[name] = ColumnDataSource(df)
 
@@ -120,7 +121,7 @@ def get_data_sources():
             percent_change *= -100.0  # Text makes clear value is a decrease
             txt = TAXPAYERS_ITEMIZING_TEXT.format(number=nf_as_mil, percent=percent_change)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = TAXPAYERS_ITEMIZING_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             filers_sources[name] = ColumnDataSource(df)
 
@@ -328,6 +329,8 @@ script, divs = components(plots)
 output_page('index.html',
             bokeh_script=script,
             plots=divs,
+            instruction_columns=[PERCENT_CUT_EMPTY,TAXPAYERS_ITEMIZING_EMPTY,DOLLARS_RAISED_EMPTY],
+
             # Plot Ids
             line_plot_id=lines._id,
             line_renderer_id=line_base_renderer._id,
