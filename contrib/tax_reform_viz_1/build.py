@@ -28,16 +28,17 @@ from styles import (PLOT_FORMATS,
 
 from data import get_source_data
 
+
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
                     "lower deficits, or a <span>{:.1f}</span> percent tax cut "
                     "for every bracket.")
-PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate."
+PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate reduction."
 
 TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
 TAXPAYERS_ITEMIZING_EMPTY = "Implement a reform to see how many fewer taxpayers would need to itemize." 
 
 DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
-DOLLARS_RAISED_EMPTY = "Implement a reform to see the revenue neutralizing rate."
+DOLLARS_RAISED_EMPTY = "Implement a reform to see how much revenue would be raised."
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -202,7 +203,7 @@ lines.add_glyph(Square(x=3,
                        fill_alpha=0.8))
 
 
-lines.add_layout(LinearAxis(axis_label="Average Adjusted Gross Income by Percentile", **AXIS_FORMATS), 'below')
+lines.add_layout(LinearAxis(axis_label="2016 Average Adjusted Gross Income by Percentile", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
 
 # create bar plot -------------------------------------
@@ -257,7 +258,7 @@ bars.add_glyph(bars_source,
 
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
-bars.add_layout(CategoricalAxis(axis_label="Annual Adjusted Gross Income", **AXIS_FORMATS), 'left')
+bars.add_layout(CategoricalAxis(axis_label="2016 Annual Adjusted Gross Income", **AXIS_FORMATS), 'left')
 
 # create text plots -------------------------------------
 taxcut_source = ColumnDataSource(taxcut_sources['ds_000_taxcut'].data)
