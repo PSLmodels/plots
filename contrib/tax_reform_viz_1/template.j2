@@ -29,9 +29,24 @@
       .text-plot-container {
       }
 
-      #results-list {
-	width:100%;
+      #text-area {
+        width: 11rem;
+        padding:0; 
+        color: #6B6B73;
+        font-weight:normal;
         font-size: 12px;
+      }
+
+      #text-area-title {
+        color: #6B6B73;
+        font-weight:normal;
+        font-size: 12px;
+      }
+
+      #results-list {
+        width:100%;
+        font-size: 12px;
+        padding: 0;
       }
 
       .text-under-plot {
@@ -145,6 +160,12 @@
 		    $("#bottom-text").html(window.textbottom_data[ds_id + '_taxcut']['text']);
 		    $("#right-text").html(window.textright_data[ds_id + '_revenue']['text']);
 		    $("#left-text").html(window.textleft_data[ds_id + '_filers']['text']);
+
+            if (slider1_val + slider2_val + slider3_val === '000') {
+		        $("#text-area-title").text('Repeal deductions above...');
+            } else {
+		        $("#text-area-title").text('In 2016:');
+            }
 	    };
 
 	    var $slider1 = $("#slider1");
@@ -207,19 +228,20 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2">
-		<p class="text-center"></p>
-		<ul id="results-list">
-		<li id="left-text" class="text-under-plot">{{ instruction_columns[0]}}</li>
-		<li id="right-text" class="text-under-plot">{{ instruction_columns[1]}}</li>
-		<li id="bottom-text" class="text-under-plot">{{ instruction_columns[2]}}</li>
-		</ul>
+            <div id="text-area" class="col-md-2">
+            <p id="text-area-title" class="text-center">Repeal deductions above...</p>
+            <ul id="results-list">
+                <li id="left-text" class="text-under-plot">{{ instruction_columns[0]}}</li>
+                <li id="right-text" class="text-under-plot">{{ instruction_columns[1]}}</li>
+                <li id="bottom-text" class="text-under-plot">{{ instruction_columns[2]}}</li>
+            </ul>
 		
             </div>
 
             <div class="col-md-5">
               <div class="plot-container">
                 {{ plots.line_plot | safe }}
+
               </div>
             </div>
 
@@ -230,7 +252,5 @@
             </div>
 
         </div>
-
-
 </body>
 </html>

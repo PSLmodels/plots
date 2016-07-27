@@ -151,7 +151,7 @@ tax_average_bin_names = reversed(['Less than 10k',
 lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
              plot_height=plot_height,
-             title='Percent Itemizing by Income Percentile',
+             title='Percent itemizing by Income Percentile in 2016',
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
@@ -203,7 +203,7 @@ lines.add_glyph(Square(x=3,
                        fill_alpha=0.8))
 
 
-lines.add_layout(LinearAxis(axis_label="2016 Average Adjusted Gross Income by Percentile", **AXIS_FORMATS), 'below')
+lines.add_layout(LinearAxis(axis_label="Average Adjusted Gross Income by Percentile", **AXIS_FORMATS), 'below')
 lines.add_layout(LinearAxis(axis_label="% Itemizing", **AXIS_FORMATS), 'left')
 
 # create bar plot -------------------------------------
@@ -211,7 +211,7 @@ PLOT_FORMATS['min_border_bottom'] = 30
 bars_source = ColumnDataSource(bar_sources['ds_000_diff'].data)
 bars = Plot(plot_width=500,
             plot_height=plot_height,
-            title='Net Change in Average Tax by Annual Income',
+            title='Net Change in Average Tax by Annual Income in 2016',
             x_range=Range1d(0, 22000),
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
@@ -258,7 +258,7 @@ bars.add_glyph(bars_source,
 
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'below')
 #bars.add_layout(LinearAxis(**AXIS_FORMATS), 'left')
-bars.add_layout(CategoricalAxis(axis_label="2016 Annual Adjusted Gross Income", **AXIS_FORMATS), 'left')
+bars.add_layout(CategoricalAxis(axis_label="Annual Adjusted Gross Income", **AXIS_FORMATS), 'left')
 
 # create text plots -------------------------------------
 taxcut_source = ColumnDataSource(taxcut_sources['ds_000_taxcut'].data)
