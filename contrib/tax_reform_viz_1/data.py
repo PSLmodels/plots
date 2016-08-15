@@ -164,7 +164,8 @@ def agg_num_delta(calcX, calcY):
     itm_x = sum(df_x['pct_itm'] * df_x['s006'])
     itm_y = sum(df_y['pct_itm'] * df_y['s006'])
     agg_num_d= itm_y - itm_x
-    return agg_num_d
+    agg_percent_d = agg_num_d / itm_x
+    return agg_num_d, agg_percent_d
 
 
 RES_COLUMNS = STATS_COLUMNS + ['e00200'] + ['MARS'] + ['n24']
@@ -195,10 +196,11 @@ def run_reform(name, reform, epsilon):
     data_df = print_data(calcbase, calcreform, weights = weighted, tab = 'c00100', name=name)
     equiv_tax_cut = reform_equiv(reform, epsilon)
     total_rev_raise = agg_diff(calcbase, calcreform)
-    delta_num_filers = agg_num_delta(calcbase, calcreform)
+    delta_num_filers, delta_percent_filers = agg_num_delta(calcbase, calcreform)
 
     #diff_df['equiv_rate_cut'] = len(diff_df)*[equiv_tax_cut]
-    return diff_df, data_df, equiv_tax_cut, total_rev_raise, delta_num_filers
+    return (diff_df, data_df, equiv_tax_cut, total_rev_raise,
+            delta_num_filers, delta_percent_filers)
 
 def get_source_data():
     reform_values = (0,1,)
@@ -219,11 +221,11 @@ def get_source_data():
     dataframes = {}
     eps = 1e-4
     for name, reform in groups.items():
-        diff_df, data_df, tax_cut, total_rev, delta_filers = run_reform(name, reform, eps)
+        diff_df, data_df, tax_cut, total_rev, delta_filers, delta_percent = run_reform(name, reform, eps)
         dataframes[name + '_data'] = data_df
         dataframes[name + '_diff'] = diff_df
         dataframes[name + '_taxcut'] = tax_cut if tax_cut > eps else 0.
         dataframes[name + '_revenue'] = total_rev
-        dataframes[name + '_filers'] = delta_filers
+        dataframes[name + '_filers'] = (delta_filers, delta_percent)
 
     return dataframes

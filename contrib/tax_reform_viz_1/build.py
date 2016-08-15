@@ -28,15 +28,17 @@ from styles import (PLOT_FORMATS,
 
 from data import get_source_data
 
+
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
-                    "lower deficits, or a {:.2f} percent tax cut "
+                    "lower deficits, or a <span>{:.1f}</span> percent tax cut "
                     "for every bracket.")
+PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate reduction."
 
-TAXPAYERS_ITEMIZING_TEXT = "{:.2f} million fewer taxpayers itemizing."
+TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
+TAXPAYERS_ITEMIZING_EMPTY = "Implement a reform to see how many fewer taxpayers would need to itemize." 
 
-
-DOLLARS_RAISED_TEXT = "{:.2f} billion dollars raised."
-
+DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
+DOLLARS_RAISED_EMPTY = "Implement a reform to see how much revenue would be raised."
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -72,7 +74,6 @@ def get_data_sources():
     with open("precalculated_data.pkle", "rb") as f:
         dataframes = pickle.load(f)
 
-
     for name, data in dataframes.items():
         if '_data' in name:
             df = data # Process the DataFrame
@@ -103,7 +104,7 @@ def get_data_sources():
             data_as_per = data * 100.
             txt = PERCENT_CUT_TEXT.format(data_as_per)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = PERCENT_CUT_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             taxcut_sources[name] = ColumnDataSource(df)
 
@@ -111,15 +112,17 @@ def get_data_sources():
             data_as_bil = data/(1.0e9)
             txt = DOLLARS_RAISED_TEXT.format(data_as_bil)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = DOLLARS_RAISED_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             revenue_sources[name] = ColumnDataSource(df)
 
         elif '_filers' in name:
-            data_as_mil = data/(-1.0e6)
-            txt = TAXPAYERS_ITEMIZING_TEXT.format(data_as_mil)
+            num_filers, percent_change = data
+            nf_as_mil = num_filers/(-1.0e6)
+            percent_change *= -100.0  # Text makes clear value is a decrease
+            txt = TAXPAYERS_ITEMIZING_TEXT.format(number=nf_as_mil, percent=percent_change)
             if name.startswith("ds_000"):
-                txt = ""
+                txt = TAXPAYERS_ITEMIZING_EMPTY
             df = pd.DataFrame(data={"text":[txt]})
             filers_sources[name] = ColumnDataSource(df)
 
@@ -148,7 +151,7 @@ tax_average_bin_names = reversed(['Less than 10k',
 lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
              plot_height=plot_height,
-             title='Percent Itemizing by Income Percentile',
+             title='Percent itemizing by Income Percentile in 2016',
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
@@ -208,7 +211,7 @@ PLOT_FORMATS['min_border_bottom'] = 30
 bars_source = ColumnDataSource(bar_sources['ds_000_diff'].data)
 bars = Plot(plot_width=500,
             plot_height=plot_height,
-            title='Net Change in Average Tax by Annual Income',
+            title='Net Change in Average Tax by Annual Income in 2016',
             x_range=Range1d(0, 22000),
             y_range=FactorRange(factors=list(tax_average_bin_names)),
             **PLOT_FORMATS)
@@ -307,9 +310,9 @@ textright_renderer = dollarsraised_text.add_glyph(revenue_source,
 plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
-plots['textleft_plot'] = itemizing_text
-plots['textright_plot'] = dollarsraised_text
-plots['textbottom_plot'] = percentcut_text
+#plots['textleft_plot'] = itemizing_text
+#plots['textright_plot'] = dollarsraised_text
+#plots['textbottom_plot'] = percentcut_text
 
 
 bars_data = {k: v.data for k, v in bar_sources.items()}
@@ -327,17 +330,19 @@ script, divs = components(plots)
 output_page('index.html',
             bokeh_script=script,
             plots=divs,
+            instruction_columns=[PERCENT_CUT_EMPTY,TAXPAYERS_ITEMIZING_EMPTY,DOLLARS_RAISED_EMPTY],
+
             # Plot Ids
             line_plot_id=lines._id,
             line_renderer_id=line_base_renderer._id,
             bar_plot_id=bars._id,
             bar_renderer_id=bar_base_renderer._id,
-            textleft_plot_id = itemizing_text._id,
-            textleft_renderer_id = textleft_renderer._id,
-            textright_plot_id = dollarsraised_text._id,
-            textright_renderer_id = textright_renderer._id,
-            textbottom_plot_id = percentcut_text._id,
-            textbottom_renderer_id = textbottom_renderer._id,
+            #textleft_plot_id = itemizing_text._id,
+            #textleft_renderer_id = textleft_renderer._id,
+            #textright_plot_id = dollarsraised_text._id,
+            #textright_renderer_id = textright_renderer._id,
+            #textbottom_plot_id = percentcut_text._id,
+            #textbottom_renderer_id = textbottom_renderer._id,
             bars_data=bars_data,
             textleft_data=textleft_data,
             textright_data=textright_data,
