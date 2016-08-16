@@ -29,15 +29,15 @@ from styles import (PLOT_FORMATS,
 
 
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
-                    "lower deficits, or a <span>{:.1f}</span> percent tax cut "
+                    "lower deficits, or a <span>{:.1f}</span>% tax cut "
                     "for every bracket.")
-PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate reduction."
+PERCENT_CUT_EMPTY = "... to see the revenue-neutralizing rate reduction."
 
-TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
-TAXPAYERS_ITEMIZING_EMPTY = "Implement a reform to see how many fewer taxpayers would need to itemize." 
+TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing (<span>{percent:.1f}%</span> decrease)."
+TAXPAYERS_ITEMIZING_EMPTY = "... to see how many fewer taxpayers would need to itemize." 
 
 DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
-DOLLARS_RAISED_EMPTY = "Implement a reform to see how much revenue would be raised."
+DOLLARS_RAISED_EMPTY = "... to see how much revenue would be raised."
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
@@ -155,7 +155,7 @@ tax_average_bin_names = reversed(['Less than 10k',
 lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
              plot_height=plot_height,
-             title='Percent itemizing by Income Percentile in 2016',
+             title='Percent Itemizing by Income Percentile in 2016',
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
@@ -181,7 +181,7 @@ line_base_renderer = lines.add_glyph(lines_source,
 lines.add_glyph(Text(x=5.15,
                      y=92,
                      text_font_style='italic',
-                     text=['baseline'],
+                     text=['Baseline'],
                      text_font_size='8pt',
                      text_color='#666666'))
 
@@ -195,7 +195,7 @@ lines.add_glyph(Square(x=3,
 lines.add_glyph(Text(x=5.15,
                      y=84.75,
                      text_font_style='italic',
-                     text=['reform'],
+                     text=['Reform'],
                      text_font_size='8pt',
                      text_color='#666666'))
 
