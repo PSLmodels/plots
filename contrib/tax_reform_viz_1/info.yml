@@ -1,7 +1,7 @@
 ---
 plot_name: Tax Reform Visualization 1
 plot_id: tax_reform_viz_1
-content: index.html
+content: index_landscape.html
 thumbnail: thumbnail.png
 short_description: > 
     Explore the impact of eliminating itemized deductions on the simplicity of
