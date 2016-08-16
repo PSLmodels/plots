@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Tax Reform Explorer</title>
+    <script src="resources/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="resources/normalize.css" />
+    <link rel="stylesheet" href="resources/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="resources/ion.rangeSlider.skinFlat.css" />
+    <script src="resources/ion.rangeSlider.js"></script>
+    <link rel="stylesheet" href="resources/bootstrap.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="resources/bootstrap.min.js"></script>
+    <link href="//cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" rel="stylesheet" />
+
+    <style>
+      
+      body {
+	width: 550px;
+      }
+
+      .slider-group {
+        height: 80px;
+        margin: 15px;
+        width:120px;
+        text-align:center;
+        margin: 15px auto;
+        vertical-align: middle;
+      }
+
+      .text-plot-container {
+      }
+
+      #text-area {
+        padding:0; 
+        color: #6B6B73;
+        font-weight:normal;
+        font-size: 12px;
+      }
+
+      #text-area-title {
+        color: #6B6B73;
+        font-weight:normal;
+        font-size: 12px;
+	text-align: left;
+      }
+
+      #results-list {
+        width:100%;
+        font-size: 12px;
+        padding: 0;
+      }
+
+      .text-under-plot {
+	width:100%;
+        color: #6B6B73;
+        font-weight:normal;
+        font-size: 12px;
+      }
+
+      .text-under-plot p {
+        color: #6B6B73;
+        font-weight:normal;
+        font-size: 12px;
+      }
+
+      .text-under-plot span {
+        color: green;
+        font-weight:normal;
+        font-size: 12px;
+      }
+
+      .slider-group h6 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #6B6B73;
+        font-weight:normal;
+        margin:auto;
+        vertical-align:middle;
+      }
+
+      .irs-from, .irs-to, .irs-single {
+        background:#21bfd5 !important;
+      }
+
+      .irs-from:after, .irs-to:after, .irs-single:after {
+        border-top-color:#21bfd5 !important;
+      }
+
+      .irs-grid-pol.small {
+        display: None !important;
+      }
+
+      .row {
+        margin-bottom:15px;
+      }
+
+      p {
+        color: #6B6B73;
+        font-weight:normal;
+        font-size:10pt;
+      }
+
+      button {
+        background-color: #21bfd5 !important;
+        color: #ffffff !important;
+      }
+
+      #logoImg {
+        opacity: 0.4;
+
+      }
+
+      ul {
+	list-style-type: none;
+      }
+
+      li {
+	padding:5px;
+      }
+
+    </style>
+
+</head>
+<body>
+
+    <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.js"></script>
+
+    {{ bokeh_script | safe }}
+
+<!-- Page contents -->
+<div style="position: relative; width:375px;padding:20px;">
+</div>
+
+<script>
+    $(function () {
+
+	    window.bars_data = {{ bars_data | safe }};
+	    window.lines_data = {{ lines_data | safe }};
+	    window.textleft_data = {{ textleft_data | safe }};
+	    window.textright_data = {{ textright_data | safe }};
+	    window.textbottom_data = {{ textbottom_data | safe }};
+
+	    var onSliderChange = function () {
+
+		    var lookup = ['keep', 'repeal'];
+		    var slider1_val = lookup.indexOf($("#slider1").prop('value').toLowerCase()).toString();
+		    var slider2_val = lookup.indexOf($("#slider2").prop('value').toLowerCase()).toString();
+		    var slider3_val = lookup.indexOf($("#slider3").prop('value').toLowerCase()).toString();
+		    var ds_id = 'ds_' + [slider1_val, slider2_val, slider3_val].join('');
+
+		    // lines data source 
+		    var line_renderers = Bokeh.index['{{ line_plot_id }}'].renderers;
+		    var line_source = line_renderers['{{ line_renderer_id }}'].model.get('data_source');
+		    line_source.set('data', window.lines_data[ds_id + '_data']);
+
+		    // bars data source 
+		    var bar_renderers = Bokeh.index['{{ bar_plot_id }}'].renderers;
+		    var bars_source = bar_renderers['{{ bar_renderer_id }}'].model.get('data_source');
+		    bars_source.set('data', window.bars_data[ds_id + '_diff']);
+
+		    $("#bottom-text").html(window.textbottom_data[ds_id + '_taxcut']['text']);
+		    $("#right-text").html(window.textright_data[ds_id + '_revenue']['text']);
+		    $("#left-text").html(window.textleft_data[ds_id + '_filers']['text']);
+
+            if (slider1_val + slider2_val + slider3_val === '000') {
+		        $("#text-area-title").text('Repeal deductions above...');
+            } else {
+		        $("#text-area-title").text('In 2016:');
+            }
+	    };
+
+	    var $slider1 = $("#slider1");
+	    $slider1.ionRangeSlider({
+		    grid: true,
+		    grid_num: 2,
+		    from: 0,
+		    hide_min_max: true,
+		    values: ["Keep", "Repeal"]
+	    });
+	    $slider1.on("change", onSliderChange);
+
+	    var $slider2 = $("#slider2");
+	    $slider2.ionRangeSlider({
+		    grid: true,
+		    grid_num: 2,
+		    from: 0,
+		    hide_min_max: true,
+		    values: ["Keep", "Repeal"]
+	    });
+	    $slider2.on("change", onSliderChange);
+
+	    var $slider3 = $("#slider3");
+	    $slider3.ionRangeSlider({
+		    grid: true,
+		    grid_num: 2,
+		    from: 0,
+		    hide_min_max: true,
+		    values: ["Keep", "Repeal"]
+	    });
+	    $slider3.on("change", onSliderChange);
+
+    });
+</script>
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-5">
+            <div class="col-md-4">
+              <div class="slider-group">
+                  <h6>Mortgage & Interest Paid Deductions</h6>
+                  <input id="slider1" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="slider-group">
+                  <h6>State & Local Tax Deduction</h6>
+                  <input id="slider2" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="slider-group">
+                    <h6>Charitable Contribution</h6>
+                    <input id="slider3" type="text" id="range" value="" name="range" />
+              </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+              <div class="plot-container">
+                {{ plots.line_plot | safe }}
+
+              </div>
+              <div class="plot-container">
+                {{ plots.bars_plot | safe }}
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="text-area" class="col-md-5">
+            <p id="text-area-title" class="text-center">Repeal deductions above...</p>
+            <ul id="results-list">
+                <li id="left-text" class="text-under-plot">{{ instruction_columns[0]}}</li>
+                <li id="right-text" class="text-under-plot">{{ instruction_columns[1]}}</li>
+                <li id="bottom-text" class="text-under-plot">{{ instruction_columns[2]}}</li>
+            </ul>
+		
+            </div>
+        </div>
+</body>
+</html>

@@ -26,7 +26,6 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-from data import get_source_data
 
 
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
@@ -44,8 +43,13 @@ locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
     here = os.path.dirname(os.path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
-    content = j2_env.get_template('template.j2').render(**kwargs)
-    with open(output_path, 'w') as output_file:
+
+    content = j2_env.get_template('template_landscape.j2').render(**kwargs)
+    with open('index_landscape.html', 'w') as output_file:
+        output_file.write(content)
+
+    content = j2_env.get_template('template_portrait.j2').render(**kwargs)
+    with open('index_portrait.html', 'w') as output_file:
         output_file.write(content)
 
 def get_data_sources():
@@ -310,9 +314,6 @@ textright_renderer = dollarsraised_text.add_glyph(revenue_source,
 plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
-#plots['textleft_plot'] = itemizing_text
-#plots['textright_plot'] = dollarsraised_text
-#plots['textbottom_plot'] = percentcut_text
 
 
 bars_data = {k: v.data for k, v in bar_sources.items()}
@@ -337,12 +338,6 @@ output_page('index.html',
             line_renderer_id=line_base_renderer._id,
             bar_plot_id=bars._id,
             bar_renderer_id=bar_base_renderer._id,
-            #textleft_plot_id = itemizing_text._id,
-            #textleft_renderer_id = textleft_renderer._id,
-            #textright_plot_id = dollarsraised_text._id,
-            #textright_renderer_id = textright_renderer._id,
-            #textbottom_plot_id = percentcut_text._id,
-            #textbottom_renderer_id = textbottom_renderer._id,
             bars_data=bars_data,
             textleft_data=textleft_data,
             textright_data=textright_data,
