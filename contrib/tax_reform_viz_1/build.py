@@ -26,26 +26,30 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-from data import get_source_data
 
 
 PERCENT_CUT_TEXT = ("These reforms could pay for higher spending, "
-                    "lower deficits, or a <span>{:.1f}</span> percent tax cut "
+                    "lower deficits, or a <span>{:.1f}</span>% tax cut "
                     "for every bracket.")
-PERCENT_CUT_EMPTY = "Implement a reform to see the revenue neutralizing rate reduction."
+PERCENT_CUT_EMPTY = "... to see the revenue-neutralizing rate reduction."
 
-TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing. (<span>{percent:.1f}%</span> decrease)"
-TAXPAYERS_ITEMIZING_EMPTY = "Implement a reform to see how many fewer taxpayers would need to itemize." 
+TAXPAYERS_ITEMIZING_TEXT = "<span>{number:.2f}</span> million fewer taxpayers itemizing (<span>{percent:.1f}%</span> decrease)."
+TAXPAYERS_ITEMIZING_EMPTY = "... to see how many fewer taxpayers would need to itemize." 
 
 DOLLARS_RAISED_TEXT = "<span>${:.2f}</span> billion raised."
-DOLLARS_RAISED_EMPTY = "Implement a reform to see how much revenue would be raised."
+DOLLARS_RAISED_EMPTY = "... to see how much revenue would be raised."
 
 locale.setlocale(locale.LC_ALL, 'en_US')
 def output_page(output_path, **kwargs):
     here = os.path.dirname(os.path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
-    content = j2_env.get_template('template.j2').render(**kwargs)
-    with open(output_path, 'w') as output_file:
+
+    content = j2_env.get_template('template_landscape.j2').render(**kwargs)
+    with open('index_landscape.html', 'w') as output_file:
+        output_file.write(content)
+
+    content = j2_env.get_template('template_portrait.j2').render(**kwargs)
+    with open('index_portrait.html', 'w') as output_file:
         output_file.write(content)
 
 def get_data_sources():
@@ -151,7 +155,7 @@ tax_average_bin_names = reversed(['Less than 10k',
 lines_source = ColumnDataSource(line_sources['ds_000_data'].data)
 lines = Plot(plot_width=plot_width,
              plot_height=plot_height,
-             title='Percent itemizing by Income Percentile in 2016',
+             title='Percent Itemizing by Income Percentile in 2016',
              x_range=Range1d(0, 100),
              y_range=Range1d(0, 100),
              **PLOT_FORMATS)
@@ -177,7 +181,7 @@ line_base_renderer = lines.add_glyph(lines_source,
 lines.add_glyph(Text(x=5.15,
                      y=92,
                      text_font_style='italic',
-                     text=['baseline'],
+                     text=['Baseline'],
                      text_font_size='8pt',
                      text_color='#666666'))
 
@@ -191,7 +195,7 @@ lines.add_glyph(Square(x=3,
 lines.add_glyph(Text(x=5.15,
                      y=84.75,
                      text_font_style='italic',
-                     text=['reform'],
+                     text=['Reform'],
                      text_font_size='8pt',
                      text_color='#666666'))
 
@@ -310,9 +314,6 @@ textright_renderer = dollarsraised_text.add_glyph(revenue_source,
 plots = {}
 plots['bars_plot'] = bars
 plots['line_plot'] = lines
-#plots['textleft_plot'] = itemizing_text
-#plots['textright_plot'] = dollarsraised_text
-#plots['textbottom_plot'] = percentcut_text
 
 
 bars_data = {k: v.data for k, v in bar_sources.items()}
@@ -337,12 +338,6 @@ output_page('index.html',
             line_renderer_id=line_base_renderer._id,
             bar_plot_id=bars._id,
             bar_renderer_id=bar_base_renderer._id,
-            #textleft_plot_id = itemizing_text._id,
-            #textleft_renderer_id = textleft_renderer._id,
-            #textright_plot_id = dollarsraised_text._id,
-            #textright_renderer_id = textright_renderer._id,
-            #textbottom_plot_id = percentcut_text._id,
-            #textbottom_renderer_id = textbottom_renderer._id,
             bars_data=bars_data,
             textleft_data=textleft_data,
             textright_data=textright_data,

@@ -16,21 +16,28 @@
     <link href="//cdn.pydata.org/bokeh/release/bokeh-0.11.1.min.css" rel="stylesheet" />
 
     <style>
+      
+      body {
+	width: 550px;
+      }
+
+      .container {
+	width: 550px;
+      }
 
       .slider-group {
         height: 80px;
-        margin: 15px;
-        width:150px;
+        width: 130px;
         text-align:center;
-        margin: 15px auto;
+        margin: 15px !important;
         vertical-align: middle;
+	float: left;
       }
 
       .text-plot-container {
       }
 
       #text-area {
-        width: 11rem;
         padding:0; 
         color: #6B6B73;
         font-weight:normal;
@@ -41,6 +48,7 @@
         color: #6B6B73;
         font-weight:normal;
         font-size: 12px;
+	text-align: left;
       }
 
       #results-list {
@@ -117,6 +125,10 @@
 	padding:5px;
       }
 
+      #slider-container {
+	display:inline-block;
+      }
+
     </style>
 
 </head>
@@ -186,6 +198,7 @@
 		    hide_min_max: true,
 		    values: ["Keep", "Repeal"]
 	    });
+
 	    $slider2.on("change", onSliderChange);
 
 	    var $slider3 = $("#slider3");
@@ -200,35 +213,38 @@
 
     });
 </script>
+<div id="slider-container">
+      <div class="slider-group">
+	  <h6>Mortgage & Interest Paid Deduction</h6>
+	  <input id="slider1" type="text" id="range" value="" name="range" />
+      </div>
+      <div class="slider-group">
+	  <h6>State & Local Tax Deduction</h6>
+	  <input id="slider2" type="text" id="range" value="" name="range" />
+      </div>
+      <div class="slider-group">
+	    <h6>Charitable Contribution Deduction</h6>
+	    <input id="slider3" type="text" id="range" value="" name="range" />
+      </div>
+</div>
+
 
 <div class="container">
-        <hr>
+
         <div class="row">
+            <div class="col-md-5">
+              <div class="plot-container">
+                {{ plots.line_plot | safe }}
 
-            <div class="col-md-4">
-              <div class="slider-group">
-                  <h6>Mortage & Other Interest Paid Deduction</h6>
-                  <input id="slider1" type="text" id="range" value="" name="range" />
               </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="slider-group">
-                  <h6>State & Local Tax Deduction</h6>
-                  <input id="slider2" type="text" id="range" value="" name="range" />
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="slider-group">
-                    <h6>Charitable Contribution</h6>
-                    <input id="slider3" type="text" id="range" value="" name="range" />
+              <div class="plot-container">
+                {{ plots.bars_plot | safe }}
               </div>
             </div>
         </div>
 
         <div class="row">
-            <div id="text-area" class="col-md-2">
+            <div id="text-area" class="col-md-5">
             <p id="text-area-title" class="text-center">Repeal deductions above...</p>
             <ul id="results-list">
                 <li id="left-text" class="text-under-plot">{{ instruction_columns[0]}}</li>
@@ -237,20 +253,6 @@
             </ul>
 		
             </div>
-
-            <div class="col-md-5">
-              <div class="plot-container">
-                {{ plots.line_plot | safe }}
-
-              </div>
-            </div>
-
-            <div class="col-md-5">
-              <div class="plot-container">
-                {{ plots.bars_plot | safe }}
-              </div>
-            </div>
-
         </div>
 </body>
 </html>

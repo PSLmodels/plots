@@ -58,6 +58,17 @@ def _upload_plot(client, bucket, plot):
                                path.join(plot.plot_id, plot.version, plot.content),
                                ExtraArgs=extra_args)
 
+            # ----------------------------------------------------------
+            #  optional portait version upload...this should change to be
+            #  a layouts =  param in info.yml. layouts should be: 
+            #  dictionary<layout_endpoint_name -> layout_file_name>
+            # ----------------------------------------------------------
+            extra_portrait = plot.content.replace('landscape','portrait')
+            if path.exists(extra_portrait):
+                client.upload_file(extra_portrait, bucket,
+                                   path.join(plot.plot_id, plot.version, extra_portrait),
+                                   ExtraArgs=extra_args)
+
             extra_args['ContentType'] = mime.guess_type(plot.thumbnail)[0]
             client.upload_file(plot.thumbnail, bucket,
                                path.join(plot.plot_id, plot.version, plot.thumbnail),
@@ -141,6 +152,8 @@ def _create_web_manifest(plots_df, s3_client, bucket):
                        'short_description',
                        'best_width',
                        'best_height',
+                       'best_width_portrait',
+                       'best_height_portrait',
                        'long_description',
                        'Concept_credit',
                        'Development_credit',
