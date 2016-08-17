@@ -21,13 +21,17 @@
 	width: 550px;
       }
 
+      .container {
+	width: 550px;
+      }
+
       .slider-group {
         height: 80px;
-        margin: 15px;
         width: 130px;
         text-align:center;
-        margin: 15px auto;
+        margin: 15px !important;
         vertical-align: middle;
+	float: left;
       }
 
       .text-plot-container {
@@ -121,6 +125,10 @@
 	padding:5px;
       }
 
+      #slider-container {
+	display:inline-block;
+      }
+
     </style>
 
 </head>
@@ -190,6 +198,7 @@
 		    hide_min_max: true,
 		    values: ["Keep", "Repeal"]
 	    });
+
 	    $slider2.on("change", onSliderChange);
 
 	    var $slider3 = $("#slider3");
@@ -204,32 +213,23 @@
 
     });
 </script>
+<div id="slider-container">
+      <div class="slider-group">
+	  <h6>Mortgage & Interest Paid Deduction</h6>
+	  <input id="slider1" type="text" id="range" value="" name="range" />
+      </div>
+      <div class="slider-group">
+	  <h6>State & Local Tax Deduction</h6>
+	  <input id="slider2" type="text" id="range" value="" name="range" />
+      </div>
+      <div class="slider-group">
+	    <h6>Charitable Contribution Deduction</h6>
+	    <input id="slider3" type="text" id="range" value="" name="range" />
+      </div>
+</div>
+
 
 <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-            <div class="col-md-4">
-              <div class="slider-group">
-                  <h6>Mortgage & Interest Paid Deduction</h6>
-                  <input id="slider1" type="text" id="range" value="" name="range" />
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="slider-group">
-                  <h6>State & Local Tax Deduction</h6>
-                  <input id="slider2" type="text" id="range" value="" name="range" />
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <div class="slider-group">
-                    <h6>Charitable Contribution Deduction</h6>
-                    <input id="slider3" type="text" id="range" value="" name="range" />
-              </div>
-            </div>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-md-5">
