@@ -28,6 +28,8 @@ OSS_credit: >
     for visualizations.
  
 best_width: "100%"
-best_height: 600px
+best_height: "460px"
+best_width_portrait: "550px"
+best_height_portrait: "830px"
 build_cmd: "python build.py"
 version: 1.0
