@@ -152,6 +152,8 @@ def _create_web_manifest(plots_df, s3_client, bucket):
                        'short_description',
                        'best_width',
                        'best_height',
+                       'best_width_portrait',
+                       'best_height_portrait',
                        'long_description',
                        'Concept_credit',
                        'Development_credit',
