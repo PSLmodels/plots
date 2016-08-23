@@ -1,14 +1,14 @@
-# taxplots
+# plots
 
-A repository of visualizations for tax policy reforms.
+A repository of visualizations for policy reforms.
 
-### What is a taxplot?
+### What is a plot?
 
-TaxPlots are single html files which contain visual elements (e.g. images, charts, graphs) to communicate an insight regarding the tax system.
+Plots are single html files which contain visual elements (e.g. images, charts, graphs) to communicate an insight regarding some facet of economic policy.
 
 ### Installation
 
-Install the taxplots package using the following commmand:
+Install the plots package using the following commmand:
 
 ```bash
 python setup.py install
@@ -35,7 +35,7 @@ Any supporting files (e.g. `.js`, `.css`, `.png`) should be placed in a `resourc
 
 **Note:** All files placed in the `resources` will be uploaded/made-public to taxplots.
 
-### TaxPlot Command-line Tools
+### Plot Command-line Tools
 Install with the taxplots python package is a command-line interface (cli) which provides the following utilites:
 
 #### List Plots
