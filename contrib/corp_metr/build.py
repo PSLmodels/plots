@@ -4,13 +4,10 @@ This program reads in the btax output dataframes and plots the results.
 import pandas as pd
 import pickle
 from bokeh.layouts import row
-from bokeh.palettes import Reds9
 from bokeh.plotting import figure
 from bokeh.models import HoverTool
 from bokeh.models import ColumnDataSource
 from bokeh.io import output_file, show
-
-SIZES = list(range(6, 22, 3))
 
 with open("resources/by_asset.pkl", "rb") as pick:
     df = pickle.load(pick)
@@ -39,6 +36,7 @@ p.yaxis.axis_label = "Asset Category"
 hover = p.select(dict(type=HoverTool))
 hover.tooltips = [('Asset', '@Asset')]
 
+SIZES = list(range(6, 22, 3))
 df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
 
 source = ColumnDataSource(df)
