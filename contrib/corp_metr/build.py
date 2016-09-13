@@ -14,6 +14,7 @@ from bokeh.models import ColumnDataSource
 from bokeh.models import NumeralTickFormatter
 from bokeh.embed import components
 
+
 def output_page(**kwargs):
     here = path.dirname(path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
@@ -21,14 +22,15 @@ def output_page(**kwargs):
     with open('index.html', 'w') as output_file:
         output_file.write(content)
 
+
 with open("resources/by_asset.pkl", "rb") as pick:
     df = pickle.load(pick)
 
 reform_df = pd.read_csv("resources/reform_byasset.csv")
-import pdb;pdb.set_trace()
 
 df = df[df['asset_category'] != 'Intellectual Property'].copy()
 reform_df = reform_df[reform_df['asset_category'] != 'Intellectual Property'].copy()
+
 
 df['metr_c_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['metr_c'] * 100), axis=1)
 reform_df['metr_c_fmt'] = reform_df.apply(lambda x: "{0:.1f}%".format(x['metr_c'] * 100), axis=1)
