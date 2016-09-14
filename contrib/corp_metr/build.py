@@ -5,7 +5,6 @@ import pandas as pd
 import pickle
 
 from os import path
-from math import pi
 
 from jinja2 import Environment, FileSystemLoader
 from bokeh.plotting import figure
@@ -13,6 +12,7 @@ from bokeh.models import HoverTool
 from bokeh.models import ColumnDataSource
 from bokeh.models import NumeralTickFormatter
 from bokeh.embed import components
+from bokeh.layouts import column
 
 
 def output_page(**kwargs):
@@ -41,38 +41,45 @@ asset_order = ['Computers and Software',
                'Transportation Equipment',
                'Industrial Machinery',
                'Other Industrial Equipment',
-               'Other Equipment',
-               'Residential Buildings',
+               'Other Equipment']
+
+asset_order2 = ['Residential Buildings',
                'Nonresidential Buildings',
-               'Mining and Drilling Structures',
+               '                        Mining and Drilling Structures',
                'Other Structures']
 
-p = figure(plot_height=380,
+SIZES = list(range(6, 22, 3))
+df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
+reform_df['size'] = pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZES)
+
+# top plot
+p = figure(plot_height=230,
            plot_width=990,
+           x_range = (-.12, .28),
            y_range=list(reversed(asset_order)),
+           x_axis_location="above",
            tools='hover')
-p.xaxis.axis_label = "Marginal Effective Tax Rate"
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
-p.yaxis.axis_label = "Asset Category"
+p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
 
 hover = p.select(dict(type=HoverTool))
 hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
 
-SIZES = list(range(6, 22, 3))
-df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
-reform_df['size']= pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZES)
+source1 = ColumnDataSource(df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))])
+reform_source1 = ColumnDataSource(reform_df[(~reform_df.asset_category.str.contains('Structures')) & (~reform_df.asset_category.str.contains('Buildings'))])
 
-source = ColumnDataSource(df)
-reform_source = ColumnDataSource(reform_df)
+source2 = ColumnDataSource(df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))])
+reform_source2 = ColumnDataSource(reform_df[(reform_df.asset_category.str.contains('Structures')) | (reform_df.asset_category.str.contains('Buildings'))])
 
 p.circle(x='metr_c',
          y='asset_category',
          color="#900000",
          size='size',
          line_color="white",
-         source=source,
+         source=source1,
+         legend="baseline",
          alpha=.4)
 
 p.circle(x='metr_c',
@@ -80,16 +87,53 @@ p.circle(x='metr_c',
          color="#336699",
          size='size',
          line_color="white",
-         source=reform_source,
+         source=reform_source1,
+         legend="reform",
          alpha=.4)
 
-p.line(x=[0,0],
-       y=[0,100],
-       line_dash=[5,5],
+p.line(x=[0, 0],
+       y=[0, 100],
+       line_dash=[5, 5],
        color='black')
 
-plots = dict(metr=p)
+# bottom plot
+p2 = figure(plot_height=160,
+            plot_width=990,
+            x_range = (-.12, .28),
+            y_range=list(reversed(asset_order2)),
+            tools='hover')
+
+p2.xaxis.axis_label = "Marginal Effective Tax Rate"
+p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
+p2.yaxis.axis_label = "Buildings"
+p2.toolbar_location = None
+p2.min_border_right = 5
+
+
+hover = p.select(dict(type=HoverTool))
+hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
+
+p2.circle(x='metr_c',
+          y='asset_category',
+          color="#900000",
+          size='size',
+          line_color="white",
+          source=source2,
+          alpha=.4)
+
+p2.circle(x='metr_c',
+          y='asset_category',
+          color="#336699",
+          size='size',
+          line_color="white",
+          source=reform_source2,
+          alpha=.4)
+
+p2.line(x=[0, 0],
+        y=[0, 100],
+        line_dash=[5, 5],
+        color='black')
+
+plots = dict(metr=column(p, p2))
 script, divs = components(plots)
-output_page(bokeh_script=script,
-            
-            plots=divs)
+output_page(bokeh_script=script, plots=divs)
