@@ -17,6 +17,7 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
+
 def output_page(**kwargs):
     here = path.dirname(path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
@@ -58,7 +59,7 @@ reform_df['size'] = pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZ
 # top plot
 p = figure(plot_height=230,
            plot_width=990,
-           x_range = (-.12, .28),
+           x_range = (-.05, .28),
            y_range=list(reversed(asset_order)),
            x_axis_location="above",
            tools='hover',
@@ -96,15 +97,11 @@ p.circle(x='mettr_c',
          legend="reform",
          alpha=.4)
 
-p.line(x=[0, 0],
-       y=[0, 100],
-       line_dash=[5, 5],
-       color='black')
 
 # bottom plot
 p2 = figure(plot_height=160,
             plot_width=990,
-            x_range = (-.12, .28),
+            x_range = (-.05, .28),
             y_range=list(reversed(asset_order2)),
             tools='hover',
             **PLOT_FORMATS)
@@ -137,10 +134,6 @@ p2.circle(x='mettr_c',
           source=reform_source2,
           alpha=.4)
 
-p2.line(x=[0, 0],
-        y=[0, 100],
-        line_dash=[5, 5],
-        color='black')
 
 plots = dict(metr=column(p, p2))
 script, divs = components(plots)
