@@ -13,6 +13,15 @@ from bokeh.models import ColumnDataSource
 from bokeh.models import NumeralTickFormatter
 from bokeh.embed import components
 from bokeh.layouts import column
+from styles import RED, BLUE, GREEN
+from styles import (PLOT_FORMATS,
+                    AXIS_FORMATS,
+                    FONT_PROPS_SM,
+                    DARK_GRAY,
+                    GREEN,
+                    PURPLE,
+                    RED,
+                    BLUE)
 
 
 def output_page(**kwargs):
@@ -58,11 +67,13 @@ p = figure(plot_height=230,
            x_range = (-.12, .28),
            y_range=list(reversed(asset_order)),
            x_axis_location="above",
-           tools='hover')
+           tools='hover',
+           **PLOT_FORMATS)
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
+p.outline_line_alpha = 0.2
 
 hover = p.select(dict(type=HoverTool))
 hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
@@ -75,7 +86,7 @@ reform_source2 = ColumnDataSource(reform_df[(reform_df.asset_category.str.contai
 
 p.circle(x='metr_c',
          y='asset_category',
-         color="#900000",
+         color=RED,
          size='size',
          line_color="white",
          source=source1,
@@ -84,7 +95,7 @@ p.circle(x='metr_c',
 
 p.circle(x='metr_c',
          y='asset_category',
-         color="#336699",
+         color=BLUE,
          size='size',
          line_color="white",
          source=reform_source1,
@@ -101,13 +112,15 @@ p2 = figure(plot_height=160,
             plot_width=990,
             x_range = (-.12, .28),
             y_range=list(reversed(asset_order2)),
-            tools='hover')
+            tools='hover',
+            **PLOT_FORMATS)
 
 p2.xaxis.axis_label = "Marginal Effective Tax Rate"
 p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.yaxis.axis_label = "Buildings"
 p2.toolbar_location = None
 p2.min_border_right = 5
+p2.outline_line_alpha = 0.2
 
 
 hover = p.select(dict(type=HoverTool))
@@ -115,7 +128,7 @@ hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
 
 p2.circle(x='metr_c',
           y='asset_category',
-          color="#900000",
+          color=RED,
           size='size',
           line_color="white",
           source=source2,
@@ -123,7 +136,7 @@ p2.circle(x='metr_c',
 
 p2.circle(x='metr_c',
           y='asset_category',
-          color="#336699",
+          color=BLUE,
           size='size',
           line_color="white",
           source=reform_source2,
