@@ -41,8 +41,8 @@ df = df[df['asset_category'] != 'Intellectual Property'].copy()
 reform_df = reform_df[reform_df['asset_category'] != 'Intellectual Property'].copy()
 
 
-df['metr_c_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['metr_c'] * 100), axis=1)
-reform_df['metr_c_fmt'] = reform_df.apply(lambda x: "{0:.1f}%".format(x['metr_c'] * 100), axis=1)
+df['mettr_c_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
+reform_df['mettr_c_fmt'] = reform_df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
 
 asset_order = ['Computers and Software',
                'Instruments and Communications Equipment',
@@ -61,6 +61,7 @@ SIZES = list(range(6, 22, 3))
 df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
 reform_df['size'] = pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZES)
 
+
 # top plot
 p = figure(plot_height=230,
            plot_width=990,
@@ -69,14 +70,14 @@ p = figure(plot_height=230,
            x_axis_location="above",
            tools='hover',
            **PLOT_FORMATS)
+hover = p.select(dict(type=HoverTool))
+hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
 p.outline_line_alpha = 0.2
 
-hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
 
 source1 = ColumnDataSource(df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))])
 reform_source1 = ColumnDataSource(reform_df[(~reform_df.asset_category.str.contains('Structures')) & (~reform_df.asset_category.str.contains('Buildings'))])
@@ -84,7 +85,7 @@ reform_source1 = ColumnDataSource(reform_df[(~reform_df.asset_category.str.conta
 source2 = ColumnDataSource(df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))])
 reform_source2 = ColumnDataSource(reform_df[(reform_df.asset_category.str.contains('Structures')) | (reform_df.asset_category.str.contains('Buildings'))])
 
-p.circle(x='metr_c',
+p.circle(x='mettr_c',
          y='asset_category',
          color=RED,
          size='size',
@@ -93,7 +94,7 @@ p.circle(x='metr_c',
          legend="baseline",
          alpha=.4)
 
-p.circle(x='metr_c',
+p.circle(x='mettr_c',
          y='asset_category',
          color=BLUE,
          size='size',
@@ -114,19 +115,20 @@ p2 = figure(plot_height=160,
             y_range=list(reversed(asset_order2)),
             tools='hover',
             **PLOT_FORMATS)
-
+hover = p2.select(dict(type=HoverTool))
+hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
 p2.xaxis.axis_label = "Marginal Effective Tax Rate"
 p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
-p2.yaxis.axis_label = "Buildings"
+p2.yaxis.axis_label = "Structures"
 p2.toolbar_location = None
 p2.min_border_right = 5
 p2.outline_line_alpha = 0.2
 
 
 hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@metr_c_fmt)')]
+hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
 
-p2.circle(x='metr_c',
+p2.circle(x='mettr_c',
           y='asset_category',
           color=RED,
           size='size',
@@ -134,7 +136,7 @@ p2.circle(x='metr_c',
           source=source2,
           alpha=.4)
 
-p2.circle(x='metr_c',
+p2.circle(x='mettr_c',
           y='asset_category',
           color=BLUE,
           size='size',
