@@ -13,16 +13,9 @@ from bokeh.models import ColumnDataSource
 from bokeh.models import NumeralTickFormatter
 from bokeh.embed import components
 from bokeh.layouts import column
-from styles import RED, BLUE, GREEN
 from styles import (PLOT_FORMATS,
-                    AXIS_FORMATS,
-                    FONT_PROPS_SM,
-                    DARK_GRAY,
-                    GREEN,
-                    PURPLE,
                     RED,
                     BLUE)
-
 
 def output_page(**kwargs):
     here = path.dirname(path.abspath(__file__))

@@ -8,11 +8,19 @@
 </head>
 
 <style>
-   h4 {
+   h3 {
 	text-align: left;
         font-family: Arial, Helvetica, sans-serif;
 	margin-left:264px;
 	color:#333333;
+	margin-bottom:-15px;
+   }
+   
+   h5 {
+	text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
+	margin-left:264px;
+	color:#666666;
    }
 
 </style>
@@ -22,7 +30,8 @@
     {{ bokeh_script | safe }}
 
     <div>
-	    <h4>Marginal Effective Tax Rates on Corporate Investments</h4>
+	    <h3>Going, going, gone: The phaseout of bonus depreciation</h3>
+	    <h5>Marginal Effective Tax Rates on Corporate Investments</h5>
 	    	    {{ plots.metr | safe }}
     </div>
 </body>
