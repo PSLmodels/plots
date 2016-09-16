@@ -1,8 +1,4 @@
-'''
-This program reads in the btax output dataframes and plots the results.
-'''
 import pandas as pd
-import pickle
 
 from os import path
 
@@ -26,87 +22,98 @@ def output_page(**kwargs):
         output_file.write(content)
 
 
-with open("resources/by_asset.pkl", "rb") as pick:
-    df = pickle.load(pick)
+# load data
+df = pd.read_csv("resources/by_asset_bonus_phaseout.csv")
+df = df[~df['asset_category'].isin(['Intellectual Property','Land','Inventories'])].copy()
+df = df.where((pd.notnull(df)), 'null')
 
-reform_df = pd.read_csv("resources/reform_byasset.csv")
+SIZES = list(range(12, 30, 4))
+df['size'] = pd.qcut(df['assets_c'].values, len(SIZES), labels=SIZES)
 
-df = df[df['asset_category'] != 'Intellectual Property'].copy()
-reform_df = reform_df[reform_df['asset_category'] != 'Intellectual Property'].copy()
+# divide up equipment vs. structures
+equipment_df = df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))]
+structure_df = df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))]
 
+data_sources = {}
+format_fields = ['mettr_c_2016', 'mettr_c_2018', 'mettr_c_2019', 'mettr_c_2020']
+for f in format_fields:
+    equipment_copy = equipment_df.copy()
+    equipment_copy['reform'] = equipment_copy[f]
+    equipment_copy['baseline'] = equipment_copy['mettr_c_2016']
+    equipment_copy['hover'] = equipment_copy.apply(lambda x: "{0:.1f}%".format(x[f] * 100), axis=1)
+    data_sources['equipment_' + f] = ColumnDataSource(equipment_copy)
 
-df['mettr_c_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
-reform_df['mettr_c_fmt'] = reform_df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
+for f in format_fields:
+    structure_copy = structure_df.copy()
+    structure_copy['reform'] = structure_copy[f]
+    structure_copy['baseline'] = structure_copy['mettr_c_2016']
+    structure_copy['hover'] = structure_copy.apply(lambda x: "{0:.1f}%".format(x[f] * 100), axis=1)
+    data_sources['structure_' + f] = ColumnDataSource(structure_copy)
 
-asset_order = ['Computers and Software',
-               'Instruments and Communications Equipment',
-               'Office and Residential Equipment',
-               'Transportation Equipment',
-               'Industrial Machinery',
-               'Other Industrial Equipment',
-               'Other Equipment']
+equipment_assets = ['Computers and Software',
+                    'Instruments and Communications',
+                    'Office and Residential',
+                    'Transportation',
+                    'Industrial Machinery',
+                    'Other Industrial',
+                    'Other']
 
-asset_order2 = ['Residential Buildings',
-               'Nonresidential Buildings',
-               '                        Mining and Drilling Structures',
-               'Other Structures']
-
-SIZES = list(range(6, 22, 3))
-df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
-reform_df['size'] = pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZES)
+structure_assets = ['Residential Bldgs',
+                    'Nonresidential Bldgs',
+                    '      Mining and Drilling Structures',
+                    'Other']
 
 
 # top plot
 p = figure(plot_height=230,
            plot_width=990,
-           x_range = (-.05, .28),
-           y_range=list(reversed(asset_order)),
+           x_range = (-.05, .5),
+           y_range=list(reversed(equipment_assets)),
            x_axis_location="above",
            tools='hover',
            **PLOT_FORMATS)
 hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
+hover.tooltips = [('Asset', ' @Asset (@mettr_c_2016_fmt)')]
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
-p.outline_line_alpha = 0.2
+#p.outline_line_alpha = 0.2
 
 
-source1 = ColumnDataSource(df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))])
-reform_source1 = ColumnDataSource(reform_df[(~reform_df.asset_category.str.contains('Structures')) & (~reform_df.asset_category.str.contains('Buildings'))])
 
-source2 = ColumnDataSource(df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))])
-reform_source2 = ColumnDataSource(reform_df[(reform_df.asset_category.str.contains('Structures')) | (reform_df.asset_category.str.contains('Buildings'))])
-
-p.circle(x='mettr_c',
-         y='asset_category',
-         color=RED,
+p.circle(x='baseline',
+         y='short_category',
+         color="#AAAAAA",
          size='size',
-         line_color="white",
-         source=source1,
+         line_color="#333333",
+         line_alpha=.1,
+         fill_alpha=0,
+         source=data_sources['equipment_mettr_c_2016'],
          legend="baseline",
          alpha=.4)
 
-p.circle(x='mettr_c',
-         y='asset_category',
-         color=BLUE,
-         size='size',
-         line_color="white",
-         source=reform_source1,
-         legend="reform",
-         alpha=.4)
+equipment_renderer = p.circle(x='reform',
+                              y='short_category',
+                              color=BLUE,
+                              size='size',
+                              line_color="white",
+                              source=data_sources['equipment_mettr_c_2016'],
+                              legend="reform",
+                              alpha=.4)
 
 
 # bottom plot
 p2 = figure(plot_height=160,
             plot_width=990,
-            x_range = (-.05, .28),
-            y_range=list(reversed(asset_order2)),
+            x_range = (-.05, .5),
+            y_range=list(reversed(structure_assets)),
             tools='hover',
             **PLOT_FORMATS)
+
+
 hover = p2.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
+hover.tooltips = [('Asset', ' @Asset (@mettr_c_2018_fmt)')]
 p2.xaxis.axis_label = "Marginal Effective Tax Rate"
 p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.yaxis.axis_label = "Structures"
@@ -115,26 +122,32 @@ p2.min_border_right = 5
 p2.outline_line_alpha = 0.2
 
 
-hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
-
-p2.circle(x='mettr_c',
-          y='asset_category',
+p2.circle(x='baseline',
+          y='short_category',
           color=RED,
           size='size',
-          line_color="white",
-          source=source2,
+          line_color="#333333",
+          line_alpha=.1,
+          fill_alpha=0,
+          source=data_sources['structure_mettr_c_2016'],
           alpha=.4)
 
-p2.circle(x='mettr_c',
-          y='asset_category',
-          color=BLUE,
-          size='size',
-          line_color="white",
-          source=reform_source2,
-          alpha=.4)
+
+structure_renderer = p2.circle(x='reform',
+                               y='short_category',
+                               color=BLUE,
+                               size='size',
+                               line_color="white",
+                               source=data_sources['structure_mettr_c_2016'],
+                               alpha=.4)
 
 
 plots = dict(metr=column(p, p2))
 script, divs = components(plots)
-output_page(bokeh_script=script, plots=divs)
+output_page(bokeh_script=script,
+            equipment_plot_id=p._id,
+            equipment_renderer_id=equipment_renderer._id,
+            structure_plot_id=p2._id,
+            structure_renderer_id=structure_renderer._id,
+            data_sources={k:v.data for k, v in data_sources.items()},
+            plots=divs)
