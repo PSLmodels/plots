@@ -1,0 +1,99 @@
+Asset Type,Asset,asset_category,mettr_c_2016,mettr_c_2018,mettr_c_2019,mettr_c_2020,short_category,assets_c
+Mainframes,Mainframes,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,481979182.2
+PCs,PCs,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,582853376.4
+DASDs,DASDs,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,0
+Printers,Printers,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,103120512.4
+Terminals,Terminals,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,165403760.3
+Tape drives,Tape drives,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,0
+Storage devices,Storage devices,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,132433876.2
+System integrators,System integrators,Computers and Software,0.241337791,0.275827979,0.307318558,0.436229914,Computers and Software,221097125.1
+Communications,Communications,Instruments and Communications Equipment,0.129993884,0.151432336,0.171839637,0.24634898,Instruments and Communications,4990569373
+Nonelectro medical instruments,Nonelectro medical instruments,Instruments and Communications Equipment,0.145023979,0.168540149,0.190797321,0.271018086,Instruments and Communications,1767367235
+Electro medical instruments,Electro medical instruments,Instruments and Communications Equipment,0.145023979,0.168540149,0.190797321,0.271018086,Instruments and Communications,545325549.6
+Nonmedical instruments,Nonmedical instruments,Instruments and Communications Equipment,0.145023979,0.168540149,0.190797321,0.271018086,Instruments and Communications,1589204138
+Photocopy and related equipment,Photocopy and related equipment,Instruments and Communications Equipment,0.1254729,0.146266658,0.16609455,0.256851543,Instruments and Communications,232131987.8
+Office and accounting equipment,Office and accounting equipment,Instruments and Communications Equipment,0.183528318,0.211912369,0.238389221,0.352735905,Instruments and Communications,45790073.68
+Nuclear fuel,Nuclear fuel,Other Industrial Equipment,0.157273938,0.182409391,0.206088872,0.311017648,Other Industrial,6889338.364
+Other fabricated metals,Other fabricated metals,Other Industrial Equipment,0.115070753,0.134346313,0.152800052,0.221062832,Other Industrial,6313587616
+Steam engines,Steam engines,Transportation Equipment,0.1700153,0.196764918,0.221844142,0.292028451,Transportation,2207800567
+Internal combustion engines,Internal combustion engines,Transportation Equipment,0.190161244,0.219318563,0.246449295,0.340648268,Transportation,602112271.5
+Metalworking machinery,Metalworking machinery,Other Industrial Equipment,0.13658722,0.158949504,0.180182671,0.25726711,Other Industrial,2165683564
+Special industrial machinery,Special industrial machinery,Industrial Machinery,0.123158503,0.143618682,0.163145798,0.234867252,Industrial Machinery,33910923856
+General industrial equipment,General industrial equipment,Industrial Machinery,0.126031228,0.1469051,0.166805128,0.239713128,Industrial Machinery,56812037882
+Electric transmission and distribution,Electric transmission and distribution,Other Industrial Equipment,0.167741245,0.194207985,0.219043265,0.288654521,Other Industrial,4379131182
+Light trucks (including utility vehicles),Light trucks (including utility vehicles),Transportation Equipment,0.121922716,0.142203793,0.16156915,0.250538598,Transportation,13523835891
+"Other trucks, buses and truck trailers","Other trucks, buses and truck trailers",Transportation Equipment,0.121922716,0.142203793,0.16156915,0.250538598,Transportation,4920143112
+Autos,Autos,Transportation Equipment,0.192228473,0.221622904,0.24895315,0.366007566,Transportation,10414965060
+Aircraft,Aircraft,Transportation Equipment,0.078739327,0.092327278,0.105520229,0.169031046,Transportation,17883638911
+Ships and boats,Ships and boats,Transportation Equipment,0.124994545,0.145719553,0.16548551,0.229005863,Transportation,1062459922
+Railroad equipment,Railroad equipment,Transportation Equipment,0.090945862,0.106511953,0.12155393,0.178414388,Transportation,6993363391
+Household furniture,Household furniture,Office and Residential Equipment,0.104966711,0.12272084,0.139784317,0.219601496,Office and Residential,643832573.3
+Other furniture,Other furniture,Office and Residential Equipment,0.133440428,0.155364218,0.176206045,0.252075256,Office and Residential,2671699509
+Other agricultural machinery,Other agricultural machinery,Other Industrial Equipment,0.133440428,0.155364218,0.176206045,0.252075256,Other Industrial,271767156.6
+Farm tractors,Farm tractors,Other Industrial Equipment,0.151787178,0.176205548,0.199257347,0.281867237,Other Industrial,197979829.2
+Other construction machinery,Other construction machinery,Other Industrial Equipment,0.113525788,0.132571702,0.150816427,0.235382855,Other Industrial,8801154208
+Construction tractors,Construction tractors,Other Industrial Equipment,0.117528262,0.13716689,0.155950466,0.242646699,Other Industrial,431691566.1
+Mining and oilfield machinery,Mining and oilfield machinery,Other Industrial Equipment,0.154932973,0.179764101,0.203177626,0.286861758,Other Industrial,12625369255
+Service industry machinery,Service industry machinery,Other Equipment,0.156757268,0.181825761,0.205446779,0.289743275,Other,2524607658
+Household appliances,Household appliances,Office and Residential Equipment,0.118343591,0.138102073,0.156994366,0.244117479,Office and Residential,395578902.7
+Other electrical,Other electrical,Other Equipment,0.176192642,0.203699287,0.229428407,0.31978051,Other,486635874.7
+Other,Other,Other Equipment,0.15316634,0.177766207,0.200977205,0.284060922,Other,6737762272
+Office,Office,Nonresidential Buildings,0.355178622,0.355178622,0.355178622,0.355178622,Nonresidential Bldgs,17896748900
+Hospitals,Hospitals,Nonresidential Buildings,0.335610403,0.335610403,0.335610403,0.335610403,Nonresidential Bldgs,26844282.68
+Special care,Special care,Nonresidential Buildings,0.335610403,0.335610403,0.335610403,0.335610403,Nonresidential Bldgs,5497632.372
+Medical buildings,Medical buildings,Nonresidential Buildings,0.355178622,0.355178622,0.355178622,0.355178622,Nonresidential Bldgs,25042539.79
+Multimerchandise shopping,Multimerchandise shopping,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,366244221.8
+Food and beverage establishments,Food and beverage establishments,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,2053715791
+Warehouses,Warehouses,Nonresidential Buildings,0.348018266,0.348018266,0.348018266,0.348018266,Nonresidential Bldgs,1970911116
+Mobile structures,Mobile structures,Other Structures,0.088445635,0.103612119,0.118282182,0.173863537,Other,
+Other commercial,Other commercial,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,5118606358
+Manufacturing,Manufacturing,Nonresidential Buildings,0.376047671,0.376047671,0.376047671,0.376047671,Nonresidential Bldgs,59885730497
+Electric,Electric,Other Structures,0.101534065,0.118760786,0.135339341,0.184099855,Other,1601371102
+Wind and solar,Wind and solar,Other Structures,0.048702272,0.057129021,0.06540779,0.106653942,Other,137096239.6
+Gas,Gas,Mining and Drilling Structures,0.103023419,0.120479629,0.137269372,0.200046876,Mining and Drilling,46258149838
+Petroleum pipelines,Petroleum pipelines,Mining and Drilling Structures,0.063548359,0.074578533,0.085351889,0.127125738,Mining and Drilling,82361451709
+Communication,Communication,Mining and Drilling Structures,0.128491376,0.149716586,0.169932515,0.228195173,Mining and Drilling,978293228.8
+Petroleum and natural gas,Petroleum and natural gas,Mining and Drilling Structures,0.073054147,0.085697365,0.098000325,0.157605686,Mining and Drilling,7915853904
+Mining,Mining,Mining and Drilling Structures,0.080320735,0.094168824,0.107606064,0.158898417,Mining and Drilling,402479677.9
+Educational and vocational,Educational and vocational,Nonresidential Buildings,0.335610403,0.335610403,0.335610403,0.335610403,Nonresidential Bldgs,93430848.43
+Lodging,Lodging,Nonresidential Buildings,0.365940435,0.365940435,0.365940435,0.365940435,Nonresidential Bldgs,73246725.38
+Amusement and recreation,Amusement and recreation,Other Structures,0.068572573,0.080460532,0.092048858,0.136770524,Other,287387251.8
+Air transportation,Air transportation,Nonresidential Buildings,0.35194351,0.35194351,0.35194351,0.35194351,Nonresidential Bldgs,22526014.78
+Other transportation,Other transportation,Nonresidential Buildings,0.35194351,0.35194351,0.35194351,0.35194351,Nonresidential Bldgs,763345.8858
+Other railroad,Other railroad,Other Structures,0.140880412,0.163833825,0.185592644,0.246572522,Other,13756032.23
+Track replacement,Track replacement,Other Structures,0.064509527,0.075704708,0.086635108,0.128979421,Other,19623274.3
+Local transit structures,Local transit structures,Other Structures,0.35194351,0.35194351,0.35194351,0.35194351,Other,201693.1153
+Other land transportation,Other land transportation,Other Structures,0.045006165,0.052768714,0.060406087,0.098622076,Other,224776140.5
+Farm,Farm,Other Structures,0.15242143,0.176923372,0.200048503,0.264335902,Other,1178935.879
+Water supply,Water supply,Other Structures,0.149883636,0.174050123,0.196880615,0.260461251,Other,208751045.1
+Sewage and waste disposal,Sewage and waste disposal,Other Structures,0.149883636,0.174050123,0.196880615,0.260461251,Other,72325494.04
+Public safety,Public safety,Nonresidential Buildings,0.35194351,0.35194351,0.35194351,0.35194351,Nonresidential Bldgs,823167943.7
+Highway and conservation and development,Highway and conservation and development,Other Structures,0.126612005,0.147569063,0.167543954,0.225190458,Other,670651233.5
+Prepackaged software,Prepackaged software,Computers and Software,0.132420831,0.154201594,0.17491552,0.362036596,Computers and Software,771540942.9
+Custom software,Custom software,Computers and Software,0.089121301,0.104396059,0.119166972,0.264455609,Computers and Software,1117032949
+Own account software,Own account software,Computers and Software,0.089121301,0.104396059,0.119166972,0.264455609,Computers and Software,862842225.4
+Pharmaceutical and medicine manufacturing,Pharmaceutical and medicine manufacturing,Intellectual Property,0.086057523,0.100839645,0.115151205,0.183489163,Intellectual Property,488272143.6
+"Chemical manufacturing, ex. pharma and med","Chemical manufacturing, ex. pharma and med",Intellectual Property,0.115941253,0.135345731,0.153916674,0.239775255,Intellectual Property,67014636.75
+Semiconductor and other component manufacturing,Semiconductor and other component manufacturing,Intellectual Property,0.157273938,0.182409391,0.206088872,0.311017648,Intellectual Property,143804487.7
+Computers and peripheral equipment manufacturing,Computers and peripheral equipment manufacturing,Intellectual Property,0.218193988,0.250410422,0.280076807,0.40409097,Intellectual Property,16460494
+Communications equipment manufacturing,Communications equipment manufacturing,Intellectual Property,0.165939516,0.192180526,0.216820723,0.325072971,Intellectual Property,66058060.89
+Navigational and other instruments manufacturing,Navigational and other instruments manufacturing,Intellectual Property,0.174428695,0.201720867,0.227266305,0.338566297,Intellectual Property,53016881.86
+"Other computer and electronic manufacturing, n.e.c.","Other computer and electronic manufacturing, n.e.c.",Intellectual Property,0.218193988,0.250410422,0.280076807,0.40409097,Intellectual Property,2815190.34
+Motor vehicles and parts manufacturing,Motor vehicles and parts manufacturing,Intellectual Property,0.247909717,0.283004494,0.314970037,0.42107368,Intellectual Property,346319364.7
+Aerospace products and parts manufacturing,Aerospace products and parts manufacturing,Intellectual Property,0.198293809,0.228373306,0.256277299,0.352531389,Intellectual Property,39916604.67
+Other manufacturing,Other manufacturing,Intellectual Property,0.161412344,0.187079889,0.211222831,0.297047064,Intellectual Property,15120091114
+Residential,Residential,Residential Buildings,0.291602206,0.291602206,0.291602206,0.291602206,Residential Bldgs,
+Scientific research and development services,Scientific research and development services,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,363960.799
+Software publishers,Software publishers,Intellectual Property,0.756649176,0.756649176,0.756649176,0.756649176,Intellectual Property,27342955.94
+Financial and real estate services,Financial and real estate services,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,25085878.46
+Computer systems design and related services,Computer systems design and related services,Intellectual Property,0.825909304,0.825909304,0.825909304,0.825909304,Intellectual Property,213592.809
+"All other nonmanufacturing, n.e.c.","All other nonmanufacturing, n.e.c.",Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,416320454.1
+Private universities and colleges,Private universities and colleges,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,121167.4926
+Other nonprofit institutions,Other nonprofit institutions,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,879039.398
+Theatrical movies,Theatrical movies,Intellectual Property,0.619230596,0.619230596,0.619230596,0.619230596,Intellectual Property,3146924.153
+Long-lived television programs,Long-lived television programs,Intellectual Property,0.71445442,0.71445442,0.71445442,0.71445442,Intellectual Property,160359770.8
+Books,Books,Intellectual Property,0.661387606,0.661387606,0.661387606,0.661387606,Intellectual Property,95355665.4
+Music,Music,Intellectual Property,0.785321686,0.785321686,0.785321686,0.785321686,Intellectual Property,14175913.89
+Other entertainment originals,Other entertainment originals,Intellectual Property,0.644520298,0.644520298,0.644520298,0.644520298,Intellectual Property,17217946.42
+Land,Land,Land,0.35273225,0.35273225,0.35273225,0.35273225,Land,2.26E+12
+Inventories,Inventories,Inventories,0.35273225,0.35273225,0.35273225,0.35273225,Inventories,6079760475

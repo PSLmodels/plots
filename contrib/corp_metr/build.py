@@ -5,6 +5,7 @@ import pandas as pd
 import pickle
 
 from os import path
+import os
 
 from jinja2 import Environment, FileSystemLoader
 from bokeh.plotting import figure
@@ -15,7 +16,7 @@ from bokeh.embed import components
 from bokeh.layouts import column
 from styles import (PLOT_FORMATS,
                     RED,
-                    BLUE)
+                    BLUE, GREEN, PURPLE)
 
 
 def output_page(**kwargs):
@@ -25,18 +26,37 @@ def output_page(**kwargs):
     with open('index.html', 'w') as output_file:
         output_file.write(content)
 
+def wavg(group, avg_name, weight_name):
+    """
+    Computes a weighted average
+    """
+    d = group[avg_name]
+    w = group[weight_name]
+    try:
+        return (d * w).sum() / w.sum()
+    except ZeroDivisionError:
+        return d.mean()
 
-with open("resources/by_asset.pkl", "rb") as pick:
-    df = pickle.load(pick)
+# read data
+df_raw = pd.read_csv("resources/by_asset_bonus_phaseout.csv")
 
-reform_df = pd.read_csv("resources/reform_byasset.csv")
+# drop intellectual property
+df_raw = df_raw[df_raw['asset_category'] != 'Intellectual Property'].copy()
 
-df = df[df['asset_category'] != 'Intellectual Property'].copy()
-reform_df = reform_df[reform_df['asset_category'] != 'Intellectual Property'].copy()
+# create weighted average of mettrs, so just one bubble per asset category
+# sum assets
+df = pd.DataFrame({'mettr_c_2016' : df_raw.groupby(
+    ['asset_category','short_category'] ).apply(wavg, "mettr_c_2016", "assets_c")}).reset_index()
+df['mettr_c_2016_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['mettr_c_2016'] * 100), axis=1)
+col_list = ['mettr_c_2018', 'mettr_c_2019', 'mettr_c_2020']
+for item in col_list:
+    df[item] = (pd.DataFrame({item : df_raw.groupby(
+        ['asset_category','short_category']).apply(wavg, item, "assets_c")})).reset_index()[item]
+    df[item+'_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x[item] * 100), axis=1)
+df['assets_c'] = (pd.DataFrame({'assets_c' : df_raw.groupby(
+    ['asset_category','short_category'])['assets_c'].sum()})).reset_index()['assets_c']
 
 
-df['mettr_c_fmt'] = df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
-reform_df['mettr_c_fmt'] = reform_df.apply(lambda x: "{0:.1f}%".format(x['mettr_c'] * 100), axis=1)
 
 asset_order = ['Computers and Software',
                'Instruments and Communications Equipment',
@@ -52,20 +72,19 @@ asset_order2 = ['Residential Buildings',
                'Other Structures']
 
 SIZES = list(range(6, 22, 3))
-df['size'] = pd.qcut(df['assets'].values, len(SIZES), labels=SIZES)
-reform_df['size'] = pd.qcut(reform_df['assets_c'].values, len(SIZES), labels=SIZES)
+df['size'] = pd.qcut(df['assets_c'].values, len(SIZES), labels=SIZES)
 
 
 # top plot
 p = figure(plot_height=230,
            plot_width=990,
-           x_range = (-.05, .28),
+           x_range = (.08, .4),
            y_range=list(reversed(asset_order)),
            x_axis_location="above",
            tools='hover',
            **PLOT_FORMATS)
 hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
+hover.tooltips = [('Asset Category', ' @asset_category (@mettr_c_2016_fmt)')]
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
@@ -74,39 +93,58 @@ p.outline_line_alpha = 0.2
 
 
 source1 = ColumnDataSource(df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))])
-reform_source1 = ColumnDataSource(reform_df[(~reform_df.asset_category.str.contains('Structures')) & (~reform_df.asset_category.str.contains('Buildings'))])
+# source1_2018 = ColumnDataSource(df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))]['mettr_c_2018'])
+
 
 source2 = ColumnDataSource(df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))])
-reform_source2 = ColumnDataSource(reform_df[(reform_df.asset_category.str.contains('Structures')) | (reform_df.asset_category.str.contains('Buildings'))])
+# source2_2018 = ColumnDataSource(df[(df.asset_category.str.contains('Structures')) | (df.asset_category.str.contains('Buildings'))]['mettr_c_2018'])
 
-p.circle(x='mettr_c',
+p.circle(x='mettr_c_2016',
          y='asset_category',
          color=RED,
          size='size',
          line_color="white",
          source=source1,
-         legend="baseline",
+         legend="2016-2017",
          alpha=.4)
 
-p.circle(x='mettr_c',
+p.circle(x='mettr_c_2018',
          y='asset_category',
          color=BLUE,
          size='size',
          line_color="white",
-         source=reform_source1,
-         legend="reform",
+         source=source1,
+         legend="2018",
+         alpha=.4)
+
+p.circle(x='mettr_c_2019',
+         y='asset_category',
+         color=GREEN,
+         size='size',
+         line_color="white",
+         source=source1,
+         legend="2019",
+         alpha=.4)
+
+p.circle(x='mettr_c_2020',
+         y='asset_category',
+         color=PURPLE,
+         size='size',
+         line_color="white",
+         source=source1,
+         legend="2020+",
          alpha=.4)
 
 
 # bottom plot
 p2 = figure(plot_height=160,
             plot_width=990,
-            x_range = (-.05, .28),
+            x_range = (.08, .4),
             y_range=list(reversed(asset_order2)),
             tools='hover',
             **PLOT_FORMATS)
 hover = p2.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
+hover.tooltips = [('Asset Category', ' @asset_category (@mettr_c_2016_fmt)')]
 p2.xaxis.axis_label = "Marginal Effective Tax Rate"
 p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.yaxis.axis_label = "Structures"
@@ -115,10 +153,11 @@ p2.min_border_right = 5
 p2.outline_line_alpha = 0.2
 
 
+# does this need to be here is above?
 hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_fmt)')]
+hover.tooltips = [('Asset Category', ' @asset_category (@mettr_c_2016_fmt)')]
 
-p2.circle(x='mettr_c',
+p2.circle(x='mettr_c_2016',
           y='asset_category',
           color=RED,
           size='size',
@@ -126,15 +165,33 @@ p2.circle(x='mettr_c',
           source=source2,
           alpha=.4)
 
-p2.circle(x='mettr_c',
+p2.circle(x='mettr_c_2018',
           y='asset_category',
           color=BLUE,
           size='size',
           line_color="white",
-          source=reform_source2,
+          source=source2,
+          alpha=.4)
+
+p2.circle(x='mettr_c_2019',
+          y='asset_category',
+          color=GREEN,
+          size='size',
+          line_color="white",
+          source=source2,
+          alpha=.4)
+
+p2.circle(x='mettr_c_2020',
+          y='asset_category',
+          color=PURPLE,
+          size='size',
+          line_color="white",
+          source=source2,
           alpha=.4)
 
 
 plots = dict(metr=column(p, p2))
 script, divs = components(plots)
 output_page(bokeh_script=script, plots=divs)
+
+os.system("./resources/phantomjs resources/rasterize.js index.html thumbnail.png")
