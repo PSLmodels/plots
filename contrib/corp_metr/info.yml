@@ -1,0 +1,9 @@
+plot_name: 'Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law'
+plot_id: corp_metr
+content: index.html
+thumbnail: thumbnail.png
+short_description: Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law
+long_description: Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law
+best_width: 420px
+best_height: 700px
+build_cmd: "python build.py"
