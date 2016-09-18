@@ -1,9 +1,34 @@
-plot_name: 'Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law'
-plot_id: corp_metr
+
+---
+plot_name: 'Marginal Effective Total Tax Rates on Typically Financed Corporate Investments, 2016 Law with reform estimates for 2018, 2019, 2020'
+plot_id: corp_mettr
 content: index.html
 thumbnail: thumbnail.png
-short_description: Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law
-long_description: Marginal Effective Tax Rates on Typically Financed Corporate Investments, 2016 Law
-best_width: 420px
-best_height: 700px
+short_description: > 
+    Explore the impact of eliminating itemized deductions on the simplicity of
+    the tax system, the distribution of taxes across different income groups,
+    and the potential for rate reduction.
+long_description: >
+    Explore the impact of eliminating itemized deductions on the simplicity of
+    the tax system, the distribution of taxes across different income groups,
+    and the potential for rate reduction. Calculations do not include the
+    effect of tax reform on individuals' behavior or the economy as a whole.
+Concept_credit: >
+    <a href = "https://www.aei.org/scholar/alex-brill/">Alex Brill</a> and
+    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>
+Development_credit: >
+    <a href = "https://github.com/talumbau">T.J. Alumbaugh</a>,
+    <a href = "https://github.com/brendancol">Brendan Collins</a>, and
+    <a href = "https://github.com/GoFroggyRun">Sean Wang</a>.
+OSS_credit: >
+    <a href = "https://github.com/open-source-economics/tax-calculator">
+    Tax-Calculator</a> and
+    <a href = "https://github.com/open-source-economics/taxdata">TaxData</a>
+    for tax computations.
+    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    for visualizations.
+ 
+best_width: "100%"
+best_height: "990px"
 build_cmd: "python build.py"
+version: 1.0
