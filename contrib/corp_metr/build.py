@@ -5,16 +5,18 @@ from os import path
 from jinja2 import Environment, FileSystemLoader
 from bokeh.plotting import figure
 from bokeh.models import HoverTool
+from bokeh.models import Legend
 from bokeh.models import ColumnDataSource
 from bokeh.models import NumeralTickFormatter
 from bokeh.embed import components
 from bokeh.layouts import column
-from styles import (PLOT_FORMATS,
-                    RED,
-                    BLUE)
+from bokeh.models import Plot, Text, Circle, Range1d
+from bokeh.plotting import Figure
+
+from styles import (PLOT_FORMATS, RED, BLUE)
 
 
-def output_page(**kwargs):
+def  output_page(**kwargs):
     here = path.dirname(path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
     content = j2_env.get_template('template.j2').render(**kwargs)
@@ -27,8 +29,9 @@ df = pd.read_csv("resources/by_asset_bonus_phaseout.csv")
 df = df[~df['asset_category'].isin(['Intellectual Property','Land','Inventories'])].copy()
 df = df.where((pd.notnull(df)), 'null')
 
-SIZES = list(range(12, 30, 4))
+SIZES = list(range(12, 30, 8))
 df['size'] = pd.qcut(df['assets_c'].values, len(SIZES), labels=SIZES)
+#df = df.where((pd.notnull(df)), 'null')
 
 # divide up equipment vs. structures
 equipment_df = df[(~df.asset_category.str.contains('Structures')) & (~df.asset_category.str.contains('Buildings'))]
@@ -60,7 +63,7 @@ equipment_assets = ['Computers and Software',
 
 structure_assets = ['Residential Bldgs',
                     'Nonresidential Bldgs',
-                    '      Mining and Drilling Structures',
+                    'Mining and Drilling',
                     'Other']
 
 
@@ -72,14 +75,13 @@ p = figure(plot_height=230,
            x_axis_location="above",
            tools='hover',
            **PLOT_FORMATS)
+
 hover = p.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_2016_fmt)')]
+hover.tooltips = [('Asset', ' @Asset (@hover)')]
 p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
-#p.outline_line_alpha = 0.2
-
 
 
 p.circle(x='baseline',
@@ -90,7 +92,6 @@ p.circle(x='baseline',
          line_alpha=.1,
          fill_alpha=0,
          source=data_sources['equipment_mettr_c_2016'],
-         legend="baseline",
          alpha=.4)
 
 equipment_renderer = p.circle(x='reform',
@@ -99,7 +100,6 @@ equipment_renderer = p.circle(x='reform',
                               size='size',
                               line_color="white",
                               source=data_sources['equipment_mettr_c_2016'],
-                              legend="reform",
                               alpha=.4)
 
 
@@ -113,7 +113,7 @@ p2 = figure(plot_height=160,
 
 
 hover = p2.select(dict(type=HoverTool))
-hover.tooltips = [('Asset', ' @Asset (@mettr_c_2018_fmt)')]
+hover.tooltips = [('Asset', ' @Asset (@hover)')]
 p2.xaxis.axis_label = "Marginal Effective Tax Rate"
 p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.yaxis.axis_label = "Structures"
