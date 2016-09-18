@@ -29,6 +29,6 @@ OSS_credit: >
     for visualizations.
  
 best_width: "100%"
-best_height: "990px"
+best_height: "550px"
 build_cmd: "python build.py"
 version: 1.0
