@@ -45,7 +45,7 @@ Medical buildings,Medical buildings,Nonresidential Buildings,0.355178622,0.35517
 Multimerchandise shopping,Multimerchandise shopping,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,366244221.8
 Food and beverage establishments,Food and beverage establishments,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,2053715791
 Warehouses,Warehouses,Nonresidential Buildings,0.348018266,0.348018266,0.348018266,0.348018266,Nonresidential Bldgs,1970911116
-Mobile structures,Mobile structures,Other Structures,0.088445635,0.103612119,0.118282182,0.173863537,Other,
+Mobile structures,Mobile structures,Other Structures,0.088445635,0.103612119,0.118282182,0.173863537,Other,196129250.4
 Other commercial,Other commercial,Nonresidential Buildings,0.359971178,0.359971178,0.359971178,0.359971178,Nonresidential Bldgs,5118606358
 Manufacturing,Manufacturing,Nonresidential Buildings,0.376047671,0.376047671,0.376047671,0.376047671,Nonresidential Bldgs,59885730497
 Electric,Electric,Other Structures,0.101534065,0.118760786,0.135339341,0.184099855,Other,1601371102
@@ -82,7 +82,7 @@ Navigational and other instruments manufacturing,Navigational and other instrume
 Motor vehicles and parts manufacturing,Motor vehicles and parts manufacturing,Intellectual Property,0.247909717,0.283004494,0.314970037,0.42107368,Intellectual Property,346319364.7
 Aerospace products and parts manufacturing,Aerospace products and parts manufacturing,Intellectual Property,0.198293809,0.228373306,0.256277299,0.352531389,Intellectual Property,39916604.67
 Other manufacturing,Other manufacturing,Intellectual Property,0.161412344,0.187079889,0.211222831,0.297047064,Intellectual Property,15120091114
-Residential,Residential,Residential Buildings,0.291602206,0.291602206,0.291602206,0.291602206,Residential Bldgs,
+Residential,Residential,Residential Buildings,0.291602206,0.291602206,0.291602206,0.291602206,Residential Bldgs,1465685510
 Scientific research and development services,Scientific research and development services,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,363960.799
 Software publishers,Software publishers,Intellectual Property,0.756649176,0.756649176,0.756649176,0.756649176,Intellectual Property,27342955.94
 Financial and real estate services,Financial and real estate services,Intellectual Property,0.706628596,0.706628596,0.706628596,0.706628596,Intellectual Property,25085878.46
