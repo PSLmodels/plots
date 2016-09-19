@@ -44,9 +44,11 @@ for f in format_fields:
     equipment_copy['reform'] = equipment_copy[f]
     equipment_copy['baseline'] = equipment_copy['mettr_c_2016']
     equipment_copy['hover'] = equipment_copy.apply(lambda x: "{0:.1f}%".format(x[f] * 100), axis=1)
+    equipment_copy['hover2016'] = equipment_copy.apply(lambda x: "{0:.1f}%".format(x['mettr_c_2016'] * 100), axis=1)
+
     data_sources['equipment_' + f] = ColumnDataSource(equipment_copy)
 
-fudge_factor = '                          '
+fudge_factor = '                          ' # this a spacer for the y-axis label
 for f in format_fields:
     structure_copy = structure_df.copy()
     structure_copy['reform'] = structure_copy[f]
@@ -93,7 +95,7 @@ p.circle(x='baseline',
          line_color="#333333",
          line_alpha=.1,
          fill_alpha=0,
-         source=data_sources['equipment_mettr_c_2016'],
+         source=ColumnDataSource(data_sources['equipment_mettr_c_2016'].data),
          alpha=.4)
 
 equipment_renderer = p.circle(x='reform',
@@ -131,7 +133,7 @@ p2.circle(x='baseline',
           line_color="#333333",
           line_alpha=.1,
           fill_alpha=0,
-          source=data_sources['structure_mettr_c_2016'],
+          source=ColumnDataSource(data_sources['structure_mettr_c_2016'].data),
           alpha=.4)
 
 
