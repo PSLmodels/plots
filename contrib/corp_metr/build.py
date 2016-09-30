@@ -54,7 +54,7 @@ for f in format_fields:
     structure_copy['reform'] = structure_copy[f]
     structure_copy['baseline'] = structure_copy['mettr_c_2016']
     structure_copy['hover'] = structure_copy.apply(lambda x: "{0:.1f}%".format(x[f] * 100), axis=1)
-    structure_copy['short_category'].str.replace('Residential Bldgs', fudge_factor + 'Residential Bldgs')
+    structure_copy['short_category'] = structure_copy['short_category'].str.replace('Residential Bldgs', fudge_factor + 'Residential Bldgs')
     data_sources['structure_' + f] = ColumnDataSource(structure_copy)
 
 equipment_assets = ['Computers and Software',
