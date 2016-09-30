@@ -78,7 +78,8 @@ def _upload_plot(client, bucket, plot):
                 for dir_path, subdir_list, file_list in walk('resources'):
                     for fname in file_list:
                         full_path = path.join(dir_path, fname)
-                        extra_args['ContentType'] = mime.guess_type(full_path)[0]
+                        if mime.guess_type(full_path)[0]:
+                            extra_args['ContentType'] = mime.guess_type(full_path)[0]
                         client.upload_file(full_path, bucket,
                                            path.join(plot.plot_id, plot.version, full_path),
                                            ExtraArgs=extra_args)
