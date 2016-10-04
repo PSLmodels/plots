@@ -76,7 +76,7 @@ structure_assets = [fudge_factor + 'Residential Bldgs',
 p = figure(plot_height=690,
            plot_width=280,
            x_range=list(reversed(equipment_assets)),
-           y_range = (-.05, .5),
+           y_range = (0, .5),
            tools='hover',
            **PLOT_FORMATS)
 
@@ -115,7 +115,7 @@ equipment_renderer = p.circle(x='short_category',
 p2 = figure(plot_height=690,
             plot_width=220,
             x_range=list(reversed(structure_assets)),
-            y_range=(-.05, .5),
+            y_range=(0, .5),
             y_axis_location='right',
             tools='hover',
             **PLOT_FORMATS)
