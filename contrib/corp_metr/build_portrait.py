@@ -133,6 +133,7 @@ p2.min_border_right = 5
 p2.min_border_left = 5
 p2.min_border_top = 44
 p2.outline_line_alpha = 0.2
+p2.yaxis.visible = False
 
 
 p2.circle(x='short_category',
