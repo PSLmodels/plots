@@ -39,7 +39,7 @@
 	height:0px;
 	text-align:center;
 	margin: 15px auto;
-	left: 120px;
+	left: 110px;
 	top: 64px;
 	z-index: 100;
    }
@@ -161,8 +161,8 @@
 	width:150px;
 	text-align:center;
 	margin: 15px auto;
-	left: 262px;
-	top: 84px;
+	left: 272px;
+	top: 87px;
 	z-index:100;
 	font-size:x-small;
    }
@@ -174,8 +174,8 @@
 	width:80px;
 	text-align:center;
 	margin: 15px auto;
-	left: 383px;
-	top: 84px;
+	left: 393px;
+	top: 87px;
 	z-index:100;
 	font-size:x-small;
    }
@@ -187,9 +187,33 @@
 	width:150px;
 	text-align:center;
 	margin: 15px auto;
-	left: 330px;
+	left: 340px;
 	top: 54px;
 	z-index:100;
+   }
+
+   #slider-text-start {
+	position: absolute;
+	display: inline;
+	margin: 15px;
+	text-align:center;
+	margin: 15px auto;
+	left: 101px;
+	top: 87px;
+	z-index:100;
+	font-size:x-small;
+   }
+
+   #slider-text-end {
+	position: absolute;
+	display: inline;
+	margin: 15px;
+	text-align:center;
+	margin: 15px auto;
+	left: 247px;
+	top: 87px;
+	z-index:100;
+	font-size:x-small;
    }
 
 </style>
@@ -227,13 +251,14 @@
 	}});
 
     var sliderInitFlag = false;
+    var animateFlag = false;
     var onSliderUpdate = function(values, handle) {
 	
 	if (!sliderInitFlag) {
 	    sliderInitFlag = true;
 	    return;
 	}
-	
+
 	var year = parseInt(values[handle]);
 
 	// hack because there is not data for 2017
@@ -253,6 +278,7 @@
     };
 
     slider.noUiSlider.on('update', onSliderUpdate);
+
 });
 </script>
 
@@ -276,6 +302,8 @@
 	</div>
 	<div id="legend-text-start"><span>&lt$20B</span></div>
 	<div id="legend-text-end"><span>&lt$1T</span></div>
+	<div id="slider-text-start"><span>2016</span></div>
+	<div id="slider-text-end"><span>2020</span></div>
     </div>
 
 </body>
