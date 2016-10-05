@@ -20,7 +20,7 @@ def  output_page(**kwargs):
     here = path.dirname(path.abspath(__file__))
     j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
     content = j2_env.get_template('template.j2').render(**kwargs)
-    with open('index.html', 'w') as output_file:
+    with open('index_landscape.html', 'w') as output_file:
         output_file.write(content)
 
 
