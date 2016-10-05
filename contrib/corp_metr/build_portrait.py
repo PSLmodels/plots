@@ -76,8 +76,9 @@ structure_assets = [fudge_factor + 'Residential Bldgs',
 p = figure(plot_height=690,
            plot_width=280,
            x_range=list(reversed(equipment_assets)),
-           y_range = (-.05, .5),
+           y_range = (0, .5),
            tools='hover',
+           background_fill_alpha=0,
            **PLOT_FORMATS)
 
 hover = p.select(dict(type=HoverTool))
@@ -115,9 +116,10 @@ equipment_renderer = p.circle(x='short_category',
 p2 = figure(plot_height=690,
             plot_width=220,
             x_range=list(reversed(structure_assets)),
-            y_range=(-.05, .5),
+            y_range=(0, .5),
             y_axis_location='right',
             tools='hover',
+            background_fill_alpha=0,
             **PLOT_FORMATS)
 p2.xaxis.major_label_orientation = 120
 p2.yaxis.major_label_orientation = 'vertical'
@@ -130,9 +132,13 @@ p2.yaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.xaxis.axis_label = "Structures"
 p2.toolbar_location = None
 p2.min_border_right = 5
-p2.min_border_left = 5
+p2.min_border_left = -5
 p2.min_border_top = 44
+p.outline_line_width = 0
+p.border_fill_alpha = 0
+
 p2.outline_line_alpha = 0.2
+p2.yaxis.visible = False
 
 
 p2.circle(x='short_category',
