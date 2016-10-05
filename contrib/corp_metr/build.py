@@ -77,6 +77,7 @@ p = figure(plot_height=230,
            x_range = (-.05, .5),
            y_range=list(reversed(equipment_assets)),
            x_axis_location="above",
+           background_fill_alpha=0,
            tools='hover',
            **PLOT_FORMATS)
 
@@ -86,7 +87,9 @@ p.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p.yaxis.axis_label = "Equipment"
 p.toolbar_location = None
 p.min_border_right = 5
-
+p.min_border_bottom = -10
+p.outline_line_width = 0
+p.border_fill_alpha = 0
 
 p.circle(x='baseline',
          y='short_category',
@@ -113,6 +116,7 @@ p2 = figure(plot_height=160,
             x_range = (-.05, .5),
             y_range=list(reversed(structure_assets)),
             tools='hover',
+            background_fill_alpha=0,
             **PLOT_FORMATS)
 
 
@@ -123,7 +127,9 @@ p2.xaxis[0].formatter = NumeralTickFormatter(format="0.1%")
 p2.yaxis.axis_label = "Structures"
 p2.toolbar_location = None
 p2.min_border_right = 5
-p2.outline_line_alpha = 0.2
+p2.min_border_top = -13
+p2.outline_line_width = 0
+p2.border_fill_alpha = 0
 
 
 p2.circle(x='baseline',
