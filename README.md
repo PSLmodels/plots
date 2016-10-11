@@ -62,6 +62,8 @@ dependencies:
   - pytest-pep8
 ```
 
+To create an `environment.yml` file from an existing conda environment, browse to the plot's directory in your preferred shell, and run `conda env export > environment.yml`.
+
 To recreate the environment specified in the plot's `environment.yml` file, browse to the plot's directory in your preferred shell, and run `conda env create`.
 
 ### Plot Command-line Tools
