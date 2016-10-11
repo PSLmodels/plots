@@ -74,11 +74,6 @@ list-plots
 
 The `list-plots` commnad will display information about plots available in the `contrib` directory.
 
-#### Build Plots
-```bash
-build-plots
-```
-The `build-plots` commnad will inspect plots available in `contrib`, find `info.yml` files corresponding to each plot, and execute the `buildcmd` for each plot.
 
 #### Upload Plots
 
