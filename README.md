@@ -27,7 +27,13 @@ content: tax-reform-explorer.html
 thumbnail: thumbnail.png
 short_description: This plot shows a short amount of stuff
 long_description: This plot shows a long amount of stuff
-build_cmd: "python main.py"
+Concept_credit: Citation for concept
+Development_credit: Citation for development
+OSS_credit: Citation for open source software projects
+best_width: recommended width when embedding
+best_height: recommended height when embedding
+build_cmd: shell command used to build the plot
+version: version number
 ```
 
 #### resources directory
