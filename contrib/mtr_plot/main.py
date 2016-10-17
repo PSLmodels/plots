@@ -19,6 +19,8 @@ def get_csv_data(MARS):
         df = source.iloc[:,[3,4,5]]
     elif MARS == 'Head of Household':
         df = source.iloc[:,[6,7,8]]
+    df.dropna()
+    df.index = (df.reset_index()).index
     df.columns = ['base','reform','reform_2']
     return ColumnDataSource(df)
 
