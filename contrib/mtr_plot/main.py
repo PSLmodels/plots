@@ -11,18 +11,19 @@ from bokeh.layouts import row, widgetbox
 from bokeh.palettes import Blues4, Reds4, Greens4
 
 def get_csv_data(MARS):
-    source = pd.read_csv('mtr_data.csv')
+    source_csv = pd.read_csv('mtr_data.csv')
 
     if MARS == 'Single':
-        df = source.iloc[:,[0,1,2]]
+        df = source_csv.iloc[:,[0,1,2]]
     elif MARS == 'Joint':
-        df = source.iloc[:,[3,4,5]]
+        df = source_csv.iloc[:,[3,4,5]]
     elif MARS == 'Head of Household':
-        df = source.iloc[:,[6,7,8]]
+        df = source_csv.iloc[:,[6,7,8]]
     df.dropna()
     df.index = (df.reset_index()).index
     df.columns = ['base','reform','reform_2']
-    return ColumnDataSource(df)
+    df['index'] = df.index
+    return df
 
 
 def make_a_plot(source):
@@ -35,15 +36,38 @@ def make_a_plot(source):
     plot.xaxis.axis_label = 'Percentile of Adjusted Gross Income'
     return plot
 
-
-def update(attr, old, new):
-    src = get_csv_data(MARS_Select.value)
-    source.data.update(src.data)
+ref_source = ColumnDataSource(dict(
+                    index = [],
+                    base = [],
+                    reform = [],
+                    reform_2 = []
+                ))
 
 mars = 'Single'
-MARS_Select = Select(value=mars, title='MARS', options=['Single', 'Joint', 'Head of Household'])
-plot = make_a_plot(get_csv_data(mars))
-MARS_Select.on_change('value', update)
+options = ['Single', 'Joint', 'Head of Household']
+scr1 = ColumnDataSource(get_csv_data(options[0]))
+scr2 = ColumnDataSource(get_csv_data(options[1]))
+scr3 = ColumnDataSource(get_csv_data(options[2]))
 
-layout = row(plot, MARS_Select)
+plot = make_a_plot(ref_source)
+callback = CustomJS(args=dict(sin_ = scr1, jon_ = scr2, sep_ = scr3 ), code="""
+        var input = select.value;
+        var data_1 = sin_.data;
+        var data_2 = jon_.data;
+        var data_3 = sep_.data;
+        if (input == "Single"){
+            ref_source.data = data_1;
+        } else if (input == "Joint"){
+            ref_source.data = data_2;
+        } else{
+            ref_source.data = data_3;
+        }
+        ref_source.trigger('change');
+    """)
+select = Select(value=mars, title='MARS', options=options,  callback=callback)
+callback.args['select'] = select
+callback.args['ref_source'] = ref_source
+
+layout = row(plot, select)
+
 show(layout)
