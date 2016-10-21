@@ -1,0 +1,39 @@
+---
+plot_name: Effect of candidate's proposals on labor incentives
+plot_id: mtr_skyline_by_percentile
+content: main.html
+thumbnail: thumbnail.png
+short_description: > 
+    Explore the impact of caindidate's tax reform proposals on labor
+    incentives.
+long_description: >
+    Explore the impact of caindidate's tax reform proposals on labor
+    incentives across income groups. For Clinton's proposal, provisions
+    included are: (1) Surtax of 4% on AGI over 5mm; (2) Fair share tax
+    (Buffett Rule) (30% minimum tax); (3) Limit the deductions to 28%. For
+    Trump's propsal, provisions included are: (1) Three Tax Brackets (12%, 25%,
+    33%); (2) Change thresholds for CG/AMT; (3) Repeal AMT and Obamacare tax on
+    investment income; (4) Change the standard deduction threshold; (5) Repeal
+    personal exemptions; (6) Repeal HH status (all HH's threshold equals
+    single's); (7) Cap itemized deductions. The interaction will allow
+    users to select from different filing status, namely single, joint, or
+    head of household.
+Concept_credit: >
+    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>
+Development_credit: >
+    <a href = "https://github.com/GoFroggyRun">Sean Wang</a>, and
+    <a href = "https://github.com/brendancol">Brendan Collins</a>.
+OSS_credit: >
+    <a href = "https://github.com/open-source-economics/tax-calculator">
+    Tax-Calculator</a> and
+    <a href = "https://github.com/open-source-economics/taxdata">TaxData</a>
+    for tax computations.
+    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    for visualizations.
+ 
+best_width: "100%"
+best_height: "550px"
+best_width_portrait: "550px"
+best_height_portrait: "550px"
+build_cmd: "python main.py"
+version: 1.0
