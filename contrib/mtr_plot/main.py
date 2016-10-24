@@ -36,14 +36,14 @@ def get_csv_data(MARS):
 
 def make_a_plot(source):
     plot = figure(plot_height=425, plot_width=plot_width,
-                  title='Effect of Candidate\'s Proposals on Labor Incentives',
+                  title='Effect of Candidates\' Proposals on Labor Disincentives',
                   tools=[hover, BoxZoomTool(), ResetTool()])
 
     plot.title.align = 'center'
     plot.title.text_font_size = '12pt'
     plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=.8, legend="Trump")
-    plot.line('index','reform_2',source = source, line_color=RED, line_width=2, line_alpha=.8, legend="Hillary")
-    plot.line('index','base',source = source, line_color=BLUE, line_width=2, line_alpha=1, legend="Base")
+    plot.line('index','reform_2',source = source, line_color=RED, line_width=2, line_alpha=.8, legend="Clinton")
+    plot.line('index','base',source = source, line_color=BLUE, line_width=2, line_alpha=1, legend="Current Law")
     plot.yaxis.axis_label = 'Average Marginal Tax Rate on Wage Income'
     plot.xaxis.axis_label = 'Percentile of Adjusted Gross Income'
     plot.legend.location = "bottom_right"
