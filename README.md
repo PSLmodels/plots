@@ -27,13 +27,44 @@ content: tax-reform-explorer.html
 thumbnail: thumbnail.png
 short_description: This plot shows a short amount of stuff
 long_description: This plot shows a long amount of stuff
-build_cmd: "python main.py"
+Concept_credit: Citation for concept
+Development_credit: Citation for development
+OSS_credit: Citation for open source software projects
+best_width: recommended width when embedding
+best_height: recommended height when embedding
+build_cmd: shell command used to build the plot
+version: version number
 ```
 
 #### resources directory
 Any supporting files (e.g. `.js`, `.css`, `.png`) should be placed in a `resources` directory within the plot directory. 
 
 **Note:** All files placed in the `resources` will be uploaded/made-public to taxplots.
+
+#### environment.yml
+The `environment.yml` contains necessary information to create the build environment for the plot. 
+
+```yml
+name: my_viz_env
+dependencies:
+- pytest
+- setuptools
+- python
+- numpy
+- pandas <=0.16.2
+- numba
+- toolz
+- six
+- ipython
+- ipython-notebook
+- bokeh
+- pip:
+  - pytest-pep8
+```
+
+To create an `environment.yml` file from an existing conda environment, browse to the plot's directory in your preferred shell, and run `conda env export > environment.yml`.
+
+To recreate the environment specified in the plot's `environment.yml` file, browse to the plot's directory in your preferred shell, and run `conda env create`.
 
 ### Plot Command-line Tools
 Install with the taxplots python package is a command-line interface (cli) which provides the following utilites:
@@ -45,11 +76,6 @@ list-plots
 
 The `list-plots` commnad will display information about plots available in the `contrib` directory.
 
-#### Build Plots
-```bash
-build-plots
-```
-The `build-plots` commnad will inspect plots available in `contrib`, find `info.yml` files corresponding to each plot, and execute the `buildcmd` for each plot.
 
 #### Upload Plots
 
