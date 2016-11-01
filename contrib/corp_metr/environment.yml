@@ -1,4 +1,4 @@
-name: py2-env
+name: corp-metr
 channels:
 - defaults
 dependencies:
@@ -39,8 +39,6 @@ dependencies:
   - backports-abc==0.4
   - backports.ssl-match-hostname==3.4.0.2
   - pathtools==0.1.2
-  - tax-plots (/Users/bcollins/projects/taxbrain/taxplots)==0.1.0
   - watchdog==0.8.3
-  - when-changed==0.3.0
-prefix: /Users/bcollins/anaconda/envs/py2-env
+prefix: /Users/bcollins/anaconda/envs/corp-metr
 
