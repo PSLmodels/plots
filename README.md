@@ -42,8 +42,12 @@ Any supporting files (e.g. `.js`, `.css`, `.png`) should be placed in a `resourc
 **Note:** All files placed in the `resources` will be uploaded/made-public to taxplots.
 
 #### environment.yml
-The `environment.yml` contains necessary information to create the build environment for the plot. 
 
+`Conda` `environment.yml` files allow for reproducible environments for building plots.  The `plots` tools as a whole have an `environment.yml` file located in the root of the code repository.  Each plot in `contrib` is also required to have an `environment.yml` file.  When building a plot, that plot's environment file should be active. 
+
+To create an `environment.yml` file from an existing conda environment, browse to the plot's directory in your preferred shell, and run `conda env export > environment.yml`.
+
+Example Output:
 ```yml
 name: my_viz_env
 dependencies:
@@ -62,9 +66,8 @@ dependencies:
   - pytest-pep8
 ```
 
-To create an `environment.yml` file from an existing conda environment, browse to the plot's directory in your preferred shell, and run `conda env export > environment.yml`.
 
-To recreate the environment specified in the plot's `environment.yml` file, browse to the plot's directory in your preferred shell, and run `conda env create`.
+To recreate the environment specified in the plot's `environment.yml` file, browse to the plot's directory in your preferred shell, and run `conda env create`. Then activate the environment with `source activate <env-name>`
 
 ### Plot Command-line Tools
 Install with the taxplots python package is a command-line interface (cli) which provides the following utilites:
