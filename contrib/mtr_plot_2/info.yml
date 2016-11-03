@@ -1,13 +1,13 @@
 ---
-plot_name: Effect of candidate's proposals on economic activity
+plot_name: Effect of candidates' proposals on economic activity
 plot_id: mtr_skyline_eco_act
 content: main.html
 thumbnail: thumbnail.png
 short_description: > 
-    Explore the impact of caindidate's tax reform proposals on total economic
+    Explore the impact of caindidates' tax reform proposals on total economic
     activity.
 long_description: >
-    Explore the impact of caindidate's tax reform proposals on total economic 
+    Explore the impact of caindidates' tax reform proposals on total economic 
     activity across income groups. For Clinton's proposal, provisions
     included are: (1) Surtax of 4% on AGI over 5mm; (2) Fair share tax
     (Buffett Rule) (30% minimum tax); (3) Limit the deductions to 28%. For

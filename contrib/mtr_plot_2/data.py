@@ -87,14 +87,14 @@ def source_data(data_1, data_2):
     df['reform_2'] = data_2['reform']
     return df
 
-source1 =get_mtr_data(calcbase,calc_T,MARS = 1,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 1,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 1,income_measure = 'wages', dollar_weighting = True)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 1,income_measure = 'wages', dollar_weighting = True)
 source_sin = source_data(source1,source2)
-source1 =get_mtr_data(calcbase,calc_T,MARS = 2,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 2,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 2,income_measure = 'wages', dollar_weighting = True)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 2,income_measure = 'wages', dollar_weighting = True)
 source_ma = source_data(source1,source2)
-source1 =get_mtr_data(calcbase,calc_T,MARS = 4,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 4,weighting = 'wage_weighted', income_measure = 'e00200', weight_by_income_measure = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 4,income_measure = 'wages', dollar_weighting = True)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 4,income_measure = 'wages', dollar_weighting = True)
 source_HH = source_data(source1,source2)
 source_sin.index = range(0,100)
 source_ma.index = range(100,200)
