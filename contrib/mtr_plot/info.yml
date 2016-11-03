@@ -1,13 +1,13 @@
 ---
-plot_name: Effect of candidate's proposals on labor incentives
+plot_name: Effect of candidates' proposals on labor incentives
 plot_id: mtr_skyline_by_percentile
 content: main.html
 thumbnail: thumbnail.png
 short_description: > 
-    Explore the impact of caindidate's tax reform proposals on labor
+    Explore the impact of caindidates' tax reform proposals on labor
     incentives.
 long_description: >
-    Explore the impact of caindidate's tax reform proposals on labor
+    Explore the impact of caindidates' tax reform proposals on labor
     incentives across income groups. For Clinton's proposal, provisions
     included are: (1) Surtax of 4% on AGI over 5mm; (2) Fair share tax
     (Buffett Rule) (30% minimum tax); (3) Limit the deductions to 28%. For
