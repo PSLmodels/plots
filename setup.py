@@ -8,7 +8,6 @@ setup(
     entry_points = {
           'console_scripts': [
               'list-plots=taxplots.cli:list_plots',
-              'build-plots=taxplots.cli:build_plots',
               'upload-plots=taxplots.cli:upload_plots'
           ],
       }

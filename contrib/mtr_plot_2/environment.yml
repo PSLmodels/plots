@@ -1,0 +1,15 @@
+name: mtr
+dependencies:
+- pytest
+- setuptools
+- python
+- numpy
+- pandas <=0.16.2
+- numba
+- toolz
+- six
+- ipython
+- ipython-notebook
+- bokeh
+- pip:
+  - pytest-pep8

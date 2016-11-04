@@ -4,13 +4,17 @@ channels: !!python/tuple
 dependencies:
 - appnope=0.1.0=py35_0
 - bokeh=0.11.1=py35_0
+- boto3=1.4.0=py35_0
+- botocore=1.4.67=py35_0
 - decorator=4.0.10=py35_0
+- docutils=0.12=py35_2
 - entrypoints=0.2.2=py35_0
 - ipykernel=4.5.0=py35_0
 - ipython=5.1.0=py35_1
 - ipython-notebook=4.0.4=py35_0
 - ipython_genutils=0.1.0=py35_0
 - jinja2=2.8=py35_1
+- jmespath=0.9.0=py35_0
 - jsonschema=2.5.1=py35_0
 - jupyter_client=4.4.0=py35_0
 - jupyter_core=4.2.0=py35_0
@@ -41,6 +45,7 @@ dependencies:
 - pyzmq=16.0.0=py35_0
 - readline=6.2=2
 - requests=2.11.1=py35_0
+- s3transfer=0.1.7=py35_0
 - setuptools=27.2.0=py35_0
 - simplegeneric=0.8.1=py35_1
 - six=1.10.0=py35_0
@@ -65,5 +70,6 @@ dependencies:
   - prompt-toolkit==1.0.8
   - pytest-cache==1.0
   - pytest-pep8==1.0.6
+  - tax-plots==0.1.0
 prefix: /Users/bcollins/anaconda/envs/tre
 

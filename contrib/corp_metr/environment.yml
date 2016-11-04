@@ -1,0 +1,44 @@
+name: corp-metr
+channels:
+- defaults
+dependencies:
+- backports=1.0=py27_0
+- backports_abc=0.4=py27_0
+- bokeh=0.12.2=py27_0
+- boto3=1.3.1=py27_0
+- botocore=1.4.52=py27_0
+- docutils=0.12=py27_2
+- futures=3.0.5=py27_0
+- jinja2=2.8=py27_1
+- jmespath=0.9.0=py27_0
+- markupsafe=0.23=py27_2
+- mkl=11.3.3=0
+- nodejs=4.2.6=0
+- numpy=1.11.1=py27_0
+- openssl=1.0.2h=1
+- pandas=0.18.1=np111py27_0
+- pip=8.1.2=py27_0
+- python=2.7.12=1
+- python-dateutil=2.5.3=py27_0
+- pytz=2016.6.1=py27_0
+- pyyaml=3.11=py27_4
+- readline=6.2=2
+- requests=2.11.1=py27_0
+- setuptools=23.0.0=py27_0
+- singledispatch=3.4.0.3=py27_0
+- six=1.10.0=py27_0
+- sqlite=3.13.0=0
+- ssl_match_hostname=3.4.0.2=py27_1
+- tk=8.5.18=0
+- tornado=4.4.1=py27_0
+- wheel=0.29.0=py27_0
+- yaml=0.1.6=0
+- zlib=1.2.8=3
+- pip:
+  - argh==0.26.2
+  - backports-abc==0.4
+  - backports.ssl-match-hostname==3.4.0.2
+  - pathtools==0.1.2
+  - watchdog==0.8.3
+prefix: /Users/bcollins/anaconda/envs/corp-metr
+
