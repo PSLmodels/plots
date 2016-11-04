@@ -89,18 +89,17 @@ def source_data(data_1, data_2):
     df['reform_2'] = data_2['reform']
     return df
 
-
-source1 =mtr_graph_data(calcbase,calc_T,mars = 1,income_measure = 'wages', dollar_weighting = True)
-source2 =mtr_graph_data(calcbase,calc_H,mars = 1,income_measure = 'wages', dollar_weighting = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 1,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 1,income_measure = 'agi', dollar_weighting = False)
 source_sin = source_data(source1,source2)
-source1 =mtr_graph_data(calcbase,calc_T,mars = 2,income_measure = 'wages', dollar_weighting = True)
-source2 =mtr_graph_data(calcbase,calc_H,mars = 2,income_measure = 'wages', dollar_weighting = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 2,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 2,income_measure = 'agi', dollar_weighting = False)
 source_ma = source_data(source1,source2)
-source1 =mtr_graph_data(calcbase,calc_T,mars = 4,income_measure = 'wages', dollar_weighting = True)
-source2 =mtr_graph_data(calcbase,calc_H,mars = 4,income_measure = 'wages', dollar_weighting = True)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 4,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 4,income_measure = 'agi', dollar_weighting = False)
 source_HH = source_data(source1,source2)
 source_sin.index = range(0,100)
 source_ma.index = range(100,200)
 source_HH.index = range(200,300)
 result = pd.concat([source_sin, source_ma, source_HH], axis=1)
-result.to_csv('mtr_data_2.csv', index= False)
+result.to_csv('mtr_data.csv', index= False)
