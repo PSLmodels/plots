@@ -36,12 +36,12 @@ def get_csv_data(MARS):
 
 def make_a_plot(source):
     plot = figure(plot_height=450, plot_width=450,
-                  title='Effect of Candidates\' Proposals on Economic Activity',
+                  title='Weighted Marginal Tax Rates under Clinton and Trump Tax Plans',
                   tools=[hover], **PLOT_FORMATS)
 
     plot.title.align = 'center'
-    plot.title.text_font_size = '11pt'
-    plot.line('index','base',source = source, line_color=BLUE, line_width=5, line_alpha=1, legend="Current Law")
+    plot.title.text_font_size = '9.5pt'
+    plot.line('index','base',source = source, line_color=BLUE, line_width=3.7, line_alpha=0.8, legend="Current Law")
     plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=.8, legend="Trump")
     plot.line('index','reform_2',source = source, line_color=RED, line_width=2,legend="Clinton")
     plot.yaxis.axis_label = 'Average Marginal Tax Rate on Wage Income'
