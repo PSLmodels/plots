@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from styles import BLUE, RED, GREEN
+from styles import BLUE, RED, GREEN, PLOT_FORMATS
 from bokeh.models import (ColumnDataSource, LogAxis, LinearAxis, Rect, FactorRange, BoxZoomTool, ResetTool,
                           CategoricalAxis, Line, Text, Square, HoverTool, BoxSelectTool)
 from bokeh.models import Plot, Range1d, ImageURL, DataRange1d, Select
@@ -35,15 +35,15 @@ def get_csv_data(MARS):
 
 
 def make_a_plot(source):
-    plot = figure(plot_height=425, plot_width=plot_width,
+    plot = figure(plot_height=450, plot_width=450,
                   title='Effect of Candidates\' Proposals on Labor Disincentives',
-                  tools=[hover, BoxZoomTool(), ResetTool()])
+                  tools=[hover], **PLOT_FORMATS)
 
     plot.title.align = 'center'
-    plot.title.text_font_size = '12pt'
+    plot.title.text_font_size = '11pt'
     plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=0.8, legend="Trump")
-    plot.line('index','reform_2',source = source, line_color=RED, line_width=2, line_alpha=1.2, legend="Clinton")
-    plot.line('index','base',source = source, line_color=BLUE, line_width=2, line_alpha=0.8, legend="Current Law")
+    plot.line('index','base',source = source, line_color=BLUE, line_width=5, line_alpha=0.8, legend="Current Law")
+    plot.line('index','reform_2',source = source, line_color=RED, line_width=2, legend="Clinton")
     plot.yaxis.axis_label = 'Average Marginal Tax Rate'
     plot.xaxis.axis_label = 'Percentile of Adjusted Gross Income'
     plot.legend.location = "bottom_right"
@@ -63,12 +63,7 @@ options = ['Single', 'Joint', 'Head of Household']
 scr1 = ColumnDataSource(get_csv_data(options[0]))
 scr2 = ColumnDataSource(get_csv_data(options[1]))
 scr3 = ColumnDataSource(get_csv_data(options[2]))
-ref_source = ColumnDataSource(dict(
-                    index = [],
-                    base = [],
-                    reform = [],
-                    reform_2 = []
-                ))
+ref_source = ColumnDataSource(get_csv_data(options[0]))
 sources = dict(Single=scr1, Joint=scr2, Head=scr3)
 plot = make_a_plot(ref_source)
 callback = CustomJS(args=sources, code="""
@@ -76,17 +71,20 @@ callback = CustomJS(args=sources, code="""
         var data_1 = Single.data;
         var data_2 = Joint.data;
         var data_3 = Head.data;
-        if (input == "Single"){
-            ref_source.data = data_1;
-        } else if (input == "Joint"){
+        if (input == "Joint"){
             ref_source.data = data_2;
         } else if (input == "Head of Household"){
             ref_source.data = data_3;
         }
         ref_source.trigger('change');
+        if (input == "Single") {
+            ref_source.data = data_1;
+        }
+        ref_source.trigger('change');
     """)
-select = Select(title='Filing Status', options=options,  callback=callback)
+select = Select(title='Filing Status', value='Single',  options=options,  callback=callback)
 callback.args['select'] = select
 callback.args['ref_source'] = ref_source
 grid = column(select, plot)
+output_file("index.html")
 show(grid)
