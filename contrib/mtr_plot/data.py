@@ -26,7 +26,9 @@ reform_H= {
     2017: {'_AGI_surtax_thd': [[5000000, 5000000, 5000000, 5000000, 5000000, 5000000]],
            '_AGI_surtax_trt': [0.04],
            '_FST_AGI_trt':[0.3],
-           '_ID_BenefitCap_rt': [0.28]
+           '_ID_BenefitCap_rt': [0.28],
+           '_ACTC_Income_thd': [0],
+           '_CTC_c': [2000]
         }}
 
 reform_T = {
@@ -87,14 +89,14 @@ def source_data(data_1, data_2):
     df['reform_2'] = data_2['reform']
     return df
 
-source1 =get_mtr_data(calcbase,calc_T,MARS = 1,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 1,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 1,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 1,income_measure = 'agi', dollar_weighting = False)
 source_sin = source_data(source1,source2)
-source1 =get_mtr_data(calcbase,calc_T,MARS = 2,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 2,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 2,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 2,income_measure = 'agi', dollar_weighting = False)
 source_ma = source_data(source1,source2)
-source1 =get_mtr_data(calcbase,calc_T,MARS = 4,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
-source2 =get_mtr_data(calcbase,calc_H,MARS = 4,weights = wage_weighted, income_measure = 'c00100', complex_weight = False)
+source1 =mtr_graph_data(calcbase,calc_T,mars = 4,income_measure = 'agi', dollar_weighting = False)
+source2 =mtr_graph_data(calcbase,calc_H,mars = 4,income_measure = 'agi', dollar_weighting = False)
 source_HH = source_data(source1,source2)
 source_sin.index = range(0,100)
 source_ma.index = range(100,200)
