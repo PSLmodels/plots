@@ -36,7 +36,7 @@ def get_csv_data(MARS):
 
 def make_a_plot(source):
     plot = figure(plot_height=450, plot_width=450,
-                  title='Effect of Candidates\' Proposals on Labor Disincentives',
+                  title='Marginal Tax Rates under Clinton and Trump Tax Plans',
                   tools=[hover], **PLOT_FORMATS)
 
     plot.title.align = 'center'
@@ -86,5 +86,5 @@ select = Select(title='Filing Status', value='Single',  options=options,  callba
 callback.args['select'] = select
 callback.args['ref_source'] = ref_source
 grid = column(select, plot)
-output_file("index.html")
+output_file("index_landscape.html")
 show(grid)
