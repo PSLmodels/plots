@@ -41,8 +41,8 @@ def make_a_plot(source):
 
     plot.title.align = 'center'
     plot.title.text_font_size = '11pt'
+    plot.line('index','base',source = source, line_color=BLUE, line_width=3.7, line_alpha=0.8, legend="Current Law")
     plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=0.8, legend="Trump")
-    plot.line('index','base',source = source, line_color=BLUE, line_width=5, line_alpha=0.8, legend="Current Law")
     plot.line('index','reform_2',source = source, line_color=RED, line_width=2, legend="Clinton")
     plot.yaxis.axis_label = 'Average Marginal Tax Rate'
     plot.xaxis.axis_label = 'Percentile of Adjusted Gross Income'
