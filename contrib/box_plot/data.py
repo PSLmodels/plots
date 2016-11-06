@@ -19,7 +19,7 @@ def run_reform(name, reform, behave):
         records_base = Records(puf)
         policy_reform = Policy()
         records_reform = Records(puf)
-        bhv = Behavior()a
+        bhv = Behavior()
         calcbase = Calculator(policy = policy_base, records = records_base)
         calcreform = Calculator(policy = policy_reform, records = records_reform, behavior = bhv)
         policy_reform.implement_reform(reform)
