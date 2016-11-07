@@ -20,7 +20,7 @@ plot_width = 425
 
 
 def get_csv_data(MARS):
-    source_csv = pd.read_csv('mtr_data_2.csv')
+    source_csv = pd.read_csv('mtr_data.csv')
 
     if MARS == 'Single':
         df = source_csv.iloc[:,[0,1,2]]
@@ -36,16 +36,16 @@ def get_csv_data(MARS):
 
 def make_a_plot(source):
     plot = figure(plot_height=450, plot_width=450,
-                  title='Weighted Marginal Tax Rates under Clinton and Trump Tax Plans',
+                  title='Marginal Tax Rates under Clinton and Trump Tax Plans',
                   tools=[hover], **PLOT_FORMATS)
 
     plot.title.align = 'center'
-    plot.title.text_font_size = '9.5pt'
+    plot.title.text_font_size = '11pt'
     plot.line('index','base',source = source, line_color=BLUE, line_width=3.7, line_alpha=0.8, legend="Current Law")
-    plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=.8, legend="Trump")
-    plot.line('index','reform_2',source = source, line_color=RED, line_width=2,legend="Clinton")
-    plot.yaxis.axis_label = 'Average Marginal Tax Rate on Wage Income'
-    plot.xaxis.axis_label = 'Percentile of Aggregate Economic Activity'
+    plot.line('index','reform',source = source, line_color=GREEN, line_width=2, line_alpha=0.8, legend="Trump")
+    plot.line('index','reform_2',source = source, line_color=RED, line_width=2, legend="Clinton")
+    plot.yaxis.axis_label = 'Average Marginal Tax Rate'
+    plot.xaxis.axis_label = 'Percentile of Adjusted Gross Income'
     plot.legend.location = "bottom_right"
     plot.legend.label_text_font = "times"
     plot.legend.label_text_font_style = "italic"
@@ -77,12 +77,12 @@ callback = CustomJS(args=sources, code="""
             ref_source.data = data_3;
         }
         ref_source.trigger('change');
-        if (input == "Single"){
+        if (input == "Single") {
             ref_source.data = data_1;
         }
-         ref_source.trigger('change');
+        ref_source.trigger('change');
     """)
-select = Select(title='Filing Status', options=options,  callback=callback)
+select = Select(title='Filing Status', value='Single',  options=options,  callback=callback)
 callback.args['select'] = select
 callback.args['ref_source'] = ref_source
 grid = column(select, plot)

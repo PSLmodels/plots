@@ -32,7 +32,7 @@ def run_reform(name, reform, behave):
         calc_behav.calc_all()
         base_list = multiyear_diagnostic_table(calcbase, 10)
         reform_list = multiyear_diagnostic_table(calc_behav, 10)
-        difflist = (base_list.iloc[18] - reform_list.iloc[18])
+        difflist = (reform_list.iloc[18] - base_list.iloc[18])
 
         return difflist
 
@@ -47,7 +47,7 @@ def get_source_data():
             for k in range(2):
                 reform_be = {CURRENT_YEAR: {'_BE_cg': [behavioral_values[k]],
                                              '_BE_inc': [behavioral_inc_values[j]]}}
-                groups_beha[''.join(['ds_', str(k), str(j)])] = reform_be
+                groups_beha[''.join([str(k), str(j)])] = reform_be
         dataframes = {}
         for name, behave in groups_beha.items():
             data = run_reform(name, reform, behave)
@@ -58,21 +58,6 @@ reform = {CURRENT_YEAR: {
                         '_AGI_surtax_thd': [[5000000, 5000000, 5000000, 5000000, 5000000, 5000000]],
                         '_AGI_surtax_trt': [0.04]}}
 
-dumm = get_source_data()
+
 df = pd.DataFrame.from_dict(dumm, orient='columns', dtype=None)
-
-
-
-puf = pd.read_csv("../tax-calculator/puf.csv")
-policy_base = Policy(start_year=2013)
-records_base = Records(puf)
-policy_reform = Policy()
-records_reform = Records(puf)
-bhv = Behavior()
-calcbase = Calculator(policy = policy_base, records = records_base)
-calcbase.advance_to_year(2017)
-calcbase.calc_all()
-base_list = multiyear_diagnostic_table(calcbase, 10)
-baseline = base_list.iloc[18]
-df = pd.concat([baseline, df], axis=1)
 df.to_csv('data.csv')
