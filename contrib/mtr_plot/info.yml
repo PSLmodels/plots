@@ -1,0 +1,39 @@
+---
+plot_name: MARGINAL TAX RATES ON LABOR INCOME UNDER CLINTON AND TRUMP TAX PLANS
+plot_id: mtr_skyline_by_percentile
+content: index_landscape.html
+thumbnail: thumbnail.png
+short_description: > 
+    Explore the impact of Clinton and Trump's tax reform proposals on average marginal tax rates
+    facing taxpayers across the income distribution. 
+long_description: >
+    Explore the impact of Clinton and Trump's tax reform proposals on average marginal tax rates
+    facing taxpayers across the income distribution. 
+    The included provisions of Clinton's proposal are: (1) Surtax of 4% on AGI over $5mm; 
+    (2) 30% of AGI minimum tax; (3) 28% limitation on the value of itemized deductions; 
+    (4) Child tax credit expansion for children under 5. 
+    The included provisions of Trump's proposal are: (1) Three tax brackets (12%, 25%,
+    33%); (2) Change thresholds for QDIV/CG; (3) Repeal AMT and net investment income tax; 
+    (4) Change the standard deduction amounts; (5) Repeal
+    personal exemptions; (6) Repeal HH status; (7) Cap itemized deductions.
+    Clinton's proposals affecting high-income taxpayers are not visible on this plot because
+    they directly affect only a tiny sliver of the top one percentile of taxpayers. 
+Concept_credit: >
+    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>
+Development_credit: >
+    <a href = "https://github.com/GoFroggyRun">Sean Wang</a>, and
+    <a href = "https://github.com/brendancol">Brendan Collins</a>.
+OSS_credit: >
+    <a href = "https://github.com/open-source-economics/tax-calculator">
+    Tax-Calculator</a> and
+    <a href = "https://github.com/open-source-economics/taxdata">TaxData</a>
+    for tax computations.
+    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    for visualizations.
+ 
+best_width: "550px"
+best_height: "550px"
+best_width_portrait: "550px"
+best_height_portrait: "550px"
+build_cmd: "python main.py"
+version: 1.0
