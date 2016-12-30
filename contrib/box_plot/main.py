@@ -1,13 +1,15 @@
-from styles import BLUE, RED, GREEN, PLOT_FORMATS
+from styles import BLUE, RED, GREEN, PLOT_FORMATS, DARK_GRAY
 from bokeh.models import (ColumnDataSource, LogAxis, LinearAxis, Rect, FactorRange, BoxZoomTool, ResetTool,
                           CategoricalAxis, Line, Text, Square, HoverTool, BoxSelectTool)
 from bokeh.models import Plot, Range1d, ImageURL, DataRange1d, Select
 from bokeh.embed import components
-from bokeh.models import CustomJS, Slider, RadioButtonGroup
+from bokeh.models import CustomJS, Slider,RadioButtonGroup, Paragraph
 from bokeh.io import curdoc
 from bokeh.plotting import figure, hplot, vplot, output_file, show
 from bokeh.layouts import row, widgetbox, column, gridplot
+from bokeh.models.widgets import Div
 import pandas as pd
+from math import pi
 
 def prepare_data():
     source_csv = pd.read_csv('data.csv', parse_dates=[0])
@@ -33,24 +35,25 @@ def prepare_data():
 sources  = prepare_data()
 
 def make_box_plot(source):
-    plot = figure(plot_height=425, plot_width=425, x_axis_type="datetime",
-                  title='Box',
-                  tools=[], **PLOT_FORMATS)
-    plot.set(y_range=Range1d(0,20))
+    plot = figure(plot_height=600, plot_width=550, x_axis_type="datetime",
+                  tools=[],**PLOT_FORMATS)
+    plot.set(y_range=Range1d(-9.5,18.5))
     plot.vbar(x='year',top='reform',source = source, line_width=20,bottom=0, color=RED, fill_alpha = 0.4)
     plot.title.align = 'center'
-    plot.title.text_font_size = '11pt'
-    plot.yaxis.axis_label = 'Change in individual income and payroll tax liabilities'
+    plot.title.text_font_size = '10pt'
+    plot.yaxis.axis_label = 'Change in individual income and payroll tax liabilities (Billions)'
     plot.xaxis.axis_label = 'Year'
     return plot
 
-ref = ColumnDataSource(dict(index = [], reform = [],year=[]))
-ref = ColumnDataSource(dict(index = [], reform = [],year=[]))
+ref = ColumnDataSource(sources['re00'].data)
+static = ColumnDataSource(sources['re00'].data)
+empty = ColumnDataSource(dict(index = [], reform = [],year=[]))
+sources["re14"].data = empty.data
 
+fig = make_box_plot(ref)
+fig.rect(x='year',y='reform',source = static, angle=pi/2,width=5, height=1, color=DARK_GRAY)
 callback = CustomJS(args=sources, code="""
-        var cg = cg_option.active;
-        var inc = inc_option.active;
-        var i = inc*3 + cg*7;
+        var i = option.active;
         var data_1 = re00.data;
         var data_2 = re01.data;
         var data_3 = re02.data;
@@ -61,33 +64,42 @@ callback = CustomJS(args=sources, code="""
         var data_8 = re12.data;
         var data_9 = re13.data;
         var data_10 = re14.data;
-        if (i == 7){
+        if (i == 0){
             ref.data = data_1;
-        } else if (i == 10){
+        } else if (i == 1){
             ref.data = data_2;
-        } else if (i == 13){
+        } else if (i == 2){
             ref.data = data_3;
-        } else if (i == 16){
-            ref.data = data_4;
-        } else if (i == 19){
-            ref.data = data_5;
-        } else if (i == 0){
-            ref.data = data_6;
         } else if (i == 3){
-            ref.data = data_7;
-        } else if (i == 6){
-            ref.data = data_8;
+            ref.data = data_4;
+        } else if (i == 4){
+            ref.data = data_5;
+        } else if (i == 8){
+            ref.data = data_6;
         } else if (i == 9){
+            ref.data = data_7;
+        } else if (i == 10){
+            ref.data = data_8;
+        } else if (i == 11){
             ref.data = data_9;
-        } else if (i == 12){
+        } else{
             ref.data = data_10;
         }
         ref.trigger('change');
     """)
-select1 = RadioButtonGroup(labels=["0", "0.2","0.4", "0.55", "1.2"], callback=callback,width=350)
-select = RadioButtonGroup(labels=["off","on"],callback=callback,width=350)
-callback.args['cg_option'] = select
-callback.args['inc_option'] = select1
+
+option = RadioButtonGroup(labels=["0.0", "0.25","0.4", "0.55", "1.09","\a","\a","\a","0.0", "0.25","0.4", "0.55"], callback=callback,width=600, active=0)
+Par1 = Div(text="""Elasticity of taxable income <b>without</b> additional capital gains behavior.""",
+width=280, height=18)
+Par2 = Div(text="""Elasticity of taxable income <b>with</b> additional capital gains behavior.""",
+width=280, height=18)
+option.active
+TIT = Div(text='Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million',
+width=550, height=30)
+callback.args['option'] = option
 callback.args['ref'] = ref
-grid = column(select,select1, fig)
+
+
+grid = column(column(row(children = [widgetbox(Par1), widgetbox(Par2)]),option), column(TIT,fig))
+output_file("index_landscape.html")
 show(grid)
