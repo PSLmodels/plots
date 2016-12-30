@@ -1,9 +1,3 @@
-from __future__ import print_function
-import pandas as pd
-import numpy as np
-import sys
-sys.path.append("../tax-calculator")
-from taxcalc.records import Records
 from taxcalc import Policy, Records, Calculator
 from taxcalc.utils import *
 from taxcalc.records import Records
@@ -38,15 +32,15 @@ def run_reform(name, reform, behave):
 
 
 def get_source_data():
-        behavioral_values = (0, 0.5)
-        behavioral_inc_values = (0, 0.2,0.4, 0.55, 1.2)
+        behavioral_values = (0, -3.49)
+        behavioral_inc_values = (0, 0.25,0.4, 0.55, 1.09)
         groups_ref = {}
         groups_grow = {}
         groups_beha = {}
         for j in range(5):
             for k in range(2):
                 reform_be = {CURRENT_YEAR: {'_BE_cg': [behavioral_values[k]],
-                                             '_BE_inc': [behavioral_inc_values[j]]}}
+                                             '_BE_sub': [behavioral_inc_values[j]]}}
                 groups_beha[''.join([str(k), str(j)])] = reform_be
         dataframes = {}
         for name, behave in groups_beha.items():
@@ -58,6 +52,6 @@ reform = {CURRENT_YEAR: {
                         '_AGI_surtax_thd': [[5000000, 5000000, 5000000, 5000000, 5000000, 5000000]],
                         '_AGI_surtax_trt': [0.04]}}
 
-
+dumm = get_source_data()
 df = pd.DataFrame.from_dict(dumm, orient='columns', dtype=None)
 df.to_csv('data.csv')
