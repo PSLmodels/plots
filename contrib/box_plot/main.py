@@ -1,11 +1,17 @@
-from styles import RED, PLOT_FORMATS, DARK_GRAY
+
 from bokeh.models import ColumnDataSource, Range1d
 from bokeh.models import CustomJS, RadioButtonGroup
-from bokeh.plotting import figure, output_file, show
-from bokeh.layouts import row, widgetbox, column
+from bokeh.plotting import figure
+from bokeh.layouts import column
 from bokeh.models.widgets import Div, RadioGroup
+from bokeh.embed import components
+
 import pandas as pd
 from math import pi
+
+from taxplots.utils import render_template
+
+from styles import RED, PLOT_FORMATS, DARK_GRAY
 
 # create data sources -----------------
 source_csv = pd.read_csv('data.csv', parse_dates=[0])
@@ -39,10 +45,22 @@ sources['capital_gains_no'] = ColumnDataSource(dict(labels=["0.0", "0.25", "0.4"
 sources['capital_gains_yes'] = ColumnDataSource(dict(labels=["0.0", "0.25", "0.4", "0.55"],
                                                      source_ids=["re10", "re11", "re12", "re13"]))
 
+
 # create figure ------------------
-fig = figure(x_axis_type="datetime", tools=[], responsive=True, **PLOT_FORMATS)
+fig = figure(x_axis_type="datetime",
+             tools=[],
+             plot_width=400,
+             plot_height=400,
+             **PLOT_FORMATS)
 fig.set(y_range=Range1d(-9.5, 18.5))
-fig.vbar(x='year', top='reform', source=sources['ref'], line_width=20, bottom=0, color=RED, fill_alpha=0.4)
+fig.vbar(x='year',
+         top='reform',
+         source=sources['ref'],
+         line_width=20,
+         bottom=0,
+         color=RED,
+         fill_alpha=0.4)
+
 fig.title.align = 'center'
 fig.title.text_font_size = '10pt'
 fig.yaxis.axis_label = 'Change in individual income and payroll tax liabilities (Billions)'
@@ -56,16 +74,18 @@ fig.rect(x='year',
          height=1,
          color=DARK_GRAY)
 
-# create components --------------
-title_div = Div(text='Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million', width=550, height=30)
 
-radio_group_text = Div(text="Include Additional Capital Gains Behavior.", width=280, height=18)
+# create components --------------
+title_div = Div(text='Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million', height=30)
+
+radio_group_text = Div(text="Include Additional Capital Gains Behavior.")
 radio_group = RadioGroup(labels=["Without", "With"], active=0)
 sources['radio_group'] = radio_group
 
-elasticity_text = Div(text="Elasticity of Taxable Income", width=280, height=18)
+elasticity_text = Div(text="Elasticity of Taxable Income")
 elasticity_option = RadioButtonGroup(labels=sources['capital_gains_no'].data['labels'], active=0)
 sources['elasticity_option'] = elasticity_option
+
 
 # create callbacks ---------------
 radio_group.callback = CustomJS(args=sources, code="""
@@ -86,10 +106,18 @@ elasticity_option.callback = CustomJS(args=sources, code="""
   ref.trigger('change');
 """)
 
-# create layout -----------------
-grid = column(column(row(children=[widgetbox(radio_group_text), widgetbox(elasticity_text)]),
-              row(radio_group, elasticity_option)),
-              column(title_div, fig))
 
-output_file("index_landscape.html")
-show(grid)
+# create layout -----------------
+controls = column(radio_group_text,
+                  radio_group,
+                  elasticity_text,
+                  elasticity_option)
+
+plots = dict(header=title_div, left=controls, center=fig)
+script, divs = components(plots)
+
+template_args = dict()
+template_args['bokeh_script'] = script
+template_args['plots'] = divs
+template_args['page_title'] = 'Box Plot'
+render_template('responsive', template_args, 'index.html')
