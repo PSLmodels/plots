@@ -1,0 +1,27 @@
+---
+plot_name: Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
+plot_id: box_plot
+content: index.html
+thumbnail: thumbnail.png
+short_description: > 
+    Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
+long_description: >
+    Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
+Concept_credit: >
+    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>.
+Development_credit: >
+    <a href = "https://github.com/GoFroggyRun">Sean Wang</a>.
+OSS_credit: >
+    <a href = "https://github.com/open-source-economics/tax-calculator">
+    Tax-Calculator</a> and
+    <a href = "https://github.com/open-source-economics/taxdata">TaxData</a>
+    for tax computations.
+    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    for visualizations.
+ 
+best_width: "600px"
+best_height: "750px"
+best_width_portrait: "600px"
+best_height_portrait: "750px"
+build_cmd: "python main.py"
+version: 1.0
