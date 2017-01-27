@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import pandas as pd
 
 from bokeh.plotting import output_file, figure, show
 from bokeh.models import (
