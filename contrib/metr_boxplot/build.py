@@ -1,13 +1,15 @@
 import csv
 import numpy as np
 import pandas as pd
-
+from os import path
+from jinja2 import Environment, FileSystemLoader
 from bokeh.plotting import output_file, figure, show
 from bokeh.models import (
     NumeralTickFormatter, FixedTicker, FuncTickFormatter, Span, ColumnDataSource,
     HoverTool, BoxAnnotation, CustomJS, PrintfTickFormatter)
 from bokeh.models.widgets import Slider, RadioButtonGroup, Paragraph
 from bokeh.layouts import column, row, widgetbox
+from bokeh.embed import components
 
 from styles import (PLOT_FORMATS,
                     AXIS_FORMATS,
@@ -23,6 +25,14 @@ tax_rates_file = open('resources/reforms_for_boxplot.csv')
 csv_tax_rates = csv.reader(tax_rates_file)
 tax_rates = list(csv_tax_rates)
 tax_rates_file.close()
+
+# Function to help with format
+def  output_page(**kwargs):
+    here = path.dirname(path.abspath(__file__))
+    j2_env = Environment(loader=FileSystemLoader(here), trim_blocks=True)
+    content = j2_env.get_template('template.j2').render(**kwargs)
+    with open('index.html', 'w') as output_file:
+        output_file.write(content)
 
 #For a given statistic, finds the max, avg and min values as well as the
 #industries/asset type associated with the max and min
@@ -148,10 +158,10 @@ output_file("mettr_reform_boxplot.html")
 p = figure(plot_width = 500, plot_height = 500, x_range=(-0.5,2.5), tools=[])
 
 #format graph title
-p.title.text = "The CIT and Investment Incentives"
-p.title.align = 'center'
-p.title.text_font_size = '16pt'
-p.title.text_font = 'Helvetica'
+# p.title.text = "The CIT and Investment Incentives"
+# p.title.align = 'center'
+# p.title.text_font_size = '16pt'
+# p.title.text_font = 'Helvetica'
 p.xgrid.grid_line_color = None
 p.ygrid.grid_line_color = None
 
@@ -248,5 +258,10 @@ option_widgets = widgetbox(children = [rate_label, rate_buttons,
                                        deductibility_label, deductibility_buttons])
 
 #layout = row(p,option_widgets)
-layout = column(p, option_widgets)
-show(layout)
+# layout = column(p, option_widgets)
+# show(layout)
+plots = dict(metr=column(p))
+script, divs = components(plots)
+output_page(bokeh_script=script,
+            plot_id=p._id,
+            plots=divs)
