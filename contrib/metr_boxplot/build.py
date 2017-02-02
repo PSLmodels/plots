@@ -158,10 +158,10 @@ output_file("mettr_reform_boxplot.html")
 p = figure(plot_width = 500, plot_height = 500, x_range=(-0.5,2.5), tools=[])
 
 #format graph title
-# p.title.text = "The CIT and Investment Incentives"
-# p.title.align = 'center'
-# p.title.text_font_size = '16pt'
-# p.title.text_font = 'Helvetica'
+p.title.text = "The CIT and Investment Incentives"
+p.title.align = 'center'
+p.title.text_font_size = '16pt'
+p.title.text_font = 'Helvetica'
 p.xgrid.grid_line_color = None
 p.ygrid.grid_line_color = None
 
@@ -258,10 +258,10 @@ option_widgets = widgetbox(children = [rate_label, rate_buttons,
                                        deductibility_label, deductibility_buttons])
 
 #layout = row(p,option_widgets)
-# layout = column(p, option_widgets)
-# show(layout)
-plots = dict(metr=column(p))
-script, divs = components(plots)
-output_page(bokeh_script=script,
-            plot_id=p._id,
-            plots=divs)
+layout = column(p, option_widgets)
+show(layout)
+# plots = dict(metr=column(p))
+# script, divs = components(plots)
+# output_page(bokeh_script=script,
+#             plot_id=p._id,
+#             plots=divs)
