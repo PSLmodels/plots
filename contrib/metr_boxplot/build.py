@@ -148,14 +148,15 @@ output_file("mettr_reform_boxplot.html")
 p = figure(plot_width = 500, plot_height = 500, x_range=(-0.5,2.5), tools=[])
 
 #format graph title
-p.title.text = "Marginal Effective Tax Rates"
+p.title.text = "The CIT and Investment Incentives"
 p.title.align = 'center'
 p.title.text_font_size = '16pt'
+p.title.text_font = 'Helvetica'
 p.xgrid.grid_line_color = None
 p.ygrid.grid_line_color = None
 
 #format axis labels
-p.xaxis.axis_label = "Financing"
+p.xaxis.axis_label = "Method of Financing"
 p.xaxis[0].ticker=FixedTicker(ticks=[0,1,2])
 #done as a custom function instead of a categorical axis because
 #categorical axes do not work well with other features
@@ -165,11 +166,14 @@ p.xaxis.formatter=FuncTickFormatter(code="""
         return types[tick]
     };
 """)
-p.yaxis.axis_label = "METR"
+p.yaxis.axis_label = "Marginal Effective Tax Rate"
 p.yaxis[0].formatter = NumeralTickFormatter(format="0%")
+#p.yaxis.bounds = (-90.0, 70.0)
+p.y_range.start = -1.0
+p.y_range.end = 0.70
 
 #line separating positive and negative rates
-zline = Span(location=0, dimension='width', line_alpha=0.2, line_width=2)
+zline = Span(location=0, dimension='width', line_alpha=0.2, line_width=2, line_dash='dashed')
 p.renderers.extend([zline])
 
 #color different regions
