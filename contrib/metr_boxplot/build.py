@@ -208,8 +208,8 @@ p.circle('positions', 'rates', size=12, color = RED, source=ref_source)
 #display rate and asset type when hovering over a glyph
 hover = HoverTool(
         tooltips = [
-            ("Rate: ", "@percents"),
-            ("Asset Type:",  "@industries"),
+            ("Rate", "@percents"),
+            ("Asset Type",  "@industries"),
         ]
     )
 p.add_tools(hover)
