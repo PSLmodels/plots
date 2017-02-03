@@ -198,12 +198,14 @@ p.add_layout(equity_region)
 #draw baseline ranges onto graph
 p.segment('positions', 'lows', 'positions', 'highs', color=BLUE,
     line_width=2, source=base_source)
-p.circle('positions', 'rates', size=12, color = BLUE, source=base_source)
+p.circle('positions', 'rates', size=12, color = BLUE, source=base_source, legend="Baseline")
 
 #draw reformed ranges onto graph
 p.segment('positions', 'lows', 'positions', 'highs', color=RED,
     line_width=2, source=ref_source)
-p.circle('positions', 'rates', size=12, color = RED, source=ref_source)
+p.circle('positions', 'rates', size=12, color = RED, source=ref_source, legend="Reform")
+
+p.legend.location = "bottom_right"
 
 #display rate and asset type when hovering over a glyph
 hover = HoverTool(
