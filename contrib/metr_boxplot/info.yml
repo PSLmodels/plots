@@ -1,0 +1,27 @@
+---
+plot_name: Business Tax Reform Visualization
+plot_id: metr_boxplot
+content: mettr_boxplot_reform.html
+thumbnail: thumbnail.png
+short_description: > 
+    Explore the impact of changing business tax policies on effective tax rates.
+long_description: >
+    Explore the impact of changing business tax policies on effective tax rates.
+Concept_credit: >
+    <a href = "https://www.jasondebacker.com">Jason DeBacker</a>, 
+    <a href = "https://www.github.com/jwgarrison">Justin Garrison</a>, and
+    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>
+Development_credit: >
+    <a href = "https://github.com/jwgarrison">Justin Garrison</a>
+OSS_credit: >
+    <a href = "https://github.com/open-source-economics/B-tax">
+    Cost of Capital Calculator</a> for tax calculations.
+    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    for visualizations.
+ 
+best_width: "100%"
+best_height: "500px"
+best_width_portrait: "500px"
+best_height_portrait: "500px"
+build_cmd: "python build.py"
+version: 1.0

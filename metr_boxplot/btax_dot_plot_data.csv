@@ -1,0 +1,63 @@
+bea_ind_code,Industry,major_industry,mettr_c_base,mettr_c_d_base,mettr_c_e_base,mettr_c_reform,mettr_c_d_reform,mettr_c_e_reform,assets_c
+110C,Farms,"Agriculture, forestry, fishing, and hunting",0.352727252,-0.11908606,0.430054976,0.352728224,-0.11908411,0.430055831,56149634006
+113F,"Forestry,åÊfishing,åÊandåÊrelatedåÊactivities","Forestry,åÊfishing,åÊandåÊrelatedåÊactivities",0.352730027,-0.11908127,0.430057394,0.352730416,-0.119080428,0.430057731,5473690344
+2110,OilåÊandåÊgasåÊextraction,OilåÊandåÊgasåÊextraction,0.350320031,-0.123003047,0.427931227,0.350533495,-0.122566574,0.428119351,11584927155
+2120,"Mining,åÊexceptåÊoilåÊandåÊgas","Mining,åÊexceptåÊoilåÊandåÊgas",0.352709715,-0.11911209,0.430039362,0.352712409,-0.119106565,0.430041729,25055711456
+2130,SupportåÊactivitiesåÊforåÊmining,SupportåÊactivitiesåÊforåÊmining,0.352392921,-0.119594158,0.429757545,0.352446457,-0.119478333,0.429803732,3077151644
+2200,Utilities,Utilities,0.339902206,-0.140530805,0.418843055,0.341625592,-0.137303179,0.420394096,28386295904
+2300,Construction,Construction,0.352729281,-0.119082306,0.430056722,0.352729798,-0.119081168,0.430057165,35575033387
+311A,"Food,åÊbeverage,åÊandåÊtobaccoåÊproducts","Food,åÊbeverage,åÊandåÊtobaccoåÊproducts",0.35265789,-0.119152674,0.429990898,0.352672254,-0.119121241,0.430003243,37953036860
+313T,TextileåÊmillsåÊandåÊtextileåÊproductåÊmills,TextileåÊmillsåÊandåÊtextileåÊproductåÊmills,0.352699616,-0.119093782,0.430028352,0.352706382,-0.119079046,0.430034177,1346265843
+315A,ApparelåÊandåÊleatheråÊandåÊalliedåÊproducts,ApparelåÊandåÊleatheråÊandåÊalliedåÊproducts,0.352726395,-0.119077166,0.430053624,0.352727783,-0.119074136,0.430054817,1023362518
+3210,WoodåÊproducts,WoodåÊproducts,0.352729607,-0.119079664,0.430056883,0.352730165,-0.119078443,0.430057363,7387628211
+3220,PaperåÊproducts,PaperåÊproducts,0.338507876,-0.1357602,0.417103593,0.341181379,-0.130038,0.41941013,11209584634
+3230,PrintingåÊandåÊrelatedåÊsupportåÊactivities,PrintingåÊandåÊrelatedåÊsupportåÊactivities,0.35257527,-0.11924438,0.429915236,0.352606135,-0.119176291,0.429941686,1981551199
+3240,PetroleumåÊandåÊcoalåÊproducts,PetroleumåÊandåÊcoalåÊproducts,0.297124156,-0.183965179,0.379374543,0.307816607,-0.16197196,0.388638133,2.79E+11
+3250,ChemicalåÊproducts,ChemicalåÊproducts,0.352146792,-0.119641875,0.429518872,0.352264206,-0.119384481,0.42961968,43703465771
+3260,PlasticsåÊandåÊrubberåÊproducts,PlasticsåÊandåÊrubberåÊproducts,0.351321068,-0.120692957,0.428771256,0.35158229,-0.120121316,0.428995707,5596273242
+3270,NonmetallicåÊmineralåÊproducts,NonmetallicåÊmineralåÊproducts,0.352699795,-0.119112028,0.430029563,0.352705832,-0.119098769,0.430034745,32368109566
+3310,PrimaryåÊmetals,PrimaryåÊmetals,0.352349788,-0.119480991,0.429708405,0.352426535,-0.119313879,0.429774431,13342906443
+3320,FabricatedåÊmetalåÊproducts,FabricatedåÊmetalåÊproducts,0.352667642,-0.119151333,0.430000354,0.352680353,-0.119123303,0.430011248,10284259536
+3330,Machinery,Manufacturing,0.352588356,-0.119234354,0.429927531,0.352617932,-0.119168947,0.429952845,13716206042
+3340,ComputeråÊandåÊelectronicåÊproducts,ComputeråÊandåÊelectronicåÊproducts,0.351360569,-0.120333327,0.428786306,0.351668886,-0.119640339,0.42904851,25333629638
+3350,"ElectricalåÊequipment,åÊappliances,åÊandåÊcomponents","ElectricalåÊequipment,åÊappliances,åÊandåÊcomponents",0.336833267,-0.129469237,0.415093597,0.34071629,-0.12114295,0.41842578,11313108519
+336M,"MotoråÊvehicles,åÊbodiesåÊandåÊtrailers,åÊandåÊparts","MotoråÊvehicles,åÊbodiesåÊandåÊtrailers,åÊandåÊparts",0.344855774,-0.127990104,0.422854229,0.346517135,-0.124327055,0.424274883,14974963409
+336O,OtheråÊtransportationåÊequipment,OtheråÊtransportationåÊequipment,0.352091061,-0.119627911,0.429462457,0.352216708,-0.119348623,0.429569831,12766973381
+3370,FurnitureåÊandåÊrelatedåÊproducts,FurnitureåÊandåÊrelatedåÊproducts,0.297220381,-0.153520642,0.377436663,0.310284203,-0.127488186,0.388746733,20090341904
+338A,MiscellaneousåÊmanufacturing,MiscellaneousåÊmanufacturing,0.352693426,-0.119107882,0.430023031,0.352702214,-0.119088303,0.430030535,9089234542
+4200,Wholesale trade,Wholesale trade,0.352375781,-0.119465602,0.42973372,0.35244979,-0.119297199,0.429796425,90039233135
+44RT,Retail trade,Retail trade,0.352727273,-0.119078336,0.430054594,0.35272842,-0.119075753,0.430055569,3.38E+11
+4810,AiråÊtransportation,AiråÊtransportation,0.351083483,-0.12162205,0.428598993,0.351250788,-0.121271456,0.42874515,1571147232
+4820,RailroadåÊtransportation,RailroadåÊtransportation,0.352123556,-0.120124843,0.429528736,0.352188087,-0.120011289,0.429587701,11032896011
+4830,WateråÊtransportation,WateråÊtransportation,0.35262622,-0.119239213,0.429965375,0.35264297,-0.119204253,0.429979992,1176205271
+4840,TruckåÊtransportation,TruckåÊtransportation,0.35272027,-0.119094461,0.430048577,0.352722527,-0.119089336,0.430050493,10948311747
+4850,TransitåÊandåÊgroundåÊpassengeråÊtransportation,TransitåÊandåÊgroundåÊpassengeråÊtransportation,0.35269555,-0.119119822,0.430026121,0.352702285,-0.119105059,0.430031899,1118781989
+4860,PipelineåÊtransportation,PipelineåÊtransportation,0.126004264,-0.486231592,0.230930057,0.153861888,-0.433771324,0.255770396,1.69E+11
+487S,OtheråÊtransportationåÊandåÊsupportåÊactivities,OtheråÊtransportationåÊandåÊsupportåÊactivities,0.352690625,-0.119142297,0.430022617,0.352696887,-0.119129801,0.430028143,8030540268
+4930,WarehousingåÊandåÊstorage,WarehousingåÊandåÊstorage,0.352713565,-0.119086372,0.430042009,0.352716904,-0.119078981,0.430044866,3598668666
+5110,PublishingåÊindustriesåÊ(includingåÊsoftware),PublishingåÊindustriesåÊ(includingåÊsoftware),0.352198322,-0.119560513,0.429562901,0.352332754,-0.119245501,0.429675513,18189240929
+5120,MotionåÊpictureåÊandåÊsoundåÊrecordingåÊindustries,MotionåÊpictureåÊandåÊsoundåÊrecordingåÊindustries,0.352720674,-0.119094392,0.430049049,0.352722134,-0.119091349,0.430050326,7903629497
+5130,BroadcastingåÊandåÊtelecommunications,BroadcastingåÊandåÊtelecommunications,0.345692183,-0.130304452,0.423867559,0.34680104,-0.128145916,0.424853044,37781239807
+5140,InformationåÊandåÊdataåÊprocessingåÊservices,InformationåÊandåÊdataåÊprocessingåÊservices,0.312721896,-0.169807854,0.393672435,0.322592982,-0.14769566,0.40200613,4511237655
+5220,CreditåÊintermediationåÊandåÊrelatedåÊactivities,CreditåÊintermediationåÊandåÊrelatedåÊactivities,0.350657439,-0.12129127,0.428159975,0.351111536,-0.120254504,0.428544011,18747534914
+5230,"Securities,åÊcommodityåÊcontracts,åÊandåÊinvestments","Securities,åÊcommodityåÊcontracts,åÊandåÊinvestments",0.352725109,-0.119080777,0.430052603,0.35272687,-0.119076711,0.430054087,12964205961
+5240,InsuranceåÊcarriersåÊandåÊrelatedåÊactivities,InsuranceåÊcarriersåÊandåÊrelatedåÊactivities,0.352592631,-0.119145549,0.429927104,0.352629448,-0.119059488,0.429957976,11602968591
+5250,"Funds,åÊtrusts,åÊandåÊotheråÊfinancialåÊvehicles","Funds,åÊtrusts,åÊandåÊotheråÊfinancialåÊvehicles",0.352719619,-0.118775274,0.430034358,0.352724462,-0.118764467,0.430038491,4948031462
+5310,RealåÊestate,RealåÊestate,0.352629961,-0.119248957,0.42997632,0.352629975,-0.119248929,0.429976333,8.01E+11
+5320,RentalåÊandåÊleasingåÊservicesåÊandåÊlessorsåÊofåÊintangible assets,RentalåÊandåÊleasingåÊservicesåÊandåÊlessorsåÊofåÊintangible assets,0.181176639,-0.364114404,0.276083821,0.217191116,-0.289893704,0.307057872,94922307659
+5411,LegalåÊservices,LegalåÊservices,0.352722619,-0.119085136,0.430050403,0.352725095,-0.119079412,0.430052488,962862341.2
+5412,"MiscellaneousåÊprofessional,åÊscientific,åÊandåÊtechnical services","MiscellaneousåÊprofessional,åÊscientific,åÊandåÊtechnical services",0.352705999,-0.119107546,0.430035345,0.352712026,-0.119093625,0.430040422,9024744786
+5415,ComputeråÊsystemsåÊdesignåÊandåÊrelatedåÊservices,ComputeråÊsystemsåÊdesignåÊandåÊrelatedåÊservices,0.352674791,-0.119123832,0.430005529,0.352694306,-0.119077638,0.430021808,1374891019
+5500,ManagementåÊofåÊcompaniesåÊandåÊenterprises,ManagementåÊofåÊcompaniesåÊandåÊenterprises,0.352308756,-0.119211458,0.429656239,0.35240528,-0.118988011,0.429737471,90930689573
+5610,AdministrativeåÊandåÊsupportåÊservices,AdministrativeåÊandåÊsupportåÊservices,0.35271661,-0.119097471,0.430045181,0.352719972,-0.119089729,0.430048016,5897452906
+5620,WasteåÊmanagementåÊandåÊremediationåÊservices,WasteåÊmanagementåÊandåÊremediationåÊservices,0.352698313,-0.119130748,0.430029485,0.352704554,-0.119118706,0.430035029,9627063296
+6100,Educational services,Educational services,0.35268654,-0.119112936,0.4300187,0.352692012,-0.119100633,0.430023356,3414772377
+6210,AmbulatoryåÊhealthåÊcareåÊservices,AmbulatoryåÊhealthåÊcareåÊservices,0.3526804,-0.119128956,0.430012062,0.3526913,-0.11910432,0.430021319,4368347358
+622H,Hospitals,Health care and social assistance,0.352638943,-0.119170643,0.429976109,0.352653866,-0.119137007,0.429988796,18080790761
+6230,NursingåÊandåÊresidentialåÊcareåÊfacilities,NursingåÊandåÊresidentialåÊcareåÊfacilities,0.29897435,-0.167506876,0.381584295,0.307414398,-0.150339472,0.388855303,3468676.374
+6240,Social assistance,Health care and social assistance,0.352726848,-0.119083487,0.430054487,0.3527276,-0.119081853,0.430055135,2168573768
+711A,"PerformingåÊarts,åÊspectatoråÊsports,åÊmuseums,åÊandåÊrelated activities","PerformingåÊarts,åÊspectatoråÊsports,åÊmuseums,åÊandåÊrelated activities",0.35083803,-0.12187051,0.428386339,0.351033925,-0.121483563,0.428560476,6022808733
+7130,"Amusements,åÊgambling,åÊandåÊrecreationåÊindustries","Amusements,åÊgambling,åÊandåÊrecreationåÊindustries",0.351076813,-0.121642015,0.42859562,0.351246184,-0.121305954,0.428746144,22318494699
+7210,Accommodation,Accommodation,0.352732084,-0.119076184,0.430059117,0.352732185,-0.119075958,0.430059203,1.02E+11
+7220,FoodåÊservicesåÊandåÊdrinkingåÊplaces,FoodåÊservicesåÊandåÊdrinkingåÊplaces,0.351190122,-0.120180136,0.428623071,0.351522732,-0.119438008,0.428906718,39598672466
+8100,"OtheråÊservices,åÊexceptåÊgovernment","OtheråÊservices,åÊexceptåÊgovernment",0.352715255,-0.119106513,0.430044377,0.352715531,-0.119105913,0.430044614,22666019837
