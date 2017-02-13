@@ -1,7 +1,7 @@
 ---
 plot_name: Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
 plot_id: box_plot
-content: index.html
+content: index_landscape.html
 thumbnail: thumbnail.png
 short_description: > 
     Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
