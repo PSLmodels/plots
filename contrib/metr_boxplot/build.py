@@ -158,7 +158,7 @@ output_file("mettr_reform_boxplot.html")
 p = figure(plot_width = 500, plot_height = 500, x_range=(-0.5,2.5), tools=[])
 
 #format graph title
-p.title.text = "The CIT and Investment Incentives"
+p.title.text = "Taxes and Investment Incentives"
 p.title.align = 'center'
 p.title.text_font_size = '16pt'
 p.title.text_font = 'Helvetica'
@@ -221,6 +221,7 @@ source_change_code = """
         var rate_option = rate.active,
             depreciation_option = depreciation.active
             deductibility_option = deductibility.active
+            individual_option = individual.active
             index = deductibility_option + depreciation_option*2 + rate_option*8
             sources = %s,
             new_source_data = sources[index].data;
@@ -244,20 +245,28 @@ deductibility_buttons = RadioButtonGroup(
             active = 0,
             callback = callback,
             width=500)
+individual_buttons = RadioButtonGroup(
+            labels = ["Yes", "No"],
+            active = 0,
+            callback = callback,
+            width=500)
 
 rate_label = Paragraph(text="Corporate Tax Rate")
 depreciation_label = Paragraph(text="Depreciation System")
 deductibility_label = Paragraph(text="Interest Deductibility")
+individual_label = Paragraph(text="Include Individual Income Taxes")
 
 callback.args['rate'] = rate_buttons
 callback.args['depreciation'] = depreciation_buttons
 callback.args['deductibility'] = deductibility_buttons
+callback.args['individual'] = individual_buttons
 callback.args['ref_source'] = ref_source
 
 #display the graph
 option_widgets = widgetbox(children = [rate_label, rate_buttons,
                                        depreciation_label, depreciation_buttons,
-                                       deductibility_label, deductibility_buttons])
+                                       deductibility_label, deductibility_buttons,
+                                       individual_label, individual_buttons])
 
 #layout = row(p,option_widgets)
 layout = column(p, option_widgets)
