@@ -113,6 +113,7 @@ controls = column(radio_group_text,
                   elasticity_text,
                   elasticity_option)
 
+# Render each type of widget into the template. Positions are reflected into responsive_flexbox.j2
 plots = dict(header=title_div, left=controls, center=fig)
 script, divs = components(plots)
 

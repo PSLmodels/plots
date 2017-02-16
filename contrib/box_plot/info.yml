@@ -1,8 +1,8 @@
 ---
 plot_name: Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
 plot_id: box_plot
-content: index_landscape.html
-thumbnail: thumbnail.png
+content: index.html
+thumbnail: alt_thumbnail.png
 short_description: > 
     Revenue Impact of a 4% Surtax on Taxpayers with Adjusted Gross Income over $5 Million
 long_description: >
@@ -18,9 +18,8 @@ OSS_credit: >
     for tax computations.
     <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
     for visualizations.
- 
-best_width: "600px"
-best_height: "750px"
+best_width: "800px"
+best_height: "500px"
 best_width_portrait: "600px"
 best_height_portrait: "750px"
 build_cmd: "python main.py"
