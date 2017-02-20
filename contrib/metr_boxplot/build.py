@@ -209,63 +209,12 @@ def make_reform_sources(plot_df):
 
     return sources
 
-
-#create an array of column data sources for the possible reforms
-# def make_reform_sources():
-#     sources={}
-#     for policy in range(0,56):
-#         standard = prepare_values(policy*3+4)
-#         debt = prepare_values(policy*3+5)
-#         equity = prepare_values(policy*3+6)
-#
-#         lows = [standard[2], debt[2], equity[2]]
-#         highs = [standard[0], debt[0], equity[0]]
-#         rates = [standard[0], debt[0], equity[0], standard[1], debt[1], equity[1],
-#             standard[2], debt[2], equity[2]]
-#         industries = [standard[3], debt[3], equity[3], "Average", "Average", "Average",
-#             standard[4], debt[4], equity[4]]
-#
-#         percents = []
-#         for rate in rates:
-#             percents.append(str(round(rate*100,1)) + "%")
-#
-#         types = ["Typically Financed", "Debt Financed", "Equity Financed"]
-#         typeNums = [0,1,2]
-#         typeNums_right = [0.1, 1.1, 2.1]
-#         positions = [0.1, 1.1, 2.1, 0.1, 1.1, 2.1, 0.1, 1.1, 2.1]
-#
-#         source = ColumnDataSource(
-#             data=dict(
-#                 positions = positions,
-#                 rates = rates,
-#                 highs = highs+highs+highs,
-#                 lows = lows+lows+lows,
-#                 industries = industries,
-#                 percents = percents
-#             )
-#         )
-#
-#         sources['_' + str(policy)] = source
-#
-#     return sources
-
 reform_sources = make_reform_sources(plot_df)
 base_sources = make_base_sources(plot_df)
 base_source = ColumnDataSource(base_sources['mettr'].data)
 ref_source = ColumnDataSource(reform_sources['mettr_1_2_1'].data)
 
 #I have no idea why this step is necessary, but its the only way it can be passed to js
-# policy_indices = []
-# for i in range(0,56):
-#     policy_indices.append(i)
-# policy_indices_underscore = []
-# for i in range(0,56):
-#     policy_indices_underscore.append("_" + str(i))
-# dict_of_sources = dict(zip(policy_indices, policy_indices_underscore))
-# js_source_array = str(dict_of_sources).replace("'","")
-
-# can I edit below to update index js pulls from?
-# better way to do this?
 policy_indices = []
 for tax in ('mettr', 'metr'):
     i_num = 0
@@ -281,8 +230,8 @@ for tax in ('mettr', 'metr'):
 dict_of_sources = dict(zip(policy_indices, policy_indices))
 js_source_array = str(dict_of_sources).replace("'","")
 
-print 'js_source_array: ', js_source_array
-# quit()
+# print 'js_source_array: ', js_source_array
+# # quit()
 
 #output to static html file
 output_file("mettr_reform_boxplot.html")
@@ -366,6 +315,7 @@ reform_source_change_code = """
             new_source_data = reform_sources[index].data;
         ref_source.data = new_source_data;
     """ % js_source_array
+
 callback = CustomJS(args=reform_sources, code=reform_source_change_code)
 # base_source_change_code = """
 #         var individual_option = individual.active
@@ -379,6 +329,7 @@ callback = CustomJS(args=reform_sources, code=reform_source_change_code)
 #     """
 # callback = CustomJS(args=base_sources, code=base_source_change_code)
 
+# Create buttons
 rate_buttons = RadioButtonGroup(
             labels = ["39.6%", "35%", "30%", "25%", "20%", "15%", "0%"],
             active = 1,
@@ -417,11 +368,6 @@ option_widgets = widgetbox(children = [rate_label, rate_buttons,
                                        deductibility_label, deductibility_buttons,
                                        individual_label, individual_buttons])
 
-#layout = row(p,option_widgets)
+
 layout = column(p, option_widgets)
 show(layout)
-# plots = dict(metr=column(p))
-# script, divs = components(plots)
-# output_page(bokeh_script=script,
-#             plot_id=p._id,
-#             plots=divs)
