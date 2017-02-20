@@ -119,88 +119,93 @@ def prepare_values(column):
 
 
 #create a column data source for the base policy
-def make_base_source(plot_df):
-    standard = plot_df[plot_df['rate_type']=='mettr_c_1_2_1']
-    debt = plot_df[plot_df['rate_type']=='mettr_c_d_1_2_1']
-    equity = plot_df[plot_df['rate_type']=='mettr_c_e_1_2_1']
+def make_base_sources(plot_df):
+    sources={}
+    for tax in ('mettr', 'metr'):
+        standard = plot_df[plot_df['rate_type']==tax+'_c_1_2_1']
+        debt = plot_df[plot_df['rate_type']==tax+'_c_d_1_2_1']
+        equity = plot_df[plot_df['rate_type']==tax+'_c_e_1_2_1']
 
-    low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
-    high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
-    avg_rates = [float(standard[standard['statistic']=='avg']['value']), float(debt[debt['statistic']=='avg']['value']), float(equity[equity['statistic']=='avg']['value'])]
-    rates = high_rates + avg_rates + low_rates
-    low_assets = [(standard[standard['statistic']=='min']['asset_name']).values[0], (debt[debt['statistic']=='min']['asset_name']).values[0], (equity[equity['statistic']=='min']['asset_name']).values[0]]
-    high_assets = [(standard[standard['statistic']=='max']['asset_name']).values[0], (debt[debt['statistic']=='max']['asset_name']).values[0], (equity[equity['statistic']=='max']['asset_name']).values[0]]
-    avg_assets = [(standard[standard['statistic']=='avg']['asset_name']).values[0], (debt[debt['statistic']=='avg']['asset_name']).values[0], (equity[equity['statistic']=='avg']['asset_name']).values[0]]
-    assets = high_assets + avg_assets + low_assets
+        low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
+        high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
+        avg_rates = [float(standard[standard['statistic']=='avg']['value']), float(debt[debt['statistic']=='avg']['value']), float(equity[equity['statistic']=='avg']['value'])]
+        rates = high_rates + avg_rates + low_rates
+        low_assets = [(standard[standard['statistic']=='min']['asset_name']).values[0], (debt[debt['statistic']=='min']['asset_name']).values[0], (equity[equity['statistic']=='min']['asset_name']).values[0]]
+        high_assets = [(standard[standard['statistic']=='max']['asset_name']).values[0], (debt[debt['statistic']=='max']['asset_name']).values[0], (equity[equity['statistic']=='max']['asset_name']).values[0]]
+        avg_assets = [(standard[standard['statistic']=='avg']['asset_name']).values[0], (debt[debt['statistic']=='avg']['asset_name']).values[0], (equity[equity['statistic']=='avg']['asset_name']).values[0]]
+        assets = high_assets + avg_assets + low_assets
 
-    percents = []
-    for rate in rates:
-        percents.append(str(round(rate*100,1)) + "%")
+        percents = []
+        for rate in rates:
+            percents.append(str(round(rate*100,1)) + "%")
 
-    types = ["Typically Financed", "Debt Financed", "Equity Financed"]
-    typeNums = [0,1,2]
-    typeNums_left = [-0.1, 0.9, 1.9]
-    positions = [-0.1, 0.9, 1.9, -0.1, 0.9, 1.9, -0.1, 0.9, 1.9]
+        types = ["Typically Financed", "Debt Financed", "Equity Financed"]
+        typeNums = [0,1,2]
+        typeNums_left = [-0.1, 0.9, 1.9]
+        positions = [-0.1, 0.9, 1.9, -0.1, 0.9, 1.9, -0.1, 0.9, 1.9]
 
-    source = ColumnDataSource(
-        data=dict(
-            positions = positions,
-            rates = rates,
-            highs = high_rates+high_rates+high_rates,
-            lows = low_rates+low_rates+low_rates,
-            assets = assets,
-            percents = percents
+        source = ColumnDataSource(
+            data=dict(
+                positions = positions,
+                rates = rates,
+                highs = high_rates+high_rates+high_rates,
+                lows = low_rates+low_rates+low_rates,
+                assets = assets,
+                percents = percents
+            )
         )
-    )
 
-    return source
+        sources[tax] = source
+
+    return sources
 
 #create an array of column data sources for the possible reforms
 def make_reform_sources(plot_df):
     sources={}
-    i_num = 0
-    for i in range(len(corp_rates)):
-        j_num = 0
-        for j in range(len(depr)):
-            m_num = 0
-            for m in range(len(interest_hair)):
-                standard = plot_df[plot_df['rate_type']=='mettr_c_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                debt = plot_df[plot_df['rate_type']=='mettr_c_d_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                equity = plot_df[plot_df['rate_type']=='mettr_c_e_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
+    for tax in ('mettr', 'metr'):
+        i_num = 0
+        for i in range(len(corp_rates)):
+            j_num = 0
+            for j in range(len(depr)):
+                m_num = 0
+                for m in range(len(interest_hair)):
+                    standard = plot_df[plot_df['rate_type']==tax+'_c_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
+                    debt = plot_df[plot_df['rate_type']==tax+'_c_d_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
+                    equity = plot_df[plot_df['rate_type']==tax+'_c_e_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
 
-                low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
-                high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
-                avg_rates = [float(standard[standard['statistic']=='avg']['value']), float(debt[debt['statistic']=='avg']['value']), float(equity[equity['statistic']=='avg']['value'])]
-                rates = high_rates + avg_rates + low_rates
-                low_assets = [(standard[standard['statistic']=='min']['asset_name']).values[0], (debt[debt['statistic']=='min']['asset_name']).values[0], (equity[equity['statistic']=='min']['asset_name']).values[0]]
-                high_assets = [(standard[standard['statistic']=='max']['asset_name']).values[0], (debt[debt['statistic']=='max']['asset_name']).values[0], (equity[equity['statistic']=='max']['asset_name']).values[0]]
-                avg_assets = [(standard[standard['statistic']=='avg']['asset_name']).values[0], (debt[debt['statistic']=='avg']['asset_name']).values[0], (equity[equity['statistic']=='avg']['asset_name']).values[0]]
-                assets = high_assets + avg_assets + low_assets
+                    low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
+                    high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
+                    avg_rates = [float(standard[standard['statistic']=='avg']['value']), float(debt[debt['statistic']=='avg']['value']), float(equity[equity['statistic']=='avg']['value'])]
+                    rates = high_rates + avg_rates + low_rates
+                    low_assets = [(standard[standard['statistic']=='min']['asset_name']).values[0], (debt[debt['statistic']=='min']['asset_name']).values[0], (equity[equity['statistic']=='min']['asset_name']).values[0]]
+                    high_assets = [(standard[standard['statistic']=='max']['asset_name']).values[0], (debt[debt['statistic']=='max']['asset_name']).values[0], (equity[equity['statistic']=='max']['asset_name']).values[0]]
+                    avg_assets = [(standard[standard['statistic']=='avg']['asset_name']).values[0], (debt[debt['statistic']=='avg']['asset_name']).values[0], (equity[equity['statistic']=='avg']['asset_name']).values[0]]
+                    assets = high_assets + avg_assets + low_assets
 
-                percents = []
-                for rate in rates:
-                    percents.append(str(round(rate*100,1)) + "%")
+                    percents = []
+                    for rate in rates:
+                        percents.append(str(round(rate*100,1)) + "%")
 
-                types = ["Typically Financed", "Debt Financed", "Equity Financed"]
-                typeNums = [0,1,2]
-                typeNums_right = [0.1, 1.1, 2.1]
-                positions = [0.1, 1.1, 2.1, 0.1, 1.1, 2.1, 0.1, 1.1, 2.1]
+                    types = ["Typically Financed", "Debt Financed", "Equity Financed"]
+                    typeNums = [0,1,2]
+                    typeNums_right = [0.1, 1.1, 2.1]
+                    positions = [0.1, 1.1, 2.1, 0.1, 1.1, 2.1, 0.1, 1.1, 2.1]
 
-                source = ColumnDataSource(
-                    data=dict(
-                        positions = positions,
-                        rates = rates,
-                        highs = high_rates+high_rates+high_rates,
-                        lows = low_rates+low_rates+low_rates,
-                        assets = assets,
-                        percents = percents
+                    source = ColumnDataSource(
+                        data=dict(
+                            positions = positions,
+                            rates = rates,
+                            highs = high_rates+high_rates+high_rates,
+                            lows = low_rates+low_rates+low_rates,
+                            assets = assets,
+                            percents = percents
+                        )
                     )
-                )
 
-                sources['mettr_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)] = source
-                m_num+=1
-            j_num+=1
-        i_num+=1
+                    sources[tax+'_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)] = source
+                    m_num+=1
+                j_num+=1
+            i_num+=1
 
     return sources
 
@@ -244,20 +249,39 @@ def make_reform_sources(plot_df):
 #
 #     return sources
 
-sources = make_reform_sources(plot_df)
-base_source = make_base_source(plot_df)
-ref_source = ColumnDataSource(sources['mettr_1_2_1'].data)
+reform_sources = make_reform_sources(plot_df)
+base_sources = make_base_sources(plot_df)
+base_source = ColumnDataSource(base_sources['mettr'].data)
+ref_source = ColumnDataSource(reform_sources['mettr_1_2_1'].data)
 
 #I have no idea why this step is necessary, but its the only way it can be passed to js
+# policy_indices = []
+# for i in range(0,56):
+#     policy_indices.append(i)
+# policy_indices_underscore = []
+# for i in range(0,56):
+#     policy_indices_underscore.append("_" + str(i))
+# dict_of_sources = dict(zip(policy_indices, policy_indices_underscore))
+# js_source_array = str(dict_of_sources).replace("'","")
+
+# can I edit below to update index js pulls from?
+# better way to do this?
 policy_indices = []
-for i in range(0,56):
-    policy_indices.append(i)
-policy_indices_underscore = []
-for i in range(0,56):
-    policy_indices_underscore.append("_" + str(i))
-dict_of_sources = dict(zip(policy_indices, policy_indices_underscore))
+for tax in ('mettr', 'metr'):
+    i_num = 0
+    for i in range(len(corp_rates)):
+        j_num = 0
+        for j in range(len(depr)):
+            m_num = 0
+            for m in range(len(interest_hair)):
+                policy_indices.append(tax+'_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num))
+                m_num+=1
+            j_num+=1
+        i_num+=1
+dict_of_sources = dict(zip(policy_indices, policy_indices))
 js_source_array = str(dict_of_sources).replace("'","")
-# print 'js_source_array: ', js_source_array
+
+print 'js_source_array: ', js_source_array
 # quit()
 
 #output to static html file
@@ -326,28 +350,34 @@ hover = HoverTool(
 p.add_tools(hover)
 
 #javascript code to change the data source based on slider inputs
-# source_change_code = """
-#         var rate_option = rate.active,
-#             depreciation_option = depreciation.active
-#             deductibility_option = deductibility.active
-#             individual_option = individual.active
-#             index = deductibility_option + depreciation_option*2 + rate_option*8
-#             sources = %s,
-#             new_source_data = sources[index].data;
-#         ref_source.data = new_source_data;
-#     """ % js_source_array
-source_change_code = """
+reform_source_change_code = """
         var rate_option = rate.active,
             depreciation_option = depreciation.active
             deductibility_option = deductibility.active
             individual_option = individual.active
-            index = 'mettr_'+ str(rate_option) + '_' + str(depreciation_option) + '_' + str(deductibility_option)
-            sources = %s,
-            new_source_data = sources[index].data;
+            tax = 'mettr_'
+        if (individual.active == 1) {
+            tax == 'metr_';
+        } else {
+            tax == 'mettr_';
+        }
+            index = tax + String(rate_option) + '_' + String(depreciation_option) + '_' + String(deductibility_option)
+            reform_sources = %s,
+            new_source_data = reform_sources[index].data;
         ref_source.data = new_source_data;
     """ % js_source_array
-
-callback = CustomJS(args=sources, code=source_change_code)
+callback = CustomJS(args=reform_sources, code=reform_source_change_code)
+# base_source_change_code = """
+#         var individual_option = individual.active
+#             index = 'mettr'
+#         if (individual_option == 1) {
+#             index == 'metr';
+#         }
+#         var base_sources = %s,
+#             new_source_data = base_sources[index].data;
+#         base_source.data = new_source_data;
+#     """
+# callback = CustomJS(args=base_sources, code=base_source_change_code)
 
 rate_buttons = RadioButtonGroup(
             labels = ["39.6%", "35%", "30%", "25%", "20%", "15%", "0%"],
