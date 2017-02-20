@@ -344,7 +344,7 @@ p.legend.location = "bottom_right"
 hover = HoverTool(
         tooltips = [
             ("Rate", "@percents"),
-            ("Asset Type",  "@industries"),
+            ("Asset Type",  "@assets"),
         ]
     )
 p.add_tools(hover)
@@ -361,7 +361,7 @@ reform_source_change_code = """
         } else {
             tax == 'mettr_';
         }
-            index = tax + String(rate_option) + '_' + String(depreciation_option) + '_' + String(deductibility_option)
+        var index = tax + String(rate_option) + '_' + String(depreciation_option) + '_' + String(deductibility_option)
             reform_sources = %s,
             new_source_data = reform_sources[index].data;
         ref_source.data = new_source_data;
