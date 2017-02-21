@@ -300,34 +300,22 @@ p.add_tools(hover)
 
 #javascript code to change the data source based on slider inputs
 reform_source_change_code = """
-        var rate_option = rate.active,
-            depreciation_option = depreciation.active
-            deductibility_option = deductibility.active
-            individual_option = individual.active
-            tax = 'mettr_'
-        if (individual.active == 1) {
-            tax == 'metr_';
-        } else {
-            tax == 'mettr_';
-        }
-        var index = tax + String(rate_option) + '_' + String(depreciation_option) + '_' + String(deductibility_option)
-            reform_sources = %s,
-            new_source_data = reform_sources[index].data;
-        ref_source.data = new_source_data;
+
+    // set reform data source
+    var tax = individual.active === 1 ? 'metr' : 'mettr';
+    var parts = [tax,
+                 rate.active.toString(),
+                 depreciation.active.toString(),
+                 deductibility.active.toString()];
+    var reform_sources = %s;
+    ref_source.data = reform_sources[parts.join('_')].data;
+
+    // set baseline data source
+    var bs_source = individual.active === 1 ? base_metr : base_mettr;
+    base_source.data = bs_source.data;
     """ % js_source_array
 
 callback = CustomJS(args=reform_sources, code=reform_source_change_code)
-# base_source_change_code = """
-#         var individual_option = individual.active
-#             index = 'mettr'
-#         if (individual_option == 1) {
-#             index == 'metr';
-#         }
-#         var base_sources = %s,
-#             new_source_data = base_sources[index].data;
-#         base_source.data = new_source_data;
-#     """
-# callback = CustomJS(args=base_sources, code=base_source_change_code)
 
 # Create buttons
 rate_buttons = RadioButtonGroup(
@@ -361,6 +349,9 @@ callback.args['depreciation'] = depreciation_buttons
 callback.args['deductibility'] = deductibility_buttons
 callback.args['individual'] = individual_buttons
 callback.args['ref_source'] = ref_source
+callback.args['base_source'] = base_source
+callback.args['base_metr'] = base_sources['metr']
+callback.args['base_mettr'] = base_sources['mettr']
 
 #display the graph
 option_widgets = widgetbox(children = [rate_label, rate_buttons,
