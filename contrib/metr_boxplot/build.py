@@ -20,16 +20,10 @@ from styles import (PLOT_FORMATS,
                     RED,
                     BLUE)
 
-#create list of lists containing data
-tax_rates_file = open('resources/reforms_for_boxplot.csv')
-csv_tax_rates = csv.reader(tax_rates_file)
-tax_rates = list(csv_tax_rates)
-tax_rates_file.close()
-
-
 # Read in and format data for better handling
 df = pd.DataFrame.from_csv('resources/reforms_for_boxplot.csv')
 
+# Show dictionaries of reforms here for (1) refernence and (2) for length
 corp_rates = [{'btax_betr_corp': .396},{'btax_betr_corp': .35},{'btax_betr_corp': .30},
               {'btax_betr_corp': .25},{'btax_betr_corp': .20},
               {'btax_betr_corp': .15},{'btax_betr_corp': 0.}]
@@ -49,36 +43,28 @@ depr  = [{'btax_depr_3yr_tax_Switch': True, 'btax_depr_5yr_tax_Switch': True,
         'btax_depr_expense_inventory':True,'btax_depr_expense_land':True}]
 interest_hair = [{'btax_other_hair': 0.},{'btax_other_hair': 1.}]
 
+# Create new array with only elements necessary for plots (max, min, avg values by reform)
 plot_df = pd.DataFrame([['this','that','other', 0.0]], columns=['asset_name', 'rate_type', 'statistic', 'value'])
 for tax in ('mettr_c_', 'metr_c_'):
     for fin in ('','d_','e_'):
-        i_num = 0
         for i in range(len(corp_rates)):
-            j_num = 0
             for j in range(len(depr)):
-                m_num = 0
                 for m in range(len(interest_hair)):
-                    val1= df.loc[df[tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)].idxmax()][tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                    rate_type1 = tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)
-                    asset1 = df.loc[df[tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)].idxmax()]['Asset']
+                    val1= df.loc[df[tax+fin+str(i)+'_'+str(j)+'_'+str(m)].idxmax()][tax+fin+str(i)+'_'+str(j)+'_'+str(m)]
+                    rate_type1 = tax+fin+str(i)+'_'+str(j)+'_'+str(m)
+                    asset1 = df.loc[df[tax+fin+str(i)+'_'+str(j)+'_'+str(m)].idxmax()]['Asset']
 
-                    val2= df.loc[df[tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)].idxmin()][tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                    rate_type2 = tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)
-                    asset2 = df.loc[df[tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)].idxmin()]['Asset']
+                    val2= df.loc[df[tax+fin+str(i)+'_'+str(j)+'_'+str(m)].idxmin()][tax+fin+str(i)+'_'+str(j)+'_'+str(m)]
+                    rate_type2 = tax+fin+str(i)+'_'+str(j)+'_'+str(m)
+                    asset2 = df.loc[df[tax+fin+str(i)+'_'+str(j)+'_'+str(m)].idxmin()]['Asset']
 
-                    val3 = df.mean()[tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                    rate_type3 = tax+fin+str(i_num)+'_'+str(j_num)+'_'+str(m_num)
+                    val3 = df.mean()[tax+fin+str(i)+'_'+str(j)+'_'+str(m)]
+                    rate_type3 = tax+fin+str(i)+'_'+str(j)+'_'+str(m)
 
                     # put values in dictionary and then append to df
                     out_dict  = {'value':(val1, val2, val3), 'rate_type':(rate_type1, rate_type2, rate_type3), 'statistic':('max','min','avg'),'asset_name':(asset1, asset2, 'Average')}
                     out_df = pd.DataFrame.from_dict(out_dict)
                     plot_df = (plot_df.append([out_df],ignore_index=True))#.copy().reset_index()
-
-                    m_num+=1
-                j_num+=1
-            i_num+=1
-
-
 
 # Function to help with format
 def  output_page(**kwargs):
@@ -88,43 +74,14 @@ def  output_page(**kwargs):
     with open('index.html', 'w') as output_file:
         output_file.write(content)
 
-#For a given statistic, finds the max, avg and min values as well as the
-#industries/asset type associated with the max and min
-def prepare_values(column):
 
-    summary = []
-    values = []
-
-    assets = []
-    weighted_rates = []
-    for index in range(1, len(tax_rates)):
-        assets.append(float(tax_rates[index][10]))
-    total_assets = sum(assets)
-
-
-    #read statistic values in from array
-    for index in range(1,len(tax_rates)):
-        values.append(float(tax_rates[index][column]))
-
-    #add max, avg and min values to summary
-    summary.append(max(values))
-
-    summary.append(np.mean(values))
-    summary.append(min(values))
-
-    summary.append(tax_rates[values.index(max(values))+1][1])
-    summary.append(tax_rates[values.index(min(values))+1][1])
-
-    return summary
-
-
-#create a column data source for the base policy
+#create an array of column data sources for the baseline policy (for mettr and metr)
 def make_base_sources(plot_df):
     sources={}
     for tax in ('mettr', 'metr'):
-        standard = plot_df[plot_df['rate_type']==tax+'_c_1_2_1']
-        debt = plot_df[plot_df['rate_type']==tax+'_c_d_1_2_1']
-        equity = plot_df[plot_df['rate_type']==tax+'_c_e_1_2_1']
+        standard = plot_df[plot_df['rate_type']==tax+'_c_1_2_0']
+        debt = plot_df[plot_df['rate_type']==tax+'_c_d_1_2_0']
+        equity = plot_df[plot_df['rate_type']==tax+'_c_e_1_2_0']
 
         low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
         high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
@@ -163,23 +120,30 @@ def make_base_sources(plot_df):
 def make_reform_sources(plot_df):
     sources={}
     for tax in ('mettr', 'metr'):
-        i_num = 0
         for i in range(len(corp_rates)):
-            j_num = 0
             for j in range(len(depr)):
-                m_num = 0
                 for m in range(len(interest_hair)):
-                    standard = plot_df[plot_df['rate_type']==tax+'_c_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                    debt = plot_df[plot_df['rate_type']==tax+'_c_d_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
-                    equity = plot_df[plot_df['rate_type']==tax+'_c_e_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)]
+                    standard = plot_df[plot_df['rate_type']==tax+'_c_'+str(i)+'_'+str(j)+'_'+str(m)]
+                    debt = plot_df[plot_df['rate_type']==tax+'_c_d_'+str(i)+'_'+str(j)+'_'+str(m)]
+                    equity = plot_df[plot_df['rate_type']==tax+'_c_e_'+str(i)+'_'+str(j)+'_'+str(m)]
 
                     low_rates = [float(standard[standard['statistic']=='min']['value']), float(debt[debt['statistic']=='min']['value']), float(equity[equity['statistic']=='min']['value'])]
                     high_rates = [float(standard[standard['statistic']=='max']['value']), float(debt[debt['statistic']=='max']['value']), float(equity[equity['statistic']=='max']['value'])]
                     avg_rates = [float(standard[standard['statistic']=='avg']['value']), float(debt[debt['statistic']=='avg']['value']), float(equity[equity['statistic']=='avg']['value'])]
-                    rates = high_rates + avg_rates + low_rates
+
                     low_assets = [(standard[standard['statistic']=='min']['asset_name']).values[0], (debt[debt['statistic']=='min']['asset_name']).values[0], (equity[equity['statistic']=='min']['asset_name']).values[0]]
                     high_assets = [(standard[standard['statistic']=='max']['asset_name']).values[0], (debt[debt['statistic']=='max']['asset_name']).values[0], (equity[equity['statistic']=='max']['asset_name']).values[0]]
                     avg_assets = [(standard[standard['statistic']=='avg']['asset_name']).values[0], (debt[debt['statistic']=='avg']['asset_name']).values[0], (equity[equity['statistic']=='avg']['asset_name']).values[0]]
+
+                    # this if statement replaces high and low with average when
+                    # they are all equal
+                    if np.all(np.round(low_rates,decimals=2) == np.round(high_rates,decimals=2)):
+                        low_rates = avg_rates
+                        high_rates = avg_rates
+                        low_assets = avg_assets
+                        high_assets = avg_assets
+
+                    rates = high_rates + avg_rates + low_rates
                     assets = high_assets + avg_assets + low_assets
 
                     percents = []
@@ -202,36 +166,25 @@ def make_reform_sources(plot_df):
                         )
                     )
 
-                    sources[tax+'_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num)] = source
-                    m_num+=1
-                j_num+=1
-            i_num+=1
+                    sources[tax+'_'+str(i)+'_'+str(j)+'_'+str(m)] = source
 
     return sources
 
 reform_sources = make_reform_sources(plot_df)
 base_sources = make_base_sources(plot_df)
 base_source = ColumnDataSource(base_sources['mettr'].data)
-ref_source = ColumnDataSource(reform_sources['mettr_1_2_1'].data)
+ref_source = ColumnDataSource(reform_sources['mettr_1_2_0'].data)
 
-#I have no idea why this step is necessary, but its the only way it can be passed to js
+#This step creates a dictionary of keys for the columnsources pass to the plots
 policy_indices = []
 for tax in ('mettr', 'metr'):
-    i_num = 0
     for i in range(len(corp_rates)):
-        j_num = 0
         for j in range(len(depr)):
-            m_num = 0
             for m in range(len(interest_hair)):
-                policy_indices.append(tax+'_'+str(i_num)+'_'+str(j_num)+'_'+str(m_num))
-                m_num+=1
-            j_num+=1
-        i_num+=1
+                policy_indices.append(tax+'_'+str(i)+'_'+str(j)+'_'+str(m))
 dict_of_sources = dict(zip(policy_indices, policy_indices))
 js_source_array = str(dict_of_sources).replace("'","")
 
-# print 'js_source_array: ', js_source_array
-# # quit()
 
 #output to static html file
 output_file("mettr_reform_boxplot.html")
@@ -261,7 +214,7 @@ p.xaxis.formatter=FuncTickFormatter(code="""
 p.yaxis.axis_label = "Marginal Effective Tax Rate"
 p.yaxis[0].formatter = NumeralTickFormatter(format="0%")
 #p.yaxis.bounds = (-90.0, 70.0)
-p.y_range.start = -1.0
+p.y_range.start = -1.6
 p.y_range.end = 0.70
 
 #line separating positive and negative rates
