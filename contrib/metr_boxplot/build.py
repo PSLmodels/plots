@@ -214,8 +214,8 @@ p.xaxis.formatter=FuncTickFormatter(code="""
 p.yaxis.axis_label = "Marginal Effective Tax Rate"
 p.yaxis[0].formatter = NumeralTickFormatter(format="0%")
 #p.yaxis.bounds = (-90.0, 70.0)
-p.y_range.start = -1.6
-p.y_range.end = 0.70
+# p.y_range.start = -1.6
+# p.y_range.end = 0.70
 
 #line separating positive and negative rates
 zline = Span(location=0, dimension='width', line_alpha=0.2, line_width=2, line_dash='dashed')
