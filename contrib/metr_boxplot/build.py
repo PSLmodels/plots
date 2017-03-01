@@ -22,6 +22,13 @@ from styles import (PLOT_FORMATS,
 
 # Read in and format data for better handling
 df = pd.DataFrame.from_csv('resources/reforms_for_boxplot.csv')
+# Drop inventories b/c differnet system to deduct
+df = df[df['Asset']!='Inventories'].copy()
+# Drop groups of assets b/c want to look at individual asset types
+df = df[df['Asset']!='All Investments'].copy()
+df = df[df['Asset']!='Equipment'].copy()
+df = df[df['Asset']!='Structures'].copy()
+df = df[df['Asset']!='Intellectual Property'].copy()
 
 # Show dictionaries of reforms here for (1) refernence and (2) for length
 corp_rates = [{'btax_betr_corp': .396},{'btax_betr_corp': .35},{'btax_betr_corp': .30},
