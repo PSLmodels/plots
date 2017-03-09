@@ -8,11 +8,9 @@ short_description: >
 long_description: >
     Explore the impact of changing business tax policies on effective tax rates.
 Concept_credit: >
-    <a href = "https://www.jasondebacker.com">Jason DeBacker</a>, 
-    <a href = "https://www.github.com/jwgarrison">Justin Garrison</a>, and
-    <a href = "https://www.aei.org/scholar/matthew-h-jensen/">Matt Jensen</a>
+    <a href = "https://www.jasondebacker.com">Jason DeBacker</a>
 Development_credit: >
-    <a href = "https://github.com/jwgarrison">Justin Garrison</a>
+    <a href = "https://www.jasondebacker.com">Jason DeBacker</a>
 OSS_credit: >
     <a href = "https://github.com/open-source-economics/B-tax">
     Cost of Capital Calculator</a> for tax calculations.
