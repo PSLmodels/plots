@@ -5,24 +5,24 @@ plot_name: 'Marginal Effective Total Tax Rates on Typically Financed Corporate I
 plot_id: corp_mettr
 content: index.html
 thumbnail: thumbnail.png
-short_description: > 
+short_description: >
     Explore the phaseout of bonus depreciation scheduled under current law.
 long_description: >
-    Explore the the impact of the scheduled phase-out of bonus depreciation on effective 
-    tax rates for new investment. Bonus depreciation will decline from 50% in 2016 and 
-    2017 to 40% in 2018, 30% in 2019, and will expire on December 31, 2019.  Calculations 
-    do not include the effect of tax reform on firms' financing behavior or the economy 
+    Explore the the impact of the scheduled phase-out of bonus depreciation on effective
+    tax rates for new investment. Bonus depreciation will decline from 50% in 2016 and
+    2017 to 40% in 2018, 30% in 2019, and will expire on December 31, 2019.  Calculations
+    do not include the effect of tax reform on firms' financing behavior or the economy
     as a whole.
 Concept_credit: >
     <a href = "http://jasondebacker.com/">Jason DeBacker</a>
 Development_credit: >
     <a href = "https://github.com/brendancol">Brendan Collins</a>
 OSS_credit: >
-    <a href = "https://github.com/open-source-economics/B-Tax">
-    Cost of Capital Calculator</a> for tax computations.
-    <a href = "http://bokeh.pydata.org/en/latest/">Bokeh</a>
+    <a href = "https://github.com/open-source-economics/B-Tax/releases/tag/0.1.2">
+    B-Tax version 0.1.2</a> for tax computations.
+    <a href = "https://github.com/bokeh/bokeh/releases/tag/0.12.2">Bokeh version 0.12.2</a>
     for visualizations.
- 
+
 best_width: "100%"
 best_height: "550px"
 best_width_portrait: "550px"
